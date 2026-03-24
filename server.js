@@ -1,13 +1,24 @@
-//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 const express = require("express");
+const handlebars = require('express-handlebars')
 const mongoose = require("mongoose");
+const path = require("path")
 
 const app = express();
+//tailwind: npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch
 
-app.use(express.json());
-app.use(express.static("public"));
+//config
+    //body parser
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-// CONNECT MONGODB
+    //template engine
+    app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
+    app.set("view engine", "handlebars");
+    app.set("views", path.join(__dirname, "views"));
+
+    app.use(express.static(path.join(__dirname, "public")));
+
+//conectar mongo
 mongoose.connect("mongodb://127.0.0.1:27017/studies");
 
 const DataSchema = new mongoose.Schema({
@@ -17,7 +28,7 @@ const DataSchema = new mongoose.Schema({
 
 const Data = mongoose.model("Data", DataSchema);
 
-// INIT DATA
+// ?
 async function getData(){
   let data = await Data.findOne();
   if(!data){
@@ -26,26 +37,30 @@ async function getData(){
   return data;
 }
 
-// ROUTES
+// routes
 
-app.get("/api/data", async (req,res)=>{
-  const data = await getData();
-  res.json(data);
-});
+app.get("/", async (req, res) => {
+  res.render("home")
+})
 
-app.post("/api/tasks", async (req,res)=>{
-  const data = await getData();
-  data.tasks = req.body.tasks;
-  await data.save();
-  res.sendStatus(200);
-});
+// app.get("/api/data", async (req,res)=>{
+//   const data = await getData();
+//   res.json(data);
+// });
 
-app.post("/api/notes", async (req,res)=>{
-  const data = await getData();
-  data.notes = req.body.text;
-  await data.save();
-  res.sendStatus(200);
-});
+// app.post("/api/tasks", async (req,res)=>{
+//   const data = await getData();
+//   data.tasks = req.body.tasks;
+//   await data.save();
+//   res.sendStatus(200);
+// });
+
+// app.post("/api/notes", async (req,res)=>{
+//   const data = await getData();
+//   data.notes = req.body.text;
+//   await data.save();
+//   res.sendStatus(200);
+// });
 
 app.listen(3000, ()=>{
   console.log("Running on http://localhost:3000");
