@@ -6,31 +6,11 @@
     <link rel="stylesheet" href="/css/output.css">
     <title>4Studies</title>
 </head>
-<body>
-     <div class="w-full max-w-5xl bg-slate-900 rounded-xl border border-slate-800 px-6 py-4">
-    
-    <nav class="flex gap-8 text-sm font-medium text-slate-400 border-b border-slate-800 pb-2">
+<body class="bg-[url('/images/fundo_4studies.jpeg')] bg-cover bg-center min-h-screen">
+    {{> _tabs}}
+    {{{body}}}
 
-      <button class="hover:text-white transition">
-        My Account
-      </button>
 
-      <button class="hover:text-white transition">
-        Company
-      </button>
-
-      <button class="text-indigo-400 border-b-2 border-indigo-500 pb-2">
-        Team Members
-      </button>
-
-      <button class="hover:text-white transition">
-        Billing
-      </button>
-
-    </nav>
-
-  </div>
-    {{body}}
     <script src="/js/script.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </body>
