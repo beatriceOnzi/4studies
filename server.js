@@ -1,10 +1,13 @@
 const express = require("express");
 const handlebars = require('express-handlebars')
-const mongoose = require("mongoose");
 const path = require("path")
+const sequelize = require("./database.js");
+const Data = require("./models/Goals");
+
+sequelize.sync();
+module.exports = sequelize;
 
 const app = express();
-//tailwind: npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch
 
 //config
     //body parser
@@ -18,24 +21,6 @@ const app = express();
 
     app.use(express.static(path.join(__dirname, "public")));
 
-//conectar mongo
-mongoose.connect("mongodb://127.0.0.1:27017/studies");
-
-const DataSchema = new mongoose.Schema({
-  notes: String,
-  tasks: [String]
-});
-
-const Data = mongoose.model("Data", DataSchema);
-
-// ?
-async function getData(){
-  let data = await Data.findOne();
-  if(!data){
-    data = await Data.create({ notes:"", tasks:[] });
-  }
-  return data;
-}
 
 // routes
 
