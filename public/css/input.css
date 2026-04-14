@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card {
+    @apply flex overflow-x-auto rounded-xl whitespace-nowrap p-1 ms-8 mt-8 h-max w-max bg-blue-900 bg-opacity-75 border-8 border-blue-900/30 outline outline-[0.8em] outline-blue-900/40;
+}

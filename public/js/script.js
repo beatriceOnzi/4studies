@@ -1,4 +1,3 @@
-
 const tasksList = document.getElementById("tasks");
 const notesArea = document.getElementById("notes");
 

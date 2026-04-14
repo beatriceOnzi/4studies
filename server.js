@@ -2,7 +2,7 @@ const express = require("express");
 const handlebars = require('express-handlebars')
 const path = require("path")
 const sequelize = require("./database.js");
-const Data = require("./models/Goals");
+const Goals = require("./models/Goals");
 
 sequelize.sync();
 module.exports = sequelize;
@@ -21,11 +21,18 @@ const app = express();
 
     app.use(express.static(path.join(__dirname, "public")));
 
-
 // routes
 
 app.get("/", async (req, res) => {
-  res.render("home")
+  res.render("home", { pagina: 1});
+})
+
+app.get("/tempo", async (req, res) => {
+  res.render("home", { pagina1: 1});
+})
+
+app.get("/notes", async (req, res) => {
+  res.render("home", { pagina2: 1});
 })
 
 // app.get("/api/data", async (req,res)=>{

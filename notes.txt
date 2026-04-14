@@ -1,0 +1,2 @@
+- fazer funções para lidar com tempo (operções com milisegundos)
+    dentro de models?
