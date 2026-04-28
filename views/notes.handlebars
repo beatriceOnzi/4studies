@@ -1,22 +1,49 @@
-<div class="flex justify-center mt-12">
-    <div class="card inline-block h-max min-h-10 w-max min-w-8">
-        <h1 class="font-bold text-sky-50 ">Notes:</h1>
-        <ul class="list-disc list-inside">
+<div class="flex justify-center gap-10 mt-6">
+    <div class="card inline-block h-max min-h-10 w-max min-w-8 p-1 ms-8 mt-8">
+        <h1 class="font-extrabold text-branco text-2xl hover:text-roxo-claro">Notes:</h1>
+        <form class="mt-4">
+            <textarea class="rounded-2 bg-">
+
+            </textarea>
+        </form>
+
+        {{!-- <ul class="list-disc list-inside">
             
         {{#each notes}}
-            <li class="font-bold text-sky-50">{{ note }}</li>
+            <li class="font-bold text-branco">{{ note }}</li>
         {{else}}
-            <li class="font-bold text-sky-50">Nenhuma nota registrada</li>
+            <li class="font-bold text-branco">Nenhuma nota registrada</li>
         {{/each}}
-            <li class="font-bold text-sky-50"><a>aqui vou cadastrar novas</a></li>
-        </ul>
+        </ul> --}}
     </div>
 
-    <div class="card inline-block h-max w-max">
-        <div class="flex gap-5">
-            <h1 class="font-bold text-sky-50">Daily Goals</h1>
-            <h1 class="font-bold text-sky-50">Weekly Goals</h1>
+    <div class="card inline-block h-max w-max p-1 ms-8 mt-8">
+        <div class="flex gap-7">
+            <a href="/notes" class="font-extrabold text-branco text-2xl hover:text-roxo-claro {{#if daily_goals_selected }} border-b-2 border-roxo-escuro{{/if}}">Daily Goals</a>
+            <a href="/notes/weekly_goals" class="font-extrabold text-sky-100 text-2xl hover:text-roxo-claro {{#if weekly_goals_selected }} border-b-2 border-roxo-escuro{{/if}}">Weekly Goals</a>
         </div>
+
+        <ul class="list-disc list-inside mt-4">
+            {{#if daily_goals_selected }}
+                {{#each goals}}
+                    <li class="font-bold text-branco">
+                            {{ daily_goals }} 
+                    </li>
+                {{/each}}
+            {{/if}}
+
+            {{#if weekly_goals_selected }}
+                {{#each goals}}
+                    <li class="font-bold text-branco">
+                            {{ weekly_goals }} 
+                    </li>
+                {{/each}}
+            {{/if}}
+
+                {{!-- <form action="/cadGoal/" class="bg-none outline-none">
+                    <input class="bg-none outline-none" type="text">
+                </form> --}}
+        </ul>
         
     </div>
 </div>

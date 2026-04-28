@@ -6,20 +6,25 @@ const TimeToday = require("./TimeToday");
 const TotalHours = require("./TotalHours");
 
 function add_stuff(){
-    let notes = new Notes({
+    let note = new Notes({
         note: "fazer a página de anotações"
     })
-    notes.save()
+    note.save()
 
-    let notes2 = new Notes({
-        note: "fazer os goals"
+    let weeklyGoals = new WeeklyGoals({
+        weekly_goals: "terminar a apresentação de slides"
     })
-    notes2.save()
+    weeklyGoals.save()
 
-    let notes3 = new Notes({
-        note: "fazer a lalalal"
+    let weeklyGoals2 = new WeeklyGoals({
+        weekly_goals: "fundamentos do js"
     })
-    notes3.save()
+    weeklyGoals2.save()
+
+    let dailyGoals = new DailyGoals({
+        daily_goals: "termiinar html css básico"
+    })
+    dailyGoals.save()
 }
     
 module.exports = add_stuff

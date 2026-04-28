@@ -6,5 +6,5 @@
 @tailwind utilities;
 
 .card {
-    @apply flex overflow-x-auto rounded-xl whitespace-nowrap p-1 ms-8 mt-8 h-max w-max bg-indigo-900 bg-opacity-75 border-8 border-indigo-900/30 outline outline-[0.8em] outline-indigo-900/40;
+    @apply flex overflow-x-auto rounded-xl whitespace-nowrap h-max w-max bg-azul bg-opacity-75 border-8 border-azul/30 outline outline-[0.8em] outline-azul/40;
 }

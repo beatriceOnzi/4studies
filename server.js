@@ -10,7 +10,8 @@ const TimeWeek = require("./models/TimeWeek");
 const TimeToday = require("./models/TimeToday");
 const TotalHours = require("./models/TotalHours");
 
-//const add_stuff = require("./models/add_stuff.js")
+const add_stuff = require("./models/add_stuff.js");
+const { notDeepEqual } = require("assert");
 
 sequelize.sync();
 module.exports = sequelize;
@@ -43,9 +44,21 @@ app.get("/", (req, res) => {
 
 app.get("/notes", (req, res) => {
   Notes.findAll().then((notes) => {
-    res.render("notes", { notes: notes});
+    DailyGoals.findAll().then((goals) => {
+        res.render("notes", { notes: notes, goals: goals, daily_goals_selected: 1});
+    })
   }).catch((e) => {
-    console.log(e)
+      console.log(e)
+  })
+});
+
+app.get("/notes/weekly_goals", (req, res) => {
+  Notes.findAll().then((notes) => {
+    WeeklyGoals.findAll().then((goals) => {
+        res.render("notes", { notes: notes, goals: goals, weekly_goals_selected: 1});
+    })
+  }).catch((e) => {
+      console.log(e)
   })
 });
 
