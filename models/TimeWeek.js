@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database");
 
-const TimeMonth = sequelize.define("TimeMonth", {
-  timeInMsThisMonth: {
+const TimeWeek = sequelize.define("TimeWeek", {
+  timeInMsThisWeek: {
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
@@ -12,4 +12,4 @@ const TimeMonth = sequelize.define("TimeMonth", {
   }
 });
 
-module.exports = TimeMonth;
+module.exports = TimeWeek;

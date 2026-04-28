@@ -1,8 +1,16 @@
 const express = require("express");
-const handlebars = require('express-handlebars')
-const path = require("path")
+const handlebars = require('express-handlebars');
+const path = require("path");
 const sequelize = require("./database.js");
-const Goals = require("./models/Goals");
+
+const Notes = require("./models/Notes");
+const WeeklyGoals = require("./models/WeeklyGoals");
+const DailyGoals = require("./models/DailyGoals");
+const TimeWeek = require("./models/TimeWeek");
+const TimeToday = require("./models/TimeToday");
+const TotalHours = require("./models/TotalHours");
+
+//const add_stuff = require("./models/add_stuff.js")
 
 sequelize.sync();
 module.exports = sequelize;
@@ -15,7 +23,13 @@ const app = express();
     app.use(express.urlencoded({ extended: true }));
 
     //template engine
-    app.engine("handlebars", handlebars.engine({ defaultLayout: "main" }));
+    app.engine("handlebars", handlebars.engine({ 
+      defaultLayout: "main",
+      runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+      }
+    }));
     app.set("view engine", "handlebars");
     app.set("views", path.join(__dirname, "views"));
 
@@ -23,17 +37,21 @@ const app = express();
 
 // routes
 
-app.get("/", async (req, res) => {
-  res.render("home", { pagina: 1});
-})
+app.get("/", (req, res) => {
+  res.render("home", { home: 1});
+});
 
-app.get("/tempo", async (req, res) => {
-  res.render("home", { pagina1: 1});
-})
+app.get("/notes", (req, res) => {
+  Notes.findAll().then((notes) => {
+    res.render("notes", { notes: notes});
+  }).catch((e) => {
+    console.log(e)
+  })
+});
 
-app.get("/notes", async (req, res) => {
-  res.render("home", { pagina2: 1});
-})
+app.get("/time", (req, res) => {
+  res.render("home", { time: 1});
+});
 
 // app.get("/api/data", async (req,res)=>{
 //   const data = await getData();
