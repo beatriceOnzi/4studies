@@ -11,7 +11,7 @@ const TimeToday = require("./models/TimeToday");
 const TotalHours = require("./models/TotalHours");
 
 const add_stuff = require("./models/add_stuff.js");
-const { notDeepEqual } = require("assert");
+// const { notDeepEqual } = require("assert");
 
 sequelize.sync();
 module.exports = sequelize;
@@ -42,7 +42,9 @@ app.get("/", (req, res) => {
   res.render("home", { home: 1});
 });
 
-app.get("/notes", (req, res) => {
+// -- Daily Goals --
+
+app.get("/notes/daily_goals", (req, res) => {
   Notes.findAll().then((notes) => {
     DailyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, daily_goals_selected: 1});
@@ -52,38 +54,57 @@ app.get("/notes", (req, res) => {
   })
 });
 
+app.post("/notes/daily_goals/new", async (req, res) => {
+  const newDailyGoal = await new DailyGoals({
+        daily_goals: req.body.value
+    });
+  await newDailyGoal.save();
+  console.log(`objeto ${newDailyGoal}`)
+
+  res.json(newDailyGoal);
+});
+
+app.delete("/notes/daily_goals/:id", async (req, res) => {
+  await DailyGoals.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
+});
+
+
+// -- Weekly Goals --
+
 app.get("/notes/weekly_goals", (req, res) => {
   Notes.findAll().then((notes) => {
     WeeklyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, weekly_goals_selected: 1});
     })
   }).catch((e) => {
-      console.log(e)
+      console.log(e);
   })
+});
+
+app.post("/notes/weekly_goals/new", async (req, res) => {
+  const newWeeklyGoal = await new WeeklyGoals({
+        weekly_goals: req.body.value
+    });
+  await newWeeklyGoal.save();
+
+  res.json(newWeeklyGoal);
+});
+
+app.delete("/notes/weekly_goals/:id", async (req, res) => {
+  await WeeklyGoals.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
 });
 
 app.get("/time", (req, res) => {
   res.render("home", { time: 1});
 });
-
-// app.get("/api/data", async (req,res)=>{
-//   const data = await getData();
-//   res.json(data);
-// });
-
-// app.post("/api/tasks", async (req,res)=>{
-//   const data = await getData();
-//   data.tasks = req.body.tasks;
-//   await data.save();
-//   res.sendStatus(200);
-// });
-
-// app.post("/api/notes", async (req,res)=>{
-//   const data = await getData();
-//   data.notes = req.body.text;
-//   await data.save();
-//   res.sendStatus(200);
-// });
 
 app.listen(3000, ()=>{
   console.log("Running on http://localhost:3000");

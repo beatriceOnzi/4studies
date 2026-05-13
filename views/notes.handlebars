@@ -1,49 +1,64 @@
 <div class="flex justify-center gap-10 mt-6">
-    <div class="card inline-block h-max min-h-10 w-max min-w-8 p-1 ms-8 mt-8">
-        <h1 class="font-extrabold text-branco text-2xl hover:text-roxo-claro">Notes:</h1>
-        <form class="mt-4">
-            <textarea class="rounded-2 bg-">
+    <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-1 ms-8 mt-8">
+        <h1 class="font-extrabold text-branco text-3xl">Notes:</h1>
+        <form class="mt-4 h-72 w-full">
+            <textarea class="text-white resize-none focus:outline-none focus:border-roxo-claro rounded-lg h-full w-full bg-azul bg-opacity-50 border-4 border-roxo-escuro">
 
             </textarea>
         </form>
-
-        {{!-- <ul class="list-disc list-inside">
-            
-        {{#each notes}}
-            <li class="font-bold text-branco">{{ note }}</li>
-        {{else}}
-            <li class="font-bold text-branco">Nenhuma nota registrada</li>
-        {{/each}}
-        </ul> --}}
     </div>
 
-    <div class="card inline-block h-max w-max p-1 ms-8 mt-8">
+    <div class="card inline-block h-[23rem] w-96 p-1 ms-8 mt-8">
         <div class="flex gap-7">
-            <a href="/notes" class="font-extrabold text-branco text-2xl hover:text-roxo-claro {{#if daily_goals_selected }} border-b-2 border-roxo-escuro{{/if}}">Daily Goals</a>
-            <a href="/notes/weekly_goals" class="font-extrabold text-sky-100 text-2xl hover:text-roxo-claro {{#if weekly_goals_selected }} border-b-2 border-roxo-escuro{{/if}}">Weekly Goals</a>
+            <a href="/notes/daily_goals" class="font-extrabold text-branco text-2xl hover:text-roxo-claro {{#if daily_goals_selected }} border-b-4 border-roxo-escuro{{/if}}">Daily Goals</a>
+            <a href="/notes/weekly_goals" class="font-extrabold text-sky-100 text-2xl hover:text-roxo-claro {{#if weekly_goals_selected }} border-b-4 border-roxo-escuro{{/if}}">Weekly Goals</a>
         </div>
 
-        <ul class="list-disc list-inside mt-4">
-            {{#if daily_goals_selected }}
+        
+        {{#if daily_goals_selected }}
+            <ul id="dailyGoalsList" class="list-disc list-inside mt-4">
                 {{#each goals}}
-                    <li class="font-bold text-branco">
-                            {{ daily_goals }} 
+                    <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
+                        <span class="group-has-[a:hover]:line-through">
+                            {{ daily_goals }}
+                        </span>
+                        <a class="deleteDailyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
                     </li>
                 {{/each}}
-            {{/if}}
+                <li class="text-branco text-2xl text-wrap font-semibold">
+                    <input
+                        id="daily_goals_input"
+                        type="text"
+                        placeholder="New daily goal"
+                        class="bg-transparent outline-none placeholder:text-gray-400"
+                    >
+                </li>
+            </ul>    
 
-            {{#if weekly_goals_selected }}
+        {{/if}}
+
+
+        {{#if weekly_goals_selected }}
+            <ul id="weeklyGoalsList" class="list-disc list-inside mt-4">
                 {{#each goals}}
-                    <li class="font-bold text-branco">
-                            {{ weekly_goals }} 
+                    <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
+                        <span class="group-has-[a:hover]:line-through">
+                            {{ weekly_goals }}
+                        </span>
+                        <a class="deleteWeeklyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
+
                     </li>
                 {{/each}}
-            {{/if}}
-
-                {{!-- <form action="/cadGoal/" class="bg-none outline-none">
-                    <input class="bg-none outline-none" type="text">
-                </form> --}}
-        </ul>
+                <li class="text-branco text-2xl text-wrap font-semibold">
+                    <input
+                        id="weekly_goals_input"
+                        type="text"
+                        placeholder="New weekly goal"
+                        class="bg-transparent outline-none placeholder:text-gray-400"
+                    >
+                </li>
+            </ul>
+        {{/if}}
         
     </div>
 </div>

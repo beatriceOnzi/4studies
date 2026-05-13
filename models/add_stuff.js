@@ -7,22 +7,22 @@ const TotalHours = require("./TotalHours");
 
 function add_stuff(){
     let note = new Notes({
-        note: "fazer a página de anotações"
+        note: "eu amo o murilo amor da minha vida"
     })
     note.save()
 
     let weeklyGoals = new WeeklyGoals({
-        weekly_goals: "terminar a apresentação de slides"
+        weekly_goals: "refatorar 4studies"
     })
     weeklyGoals.save()
 
     let weeklyGoals2 = new WeeklyGoals({
-        weekly_goals: "fundamentos do js"
+        weekly_goals: "js avancado"
     })
     weeklyGoals2.save()
 
     let dailyGoals = new DailyGoals({
-        daily_goals: "termiinar html css básico"
+        daily_goals: "html css avancado"
     })
     dailyGoals.save()
 }

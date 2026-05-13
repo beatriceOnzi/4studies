@@ -1,2 +1,8 @@
 - fazer funções para lidar com tempo (operções com milisegundos)
     dentro de models?
+
+- consertar cadastro
+- separar services
+
+- tranformar tudo para o frontend?
+    carregar as tasks apenas pelo script.js não pelo handlebars
