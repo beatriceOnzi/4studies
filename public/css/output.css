@@ -591,10 +591,6 @@ video {
   display: inline-flex;
 }
 
-.hidden{
-  display: none;
-}
-
 .h-12{
   height: 3rem;
 }
@@ -622,6 +618,14 @@ video {
 .h-max{
   height: -moz-max-content;
   height: max-content;
+}
+
+.h-screen{
+  height: 100vh;
+}
+
+.max-h-screen{
+  max-height: 100vh;
 }
 
 .min-h-10{
@@ -681,12 +685,8 @@ video {
   gap: 1.75rem;
 }
 
-.overflow-auto{
-  overflow: auto;
-}
-
-.overflow-scroll{
-  overflow: scroll;
+.overflow-hidden{
+  overflow: hidden;
 }
 
 .overflow-x-auto{
@@ -819,16 +819,6 @@ video {
   line-height: 1.75rem;
 }
 
-.text-sm{
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
-.text-base{
-  font-size: 1rem;
-  line-height: 1.5rem;
-}
-
 .text-lg{
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -840,14 +830,6 @@ video {
 
 .font-semibold{
   font-weight: 600;
-}
-
-.font-bold{
-  font-weight: 700;
-}
-
-.font-extralight{
-  font-weight: 200;
 }
 
 .tracking-widest{
@@ -862,11 +844,6 @@ video {
 .text-sky-100{
   --tw-text-opacity: 1;
   color: rgb(224 242 254 / var(--tw-text-opacity, 1));
-}
-
-.text-white{
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .text-opacity-0{
@@ -962,10 +939,6 @@ video {
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
 }
 
-.hover\:block:hover{
-  display: block;
-}
-
 .hover\:cursor-pointer:hover{
   cursor: pointer;
 }
@@ -978,10 +951,6 @@ video {
 .hover\:text-roxo-claro:hover{
   --tw-text-opacity: 1;
   color: rgb(193 140 237 / var(--tw-text-opacity, 1));
-}
-
-.hover\:text-opacity-100:hover{
-  --tw-text-opacity: 1;
 }
 
 .focus\:border-roxo-claro:focus{
@@ -1011,25 +980,8 @@ video {
   background-color: rgb(109 40 217 / var(--tw-bg-opacity, 1));
 }
 
-.group:hover .group-hover\:block{
-  display: block;
-}
-
-.group:hover .group-hover\:text-gray-500{
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
-}
-
 .group:hover .group-hover\:text-opacity-100{
   --tw-text-opacity: 1;
-}
-
-.group:hover .group-hover\:line-through{
-  text-decoration-line: line-through;
-}
-
-.has-\[a\:hover\]\:line-through:has(a:hover){
-  text-decoration-line: line-through;
 }
 
 .group:has(a:hover) .group-has-\[a\:hover\]\:line-through{

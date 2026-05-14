@@ -2,8 +2,7 @@
     <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-1 ms-8 mt-8">
         <h1 class="font-extrabold text-branco text-3xl">Notes:</h1>
         <form id="notes_form" class="mt-4 h-72 w-full">
-            <textarea id="notes_textarea" class="text-branco text-xl resize-none focus:outline-none focus:border-roxo-claro rounded-lg h-full w-full bg-azul bg-opacity-50 border-4 border-roxo-escuro">{{ notes.note }}
-            </textarea>
+            <textarea id="notes_textarea" class="text-branco text-2xl tracking-widest resize-none focus:outline-none focus:border-roxo-claro rounded-lg h-full w-full bg-azul bg-opacity-50 border-4 border-roxo-escuro">{{ notes.note }}</textarea>
         </form>
     </div>
 
@@ -24,7 +23,7 @@
                         <a class="deleteDailyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
                     </li>
                 {{/each}}
-                <li class="text-branco text-2xl text-wrap font-semibold">
+                <li class="text-branco text-2xl text-wrap font-semibold tracking-widest">
                     <input
                         id="daily_goals_input"
                         type="text"
@@ -48,7 +47,7 @@
 
                     </li>
                 {{/each}}
-                <li class="text-branco text-2xl text-wrap font-semibold">
+                <li class="text-branco text-2xl text-wrap tracking-widest font-semibold">
                     <input
                         id="weekly_goals_input"
                         type="text"
