@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
 // -- Daily Goals --
 
 app.get("/notes/daily_goals", (req, res) => {
-  Notes.findAll().then((notes) => {
+  Notes.findByPk(1).then((notes) => {
     DailyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, daily_goals_selected: 1});
     })
@@ -59,7 +59,6 @@ app.post("/notes/daily_goals/new", async (req, res) => {
         daily_goals: req.body.value
     });
   await newDailyGoal.save();
-  console.log(`objeto ${newDailyGoal}`)
 
   res.json(newDailyGoal);
 });
@@ -72,11 +71,10 @@ app.delete("/notes/daily_goals/:id", async (req, res) => {
     });
 });
 
-
 // -- Weekly Goals --
 
 app.get("/notes/weekly_goals", (req, res) => {
-  Notes.findAll().then((notes) => {
+  Notes.findByPk(1).then((notes) => {
     WeeklyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, weekly_goals_selected: 1});
     })
@@ -100,6 +98,16 @@ app.delete("/notes/weekly_goals/:id", async (req, res) => {
             id: req.params.id
         }
     });
+});
+
+// -- Notes --
+app.post("/notes/save", async (req, res) => {
+  const notes = await Notes.findByPk(1)
+  notes.note = req.body.notes
+
+  await notes.save();
+
+  res.json(notes);
 });
 
 app.get("/time", (req, res) => {

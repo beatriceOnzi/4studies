@@ -81,8 +81,7 @@ function createLi(data, goalList) {
 }
 
 async function newGoal(goalInput, goalList) {
-    const value =
-        goalInput.value.trim();
+    const value = goalInput.value.trim();
     if (!value) return;
 
     const serverURL = getServerURL(goalList.id, 'new')
