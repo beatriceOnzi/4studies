@@ -4,6 +4,7 @@ const path = require("path");
 const sequelize = require("./database.js");
 
 const notes_routes = require("./routes/notes");
+const clock_routes = require("./routes/clock.js");
 
 const TimeWeek = require("./models/TimeWeek");
 const TimeToday = require("./models/TimeToday");
@@ -36,13 +37,11 @@ const app = express();
     app.use(express.static(path.join(__dirname, "public")));
 
 // routes
+  // imported routes
+    app.use('/notes', notes_routes)
+    app.use(clock_routes)
 
-app.get("/", (req, res) => {
-  res.render("home", { home: 1});
-});
 
-app.use('/notes', notes_routes)
-
-app.listen(3000, ()=>{
+app.listen(1805, ()=>{
   console.log("Running on http://localhost:3000");
 });

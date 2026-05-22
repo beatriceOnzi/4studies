@@ -11,20 +11,9 @@ function add_stuff(){
     })
     note.save()
 
-    let weeklyGoals = new WeeklyGoals({
-        weekly_goals: "refatorar 4studies"
-    })
-    weeklyGoals.save()
+    let datetest = new TimeToday({})
+    datetest.save()
 
-    let weeklyGoals2 = new WeeklyGoals({
-        weekly_goals: "js avancado"
-    })
-    weeklyGoals2.save()
-
-    let dailyGoals = new DailyGoals({
-        daily_goals: "html css avancado"
-    })
-    dailyGoals.save()
 }
     
 module.exports = add_stuff
