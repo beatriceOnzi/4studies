@@ -16,6 +16,7 @@ router.get("/daily_goals", (req, res) => {
   }).catch((e) => {
       console.log(e)
   })
+
 });
 
 router.post("/daily_goals/new", async (req, res) => {
@@ -68,6 +69,10 @@ router.delete("/weekly_goals/:id", async (req, res) => {
 
 router.post("/save", async (req, res) => {
   const notes = await Notes.findByPk(1)
+  if (notes.note){
+    notes.note= ""
+  }
+  
   notes.note = req.body.notes
 
   await notes.save();
