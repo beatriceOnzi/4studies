@@ -8,3 +8,23 @@
 .card {
     @apply flex rounded-xl whitespace-nowrap h-max w-max bg-azul bg-opacity-75 border-8 border-azul/30 outline outline-[0.8rem] outline-azul/40;
 }
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(54, 46, 129, 0.75);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F4EDFF;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C18CED;
+  border-radius: 10px;
+}

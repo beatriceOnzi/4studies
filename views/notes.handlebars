@@ -14,7 +14,7 @@
 
         
         {{#if daily_goals_selected }}
-            <ul id="dailyGoalsList" class="list-disc list-inside mt-4">
+            <ul id="dailyGoalsList" class="list-disc list-inside mt-4 h-72 overflow-y-auto">
                 {{#each goals}}
                     <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
                         <span class="group-has-[a:hover]:line-through">
@@ -37,7 +37,7 @@
 
 
         {{#if weekly_goals_selected }}
-            <ul id="weeklyGoalsList" class="list-disc list-inside mt-4">
+            <ul id="weeklyGoalsList" class="list-disc list-inside mt-4 h-72 overflow-y-auto">
                 {{#each goals}}
                     <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
                         <span class="group-has-[a:hover]:line-through">
@@ -60,3 +60,6 @@
         
     </div>
 </div>
+
+<script src="/scripts/script_goals.js"></script>
+<script src="/scripts/script_notes.js"></script>
