@@ -10,7 +10,6 @@ const TimeWeek = require("./models/TimeWeek");
 const TimeToday = require("./models/TimeToday");
 const TotalHours = require("./models/TotalHours");
 
-const add_stuff = require("./models/add_stuff.js");
 // const { notDeepEqual } = require("assert");
 
 sequelize.sync();

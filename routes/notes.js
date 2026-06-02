@@ -5,7 +5,6 @@ const Notes = require("../models/Notes");
 const WeeklyGoals = require("../models/WeeklyGoals");
 const DailyGoals = require("../models/DailyGoals");
 
-
 // -- Daily Goals --
 
 router.get("/daily_goals", (req, res) => {

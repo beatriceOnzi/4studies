@@ -3,7 +3,11 @@
         {{time}}
     </div>
     <div id="clock_button" class="card cursor-pointer text-4xl font-medium tracking-widest text-branco px-4 py-2 outline-8 hover:bg-roxo-claro/80 hover:font-semibold active:bg-roxo-claro">
-        Start
+        {{#if is_running}}
+            Stop
+        {{else}}
+            Start
+        {{/if}}
     </div>
 </div>
 <script src="/scripts/script_clock.js"></script>
