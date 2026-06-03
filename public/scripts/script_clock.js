@@ -5,7 +5,14 @@ const clock_text = document.getElementById('clock_time');
 let start_end_timestamp = [];
 let interval_in_ms = 0;
 
-let hour_display = null;
+let running_display = null;
+
+
+document.addEventListener("DOMContentLoaded", async function() {
+    let is_running = await get_is_running()
+    handle_clock_display(is_running)
+    start_clock();
+});
 
 clock_btn.addEventListener('click', handle_clock_press);
 
@@ -14,32 +21,27 @@ async function handle_clock_press(){
 
     clock_btn.textContent = clock_btn.textContent.trim();
 
-    if (clock_btn.textContent == "Start") { // fazer esse teste com is_running()??
+    is_running = await get_is_running()
 
-        const current_time = await get_ms_today();
-
-        start_end_timestamp.length = 0;
-
-        start_end_timestamp[0] = get_current_timestamp();
-        save_last_clock_in(start_end_timestamp[0])
-
-        start_clock_display(current_time); // tirar essa funcao daqui
+    if (!is_running) {
+        start_clock(start_end_timestamp[0])
 
         clock_btn.textContent = "Stop";
 
     } else {
+        stop_clock();
 
-        start_end_timestamp[1] = get_current_timestamp();
-
-        interval_in_ms = get_interval(start_end_timestamp);
-
-        await add_interval_to_database(interval_in_ms);
-
-        stop_clock_display();
-        desable_clock_running();
         clock_btn.textContent = "Start";
         
     }
+}
+
+async function get_is_running() {
+    const response = await fetch("/get_is_running");
+    console.log(response)
+    data = await response.json()
+    console.log(data)
+    return data
 }
 
 async function desable_clock_running() {
@@ -61,36 +63,50 @@ async function save_last_clock_in(timestamp) {
     });
 }
 
-async function start_clock_display(current_saved_time){
-    clock_text.textContent = msToHours(current_saved_time);
-
-    const last_clock_in_timestamp = await get_last_clock_in()
-    const ms_today = await get_ms_today()
-
-    hour_display = setInterval(() => {
-        const a = get_current_timestamp()
-
-        const current_timestamp = get_current_timestamp()
-        const elapsed_since_clock_in = current_timestamp - last_clock_in_timestamp
-        const total_ms_today = ms_today + elapsed_since_clock_in
-
-        console.log(`current_timestamp ${current_timestamp} 
-            elapsed_since_clock_in ${elapsed_since_clock_in} 
-            tottal_ms_today ${total_ms_today}`)
-
-        const elapsed_ms = a - start_end_timestamp[0];
-        const final = total_ms_today + elapsed_ms
-        console.log("elapsed", final)
-
-        clock_text.textContent = msToHours(final);
-
-
-    }, 1000);
+async function start_clock(){
+    start_end_timestamp.length = 0;
+    start_end_timestamp[0] = get_current_timestamp();
+    save_last_clock_in(start_end_timestamp[0])
 }
 
-async function stop_clock_display(){
+async function stop_clock(){
+    interval = start_end_timestamp[1] - start_end_timestamp[0]
+    save_interval_to_database(interval);
+    desable_clock_running();
     clock_text.textContent = msToHours(await get_ms_today())
-    clearInterval(hour_display)
+    clearInterval(running_display)
+}
+
+
+async function handle_clock_display(is_running){
+    if (is_running){
+        const current_saved_time = await get_ms_today();
+        clock_text.textContent = msToHours(current_saved_time);
+
+        const last_clock_in_timestamp = await get_last_clock_in()
+        const ms_today = await get_ms_today()
+
+        running_display = setInterval(() => {
+            const a = get_current_timestamp()
+
+            const current_timestamp = get_current_timestamp()
+            const elapsed_since_clock_in = current_timestamp - last_clock_in_timestamp
+            const total_ms_today = ms_today + elapsed_since_clock_in
+
+            console.log(`current_timestamp ${current_timestamp} 
+                elapsed_since_clock_in ${elapsed_since_clock_in} 
+                tottal_ms_today ${total_ms_today}`)
+
+            const elapsed_ms = a - start_end_timestamp[0];
+            console.log("elapsed", elapsed_ms)
+            const final = total_ms_today + elapsed_ms
+            console.log("final", final)
+
+            clock_text.textContent = msToHours(final);
+
+
+        }, 1000);
+    }
 
 }
 
@@ -128,7 +144,7 @@ async function get_last_clock_in() {
     return data
 }
 
-async function add_interval_to_database(interval_in_ms) {
+async function save_interval_to_database(interval_in_ms) {
     const response = await fetch("/add_ms_today", {
 
         method: 'POST',

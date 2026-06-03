@@ -55,6 +55,11 @@ router.get("/desable_clock_running", async (req, res) => {
     res.json(updated_today);
 })
 
+router.get("/get_is_running", async (req, res) => {
+    const time_today = await get_time_today();
+    res.json(time_today.lastClockIn != 0);
+});
+
 // -- Helper Functions --
 
 async function desable_clock_running() {
