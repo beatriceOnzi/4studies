@@ -5,7 +5,6 @@ const TimeToday = require("../models/TimeToday");
 const TimeWeek = require("../models/TimeWeek");
 const TotalHours = require("../models/TotalHours");
 // const add_stuff = require("../models/add_stuff.js");
-
  
 // salvar os milisegundos no timeWeek e TotalHours para já contar na estatistica
 
@@ -23,22 +22,6 @@ router.get("/", async (req, res) => {
     res.render("clock", { clock: 1, time: time, is_running:  isRunning});
 });
 
-router.post("/add_ms_today", async (req, res) => {
-    const time_today = await get_time_today();
-    time_today.timeInMsToday = time_today.timeInMsToday + req.body.interval_in_ms
-    time_today.save();
-
-    res.json(time_today);
-});
-
-
-router.post("/save_last_clock_in", async (req, res) => {
-    const today = await getToday();
-    const updated_today = save_last_clock_in(req.body.timestamp, today)
-
-    res.json(updated_today);
-});
-
 router.get("/get_ms_today", async (req, res) => {
     const time_today = await get_time_today()
     res.json(time_today.timeInMsToday);
@@ -49,40 +32,44 @@ router.get("/get_last_clock_in", async (req, res) => {
     res.json(time_today.lastClockIn);
 })
 
+router.get("/get_is_running", async (req, res) => {
+    const time_today = await get_time_today();
+    res.json(time_today.lastClockIn != 0);
+});
+
+router.post("/save_last_clock_in", async (req, res) => {
+    const today = await getToday();
+    const updated_today = save_last_clock_in(req.body.timestamp, today)
+
+    res.json(updated_today);
+});
+
 router.get("/desable_clock_running", async (req, res) => {
     const updated_today = desable_clock_running()
 
     res.json(updated_today);
 })
 
-router.get("/get_is_running", async (req, res) => {
+router.post("/add_ms_today", async (req, res) => {
     const time_today = await get_time_today();
-    res.json(time_today.lastClockIn != 0);
+    time_today.timeInMsToday = time_today.timeInMsToday + req.body.interval_in_ms
+    time_today.save();
+
+    res.json(time_today);
 });
+
 
 // -- Helper Functions --
 
-async function desable_clock_running() {
-    const date = await getToday();
-    const today = await TimeToday.findOne({ where: {today: date}});
-    today.lastClockIn = 0;
-    today.save()
-    return today
+async function getStudyToday() {
+    const today = getToday();
+    const study_today = await TimeToday.findOne({ where: { today: today } });
+    return study_today;
 }
 
-async function is_running() {
-    const date = getToday();
-    const today = await TimeToday.findOne({ where: {today: date}})
-
-    return today ? today.lastClockIn != 0: false;
-    
-}
-
-async function save_last_clock_in(timestamp, date) {
-    const today = await TimeToday.findOne({ where: {today: date}});
-    today.lastClockIn = timestamp;
-    today.save()
-    return today
+function getToday(){
+    const today = new Intl.DateTimeFormat('en-CA').format(new Date());
+    return today;
 }
 
 async function get_id_by_date(date) {
@@ -106,20 +93,33 @@ async function checkIfIsFirstClockIn() {
     }
     return true;
 }
+
 async function createTimeToday() {
     const datetest = new TimeToday({});
     await datetest.save();
 }
 
-async function getStudyToday() {
-    const today = getToday();
-    const study_today = await TimeToday.findOne({ where: { today: today } });
-    return study_today;
+async function is_running() {
+    const date = getToday();
+    const today = await TimeToday.findOne({ where: {today: date}})
+
+    return today ? today.lastClockIn != 0: false;
+    
 }
 
-function getToday(){
-    const today = new Intl.DateTimeFormat('en-CA').format(new Date());
-    return today;
+async function desable_clock_running() {
+    const date = await getToday();
+    const today = await TimeToday.findOne({ where: {today: date}});
+    today.lastClockIn = 0;
+    today.save()
+    return today
+}
+
+async function save_last_clock_in(timestamp, date) {
+    const today = await TimeToday.findOne({ where: {today: date}});
+    today.lastClockIn = timestamp;
+    today.save()
+    return today
 }
 
 function msToHours(ms) {

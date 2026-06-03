@@ -558,6 +558,22 @@ video {
   display: none;
 }
 
+.absolute{
+  position: absolute;
+}
+
+.left-0{
+  left: 0px;
+}
+
+.top-0{
+  top: 0px;
+}
+
+.-z-10{
+  z-index: -10;
+}
+
 .mx-1{
   margin-left: 0.25rem;
   margin-right: 0.25rem;
@@ -618,10 +634,6 @@ video {
 .h-max{
   height: -moz-max-content;
   height: max-content;
-}
-
-.h-screen{
-  height: 100vh;
 }
 
 .min-h-10{
@@ -705,6 +717,10 @@ video {
   overflow-y: auto;
 }
 
+.overflow-x-hidden{
+  overflow-x: hidden;
+}
+
 .whitespace-nowrap{
   white-space: nowrap;
 }
@@ -770,18 +786,6 @@ video {
 
 .bg-opacity-75{
   --tw-bg-opacity: 0.75;
-}
-
-.bg-\[url\(\'\/images\/fundo\.jpg\'\)\]{
-  background-image: url('/images/fundo.jpg');
-}
-
-.bg-cover{
-  background-size: cover;
-}
-
-.bg-center{
-  background-position: center;
 }
 
 .p-1{
@@ -870,11 +874,6 @@ video {
   color: rgb(244 237 255 / var(--tw-text-opacity, 1));
 }
 
-.text-roxo-claro{
-  --tw-text-opacity: 1;
-  color: rgb(193 140 237 / var(--tw-text-opacity, 1));
-}
-
 .text-sky-100{
   --tw-text-opacity: 1;
   color: rgb(224 242 254 / var(--tw-text-opacity, 1));
@@ -932,7 +931,7 @@ video {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: rgba(54, 46, 129, 0.75);
+  background-color: rgba(54, 46, 129, 0.5);
   border-radius: 10px;
 }
 
