@@ -6,13 +6,11 @@ const TimeToday = require("./TimeToday");
 const TotalHours = require("./TotalHours");
 
 function add_stuff(){
-    let note = new Notes({
-        note: "eu amo o murilo amor da minha vida"
+    let total = new TotalHours({
+        totalHoursCompletedInMs: 0,
+        goalHoursInMs: 3600000000
     })
-    note.save()
-
-    let datetest = new TimeToday({})
-    datetest.save()
+    total.save()
 
 }
     

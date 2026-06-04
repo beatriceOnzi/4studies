@@ -127,7 +127,7 @@ async function enable_clock_running(timestamp) {
 }
 
 async function save_interval_to_database(interval_in_ms) {
-    const response = await fetch("/add_ms_today", {
+    const response = await fetch("/add_ms", {
 
         method: 'POST',
 

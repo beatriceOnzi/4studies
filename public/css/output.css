@@ -693,8 +693,20 @@ video {
   align-items: center;
 }
 
+.items-stretch{
+  align-items: stretch;
+}
+
 .justify-center{
   justify-content: center;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.justify-around{
+  justify-content: space-around;
 }
 
 .gap-10{
@@ -818,6 +830,18 @@ video {
 
 .pt-24{
   padding-top: 6rem;
+}
+
+.pt-16{
+  padding-top: 4rem;
+}
+
+.pt-10{
+  padding-top: 2.5rem;
+}
+
+.pt-1{
+  padding-top: 0.25rem;
 }
 
 .text-center{
