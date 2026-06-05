@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "watch": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
+    "start": "nodemon ./src/server.js",
+    "watch": "npx tailwindcss -i ./src/public/css/input.css -o ./public/css/output.css --watch",
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -12,6 +13,7 @@
     "sqlite3": "^6.0.1"
   },
   "devDependencies": {
+    "jest": "^30.4.2",
     "tailwindcss": "^3.4.19"
   }
 }

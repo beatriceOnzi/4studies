@@ -43,6 +43,4 @@ const app = express();
     app.use(time_routes)
 
 
-app.listen(1805, ()=>{
-  console.log("Running on http://localhost:1805");
-});
+module.exports = app;
