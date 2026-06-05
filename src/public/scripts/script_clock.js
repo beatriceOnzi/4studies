@@ -62,7 +62,7 @@ async function stop_clock(){
     const interval = current_timestamp - last_clock_in_timestamp 
 
     await save_interval_to_database(interval);
-    await desable_clock_running();
+    await save_clock_out(current_timestamp);
     clearInterval(running_display)
 
     clock_text.textContent = msToHours(await get_ms_today())
@@ -107,12 +107,23 @@ async function get_last_clock_in() {
     return data
 }
 
-async function desable_clock_running() {
-    const response = await fetch("/desable_clock_running");
+async function save_clock_out(timestamp) {
+    const response = await fetch("/save_clock_out", {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            timestamp
+        })
+    });
 }
 
 async function enable_clock_running(timestamp) {
-    const response = await fetch("/save_last_clock_in", {
+    const response = await fetch("/create_clock_in", {
 
         method: 'POST',
 
@@ -127,7 +138,7 @@ async function enable_clock_running(timestamp) {
 }
 
 async function save_interval_to_database(interval_in_ms) {
-    const response = await fetch("/add_ms", {
+    const response = await fetch("/add_ms_to_database", {
 
         method: 'POST',
 
