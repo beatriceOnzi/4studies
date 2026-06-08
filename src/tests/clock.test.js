@@ -4,16 +4,16 @@ const ClockIn = require('../models/ClockIn');
 const TimeToday = require('../models/TimeToday');
 const TotalHours = require('../models/TotalHours');
 
-const timeTodayService = require('../services/time_service');
 const {
     is_running,
     create_clock_in,
     save_clock_out,
     add_ms_to_TotalHours,
-    add_ms_to_TimeToday
+    add_ms_to_TimeToday,
+    get_time_today,
+    getToday
 } = require('../services/clock_service');
 
-jest.mock('../services/time_service');
 jest.mock('../models/ClockIn');
 jest.mock('../models/TimeToday');
 jest.mock('../models/TotalHours');
@@ -45,7 +45,7 @@ describe('is_running', () => {
         expect(result).toBe(false);
     });
 
-    test('deve retornar false quando não existe clockIn', async () => {
+    test('deve retornar false quando não existe clockIn nem clockOut', async () => {
 
         ClockIn.findOne.mockResolvedValue({
             clockInTS: null,
@@ -64,23 +64,24 @@ describe('create_clock_in', () => {
     test('deve criar um clock in com clockOutTS nulo', async () => {
 
         const timestamp = 123456;
-        const date = '2026-06-05';
+        const today = getToday()
 
         ClockIn.create.mockResolvedValue({
             clockInTS: timestamp,
             clockOutTS: null,
-            day: date
+            day: today
         });
 
-        const result = await create_clock_in(timestamp, date);
+        const result = await create_clock_in(timestamp);
 
         expect(ClockIn.create).toHaveBeenCalledWith({
             clockInTS: timestamp,
             clockOutTS: null,
-            day: date
+            day: today
         });
 
         expect(result.clockOutTS).toBeNull();
+        expect(result.day).toBe(today);
     });
 
 });
@@ -141,44 +142,41 @@ describe('save_clock_out', () => {
 });
 
 describe('add_ms_to_TimeToday', () => {
-    test('salvar milisegundos no dia correto em TimeToday', async () => {
-        const saveMock = jest.fn();
+
+    test('deve somar milisegundos no registro do dia correto', async () => {
+        const saveMock = jest.fn().mockResolvedValue(true);
 
         const fakeRecord = {
             timeInMsToday: 100,
-            today: '2026-05-06',
-            save: saveMock
+            today: getToday(),
+            save: saveMock,
         };
 
-        timeTodayService.get_time_today.mockResolvedValue(fakeRecord);
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
 
         await add_ms_to_TimeToday(100);
 
+        expect(TimeToday.findOne).toHaveBeenCalledTimes(1);
         expect(fakeRecord.timeInMsToday).toBe(200);
-
         expect(saveMock).toHaveBeenCalledTimes(1);
     });
-
-})
-
+});
 
 describe('add_ms_to_TotalHours', () => {
     test('salvar milisegundos em TotalHours', async () => { // unfinshed
-        const saveMock = jest.fn();
 
         const fakeRecord = {
-            timeInMsToday: 100,
-            today: '2026-05-06',
-            save: saveMock
+            totalHoursCompletedInMs: 100,
+            goalHoursInMs: 500,
+            save: jest.fn().mockResolvedValue(true),
         };
 
-        timeTodayService.get_time_today.mockResolvedValue(fakeRecord);
+        TotalHours.findByPk.mockResolvedValue(fakeRecord);
 
-        await add_ms_to_TimeToday(100);
+        await add_ms_to_TotalHours(100);
 
-        expect(fakeRecord.timeInMsToday).toBe(200);
-
-        expect(saveMock).toHaveBeenCalledTimes(1);
+        expect(TotalHours.findByPk).toHaveBeenCalledWith(1);
+        expect(fakeRecord.totalHoursCompletedInMs).toBe(200);
     });
 
 })

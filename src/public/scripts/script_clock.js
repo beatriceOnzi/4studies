@@ -1,4 +1,3 @@
-
 const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
 
@@ -37,11 +36,12 @@ async function handle_clock_press(){
     let is_running = await get_is_running()
 
     if (!is_running) {
-        start_clock(is_running)
+        start_clock()
 
         clock_btn.textContent = "Stop";
 
     } else {
+
         stop_clock();
 
         clock_btn.textContent = "Start";
@@ -51,8 +51,7 @@ async function handle_clock_press(){
 
 async function start_clock(){
     handle_clock_display(true)
-    const last_clock_in_timestamp = await get_timestamp_now();
-    enable_clock_running(last_clock_in_timestamp)
+    enable_clock_running()
 }
 
 async function stop_clock(){
@@ -61,11 +60,12 @@ async function stop_clock(){
     
     const interval = current_timestamp - last_clock_in_timestamp 
 
-    await save_interval_to_database(interval);
-    await save_clock_out(current_timestamp);
-    clearInterval(running_display)
-
-    clock_text.textContent = msToHours(await get_ms_today())
+    await Promise.all([
+        save_interval_to_database(interval),
+        save_clock_out(current_timestamp)
+    ]);
+    clearInterval(running_display);
+    clock_text.textContent = msToHours(await get_ms_today());
 }
 
 
@@ -122,7 +122,8 @@ async function save_clock_out(timestamp) {
     });
 }
 
-async function enable_clock_running(timestamp) {
+async function enable_clock_running() {
+    timestamp = get_timestamp_now()
     const response = await fetch("/create_clock_in", {
 
         method: 'POST',
@@ -135,6 +136,7 @@ async function enable_clock_running(timestamp) {
             timestamp
         })
     });
+
 }
 
 async function save_interval_to_database(interval_in_ms) {

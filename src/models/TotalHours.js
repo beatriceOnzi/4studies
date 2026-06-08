@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database");
 
-const TotalHours = sequelize.define("TotalHous", {
+const TotalHours = sequelize.define("TotalHours", {
   totalHoursCompletedInMs: {
     type: DataTypes.INTEGER,
     defaultValue: 0

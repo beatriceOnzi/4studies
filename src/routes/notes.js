@@ -7,8 +7,13 @@ const DailyGoals = require("../models/DailyGoals");
 
 // -- Daily Goals --
 
-router.get("/daily_goals", (req, res) => {
-  Notes.findByPk(1).then((notes) => {
+router.get("/daily_goals", async (req, res) => {
+  let notes = await Notes.findOne()
+  if (notes == null){
+    notes = await create_notes()
+  }
+
+  Notes.findOne().then((notes) => {
     DailyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, daily_goals_selected: 1});
     })
@@ -19,6 +24,7 @@ router.get("/daily_goals", (req, res) => {
 });
 
 router.post("/daily_goals/new", async (req, res) => {
+
   const newDailyGoal = await new DailyGoals({
         daily_goals: req.body.value
     });
@@ -37,8 +43,12 @@ router.delete("/daily_goals/:id", async (req, res) => {
 
 // -- Weekly Goals --
 
-router.get("/weekly_goals", (req, res) => {
-  Notes.findByPk(1).then((notes) => {
+router.get("/weekly_goals", async (req, res) => {
+  let notes = await Notes.findOne()
+  if (!notes){
+    notes = await create_notes();
+  }
+  Notes.findOne().then((notes) => {
     WeeklyGoals.findAll().then((goals) => {
         res.render("notes", { notes: notes, goals: goals, weekly_goals_selected: 1});
     })
@@ -67,16 +77,19 @@ router.delete("/weekly_goals/:id", async (req, res) => {
 // -- Notes --
 
 router.post("/save", async (req, res) => {
-  const notes = await Notes.findByPk(1)
-  if (notes.note){
+  let notes = await Notes.findOne()
+  if (!notes.note){
     notes.note= ""
   }
-  
   notes.note = req.body.notes
 
   await notes.save();
 
   res.json(notes);
 });
+
+async function create_notes() {
+  return await Notes.create({})
+}
 
 module.exports = router
