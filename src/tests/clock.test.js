@@ -171,11 +171,11 @@ describe('add_ms_to_TotalHours', () => {
             save: jest.fn().mockResolvedValue(true),
         };
 
-        TotalHours.findByPk.mockResolvedValue(fakeRecord);
+        TotalHours.findOne.mockResolvedValue(fakeRecord);
 
         await add_ms_to_TotalHours(100);
 
-        expect(TotalHours.findByPk).toHaveBeenCalledWith(1);
+        expect(TotalHours.findOne).toHaveBeenCalledTimes(1);
         expect(fakeRecord.totalHoursCompletedInMs).toBe(200);
     });
 
