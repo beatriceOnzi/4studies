@@ -1,0 +1,39 @@
+.box {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #1dd1a1, #54a0ff);
+    border-radius: 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.sky {
+    display: flex;
+    width: 600px;
+    height: 600px;
+    margin: 150px;
+    margin-top: 300px;
+    position: relative;
+}
+
+.cloud1 {
+    width: 160px;
+    height: 140px;
+    background: linear-gradient(135deg, #c2d9eb, #8f99c7);
+    border-radius: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 70px;
+}
+
+.cloud2 {
+    width: 190px;
+    height: 170px;
+    background: linear-gradient(135deg, #c2d9eb, #8f99c7);
+    border-radius: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 10px;
+    right: 5px;
+}
