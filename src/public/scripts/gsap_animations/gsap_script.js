@@ -36,7 +36,12 @@ gsap.to("#mountains", {
         start:"top top",
         end:"+=500",
         scrub: 1,
-        ease: "power1.inOut"
+        ease: "power1.inOut",
+        onComplete: () => {
+            gsap.to('.box', {
+                position: "fixed" // nao funciona assim, pesquisar
+            });
+        }
     }
 });
 
