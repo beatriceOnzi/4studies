@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon ./src/server.js",
-    "watch": "npx tailwindcss -i ./src/public/css/input.css -o ./public/css/output.css --watch",
+    "watch": "npx tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css --watch",
     "test": "jest --runInBand"
   },
   "dependencies": {

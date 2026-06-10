@@ -4,19 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/output.css">
+    <link rel="stylesheet" href="/css/gsap_style.css">
     <link rel="icon" type="image/x-icon" href="/images/icon.png">
     <title>4Studies</title>
 </head>
 <body class="tracking-widest font-soul overflow-x-hidden selection:bg-purple-300 selection:text-purple-900">
     <img
         src="/images/sky.png"
+        id="sky"
+        class="absolute top-0 left-0 w-full -z-10"
+        alt=""
+    >
+    <img
+        src="/images/mountain_sunset.png"
+        id="mountains"
         class="absolute top-0 left-0 w-full -z-10"
         alt=""
     >
     {{> _tabs}}
     {{{body}}}
 
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"></script>
+    <script src="/scripts/gsap_animations/gsap_script.js"></script>
 </body>
 </html>
 {{!-- 
