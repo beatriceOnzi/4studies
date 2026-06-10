@@ -10,28 +10,20 @@ Plataforma desenvolvida para auxiliar estudantes na organização e otimização
 
 ## Requisitos
 
-- Node.js 18 ou superior
+- Node.js 18
 - NPM
 
 ---
 
 ## Tecnologias Utilizadas
 
-### Back-end
-
 - JavaScript (Node.js)
 - Express
 - Sequelize
 - SQLite
-
-### Front-end
-
 - Handlebars
 - Tailwind CSS
 - JavaScript
-
-### Testes
-
 - Jest
 
 ---
@@ -67,12 +59,6 @@ Clone o repositório:
 git clone <url-do-repositorio>
 ```
 
-Acesse a pasta:
-
-```
-cd 4studies
-```
-
 Instale as dependências:
 
 ```
@@ -88,13 +74,6 @@ Iniciar o servidor:
 ```
 npm start
 ```
-
-A aplicação ficará disponível em:
-
-```
-http://localhost:1805
-```
-
 ---
 
 ## Compilação do Tailwind CSS
@@ -103,16 +82,6 @@ Para atualizar os estilos durante o desenvolvimento:
 
 ```
 npm run watch
-```
-
----
-
-## Testes
-
-Executar todos os testes :
-
-```
-npm test
 ```
 
 ---
