@@ -17,6 +17,10 @@
     position: relative;
 }
 
+#mountains {
+    margin-top: 550px;
+}
+
 .cloud1 {
     width: 160px;
     height: 140px;

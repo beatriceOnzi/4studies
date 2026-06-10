@@ -28,6 +28,18 @@ gsap.to("#sky", {
     }
 });
 
+gsap.to("#mountains", {
+    y: -400,
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"+=500",
+        scrub: 1,
+        ease: "power1.inOut"
+    }
+});
+
 
 
 gsap.to(".cloud1", {
