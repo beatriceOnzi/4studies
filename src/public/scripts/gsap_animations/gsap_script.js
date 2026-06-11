@@ -1,23 +1,5 @@
-gsap.to('.box', {
-  opacity: 1,
-  scale: 1,
-  duration: 2,
-  onComplete: () => {
-    gsap.to('.box', {
-      y: -500,
-      borderRadius: '100%',
-      repeat: -1,
-      yoyo: true,
-      duration: 2,
-      ease: 'bounce.in',
-      rotation: 360
-    });
-  }
-});
-
-
 gsap.to("#sky", {
-    y: -300,
+    y: -40,
 
     scrollTrigger:{
         trigger:"#start",
@@ -36,10 +18,10 @@ gsap.to("#mountains", {
         start:"top top",
         end:"+=500",
         scrub: 1,
-        ease: "power1.inOut",
+        ease: "power4.out",
         onComplete: () => {
             gsap.to('.box', {
-                position: "fixed" // nao funciona assim, pesquisar
+                pin: true,
             });
         }
     }

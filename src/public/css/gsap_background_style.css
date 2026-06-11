@@ -1,13 +1,3 @@
-.box {
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, #1dd1a1, #54a0ff);
-    border-radius: 40px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    transform: scale(0.8);
-}
-
 .sky {
     display: flex;
     width: 600px;
@@ -17,8 +7,15 @@
     position: relative;
 }
 
+.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
 #mountains {
-    margin-top: 550px;
+    margin-top: 1150px;
 }
 
 .cloud1 {
