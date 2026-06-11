@@ -13,7 +13,7 @@ const {
 
 // -- Daily Goals --
 
-router.get("/daily_goals", async (req, res) => {
+router.get("/daily_goals", async (req, res) => { // untested
   let notes = await get_notes()
   if (notes == null){
     notes = await create_notes()
@@ -28,13 +28,13 @@ router.post("/daily_goals/new", async (req, res) => {
   res.json(newDailyGoal);
 });
 
-router.delete("/daily_goals/:id", async (req, res) => {
+router.delete("/daily_goals/:id", async (req, res) => { // untested
   delete_daily_goal(req.params.id)
 });
 
 // -- Weekly Goals --
 
-router.get("/weekly_goals", async (req, res) => {
+router.get("/weekly_goals", async (req, res) => { // untested
   let notes = await get_notes()
   if (!notes){
     notes = await create_notes();
@@ -49,7 +49,7 @@ router.post("/weekly_goals/new", async (req, res) => {
   res.json(newWeeklyGoal);
 });
 
-router.delete("/weekly_goals/:id", async (req, res) => {
+router.delete("/weekly_goals/:id", async (req, res) => { // untested
   delete_weekly_goal(req.params.id)
 });
 

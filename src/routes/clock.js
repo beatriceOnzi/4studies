@@ -22,7 +22,7 @@ const {
 // salvar os milisegundos no timeWeek para já contar na estatistica
 
 // -- Routes --
-router.get("/", async (req, res) => {
+router.get("/", async (req, res) => { // sem teste
     if (await checkIfIsFirstClockIn()) {
         await createTimeToday();
     }
@@ -35,12 +35,12 @@ router.get("/", async (req, res) => {
     res.render("clock", { clock: 1, time: time, is_running:  isRunning});
 });
 
-router.get("/get_ms_today", async (req, res) => { // done +-
+router.get("/get_ms_today", async (req, res) => { // done
     const time_today = await get_time_today();
     res.json(time_today.timeInMsToday);
 })
 
-router.get("/get_last_clock_in", async (req, res) => { // done
+router.get("/get_last_clock_in", async (req, res) => { // sem teste
     const last_clock_record = await ClockIn.findOne({ order: [ [ 'createdAt', 'DESC' ] ]});
     if (last_clock_record.clockOutTS){
         return res.json("Clock is not running. get_last_clock_in")
