@@ -1,6 +1,6 @@
 @import url('https://googleapis.com');
 
-@import url('https://fonts.googleapis.com/css2?family=Festive&family=My+Soul&family=Oregano:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Marck+Script&family=My+Soul&display=swap');
 
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
@@ -683,6 +683,10 @@ video {
   min-width: 2rem;
 }
 
+.flex-1{
+  flex: 1 1 0%;
+}
+
 .cursor-pointer{
   cursor: pointer;
 }
@@ -776,6 +780,10 @@ video {
   border-bottom-width: 4px;
 }
 
+.border-s-4{
+  border-inline-start-width: 4px;
+}
+
 .border-azul\/30{
   border-color: rgb(54 46 129 / 0.3);
 }
@@ -830,6 +838,10 @@ video {
   padding-bottom: 1.75rem;
 }
 
+.ps-3{
+  padding-inline-start: 0.75rem;
+}
+
 .pt-10{
   padding-top: 2.5rem;
 }
@@ -840,6 +852,14 @@ video {
 
 .text-center{
   text-align: center;
+}
+
+.font-italianno{
+  font-family: Italianno, sans-serif;
+}
+
+.font-marck{
+  font-family: Marck Script, sans-serif;
 }
 
 .font-soul{
@@ -871,6 +891,10 @@ video {
   line-height: 1.75rem;
 }
 
+.font-bold{
+  font-weight: 700;
+}
+
 .font-extrabold{
   font-weight: 800;
 }
@@ -881,6 +905,14 @@ video {
 
 .font-semibold{
   font-weight: 600;
+}
+
+.tracking-\[0\.15em\]{
+  letter-spacing: 0.15em;
+}
+
+.tracking-wide{
+  letter-spacing: 0.025em;
 }
 
 .tracking-widest{

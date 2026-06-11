@@ -12,9 +12,9 @@ module.exports = {
         }
       },
       fontFamily: {
-        festive: ['Festive', 'sans-serif'],
-        oregano: ['Oregano', 'sans-serif'],
         soul: ['My Soul', 'sans-serif'],
+        italianno: ['Italianno', 'sans-serif'],
+        marck: ['Marck Script', 'sans-serif']
       }
     },
   },
