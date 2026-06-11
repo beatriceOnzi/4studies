@@ -5,6 +5,8 @@ const ClockIn    = require('../models/ClockIn');
 const TimeToday  = require('../models/TimeToday');
 const TotalHours = require('../models/TotalHours');
 
+const { msToHours } = require("../services/page_service")
+
 const {
     is_running,
     create_clock_in,
@@ -16,7 +18,6 @@ const {
     checkIfIsFirstClockIn,
     createTimeToday,
     getStudyToday,
-    msToHours,
     create_total_hours_if_needed,
 } = require('../services/clock_service');
 

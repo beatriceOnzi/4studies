@@ -1,10 +1,10 @@
 {{!-- clock --}}
 <div class="flex flex-col items-center gap-10 h-full pt-24 mt-4 mb-20">
     <div id="clock_time" class="card pb-7 w-[30rem] justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
-        {{time}}
+        {{data.time}}
     </div>
     <div id="clock_button" class="card cursor-pointer text-4xl font-medium tracking-widest text-branco px-4 py-2 outline-8 hover:bg-roxo-claro/80 hover:font-semibold active:bg-roxo-claro">
-        {{#if is_running}}
+        {{#if data.is_running}}
             Stop
         {{else}}
             Start
@@ -18,7 +18,7 @@
     <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-1 ms-8 mt-8">
             <h1 class="font-extrabold text-branco text-3xl">Notes:</h1>
             <form id="notes_form" class="mt-4 h-72 w-full">
-                <textarea id="notes_textarea" class="text-branco text-2xl tracking-widest resize-none focus:outline-none focus:border-roxo-claro rounded-lg h-full w-full bg-azul bg-opacity-50 border-4 border-roxo-escuro">{{ notes.note }}</textarea>
+                <textarea id="notes_textarea" class="text-branco text-2xl tracking-widest resize-none focus:outline-none focus:border-roxo-claro rounded-lg h-full w-full bg-azul bg-opacity-50 border-4 border-roxo-escuro">{{ data.notes }}</textarea>
             </form>
     </div>
 </div>
@@ -34,12 +34,12 @@
         </div>
 
         
-        {{#if daily_goals_selected }}
+        {{#if data.daily_goals }}
             <ul id="dailyGoalsList" class="list-disc list-inside mt-4 h-72 overflow-y-auto">
-                {{#each goals}}
+                {{#each data.daily_goals}}
                     <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
                         <span class="group-has-[a:hover]:line-through">
-                            {{ daily_goals }}
+                            {{ this.daily_goals }}
                         </span>
                         <a class="deleteDailyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
                     </li>
@@ -57,12 +57,12 @@
         {{/if}}
 
 
-        {{#if weekly_goals_selected }}
+        {{#if data.weekly_goals }}
             <ul id="weeklyGoalsList" class="list-disc list-inside mt-4 h-72 overflow-y-auto">
-                {{#each goals}}
+                {{#each data.weekly_goals}}
                     <li data-id="{{ id }}" class="group font-semibold text-2xl text-wrap tracking-widest text-branco">
                         <span class="group-has-[a:hover]:line-through">
-                            {{ weekly_goals }}
+                            {{ this.weekly_goals }}
                         </span>
                         <a class="deleteWeeklyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
 
@@ -86,10 +86,10 @@
 
 <div class="flex flex-col items-center gap-10 h-full pt-10 my-56">
     <div id="clock_time" class="card pb-7 w-[30rem] justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
-        {{hoursCompleted}}
+        {{data.hours_completed}}
     </div>
     <div id="clock_time" class="card pb-7 w-[30rem] justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
-        {{totalHours}}
+        {{data.goal_hours}}
     </div>
 </div>
 

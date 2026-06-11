@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+const { get_data } = require("../services/page_service")
+
 const {
-  load_page,
   get_notes,
   create_notes,
   delete_weekly_goal,
@@ -18,8 +19,8 @@ router.get("/daily_goals", async (req, res) => { // untested
   if (notes == null){
     notes = await create_notes()
   }
-  daily_page_data = await load_page("daily")
-  res.render("notes", { notes: daily_page_data.notes, goals: daily_page_data.goals, daily_goals_selected: 1});
+  data = await get_data()
+  res.render("index", {data: data});
 
 });
 
@@ -39,9 +40,8 @@ router.get("/weekly_goals", async (req, res) => { // untested
   if (!notes){
     notes = await create_notes();
   }
-  weekly_page_data = await load_page("weekly")
-  res.render("notes", { notes: weekly_page_data.notes, goals: weekly_page_data.goals, weekly_goals_selected: 1});
-
+  data = await get_data()
+  res.render("index", {data: data});
 });
 
 router.post("/weekly_goals/new", async (req, res) => {

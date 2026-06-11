@@ -6,7 +6,6 @@ const WeeklyGoals = require('../models/WeeklyGoals');
 const DailyGoals  = require('../models/DailyGoals');
 
 const {
-    load_page,
     get_notes,
     create_notes,
     delete_weekly_goal,

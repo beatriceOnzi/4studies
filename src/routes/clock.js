@@ -4,6 +4,11 @@ const router = express.Router();
 const ClockIn = require("../models/ClockIn")
 const add_stuff = require("../models/add_stuff")
 
+const { 
+    get_data
+} = require("../services/page_service")
+
+
 const {
     is_running,
     create_clock_in,
@@ -13,7 +18,6 @@ const {
     checkIfIsFirstClockIn,
     createTimeToday,
     getStudyToday,
-    msToHours,
     get_time_today,
     create_total_hours_if_needed
 } = require('../services/clock_service');
@@ -28,11 +32,8 @@ router.get("/", async (req, res) => { // sem teste
     }
     create_total_hours_if_needed()
 
-    const study_today = await getStudyToday();
-    let time = msToHours(study_today.timeInMsToday);
-    let isRunning = await is_running();
-
-    res.render("clock", { clock: 1, time: time, is_running:  isRunning});
+    const data = await get_data()
+    res.render("index", {data: data});
 });
 
 router.get("/get_ms_today", async (req, res) => { // done

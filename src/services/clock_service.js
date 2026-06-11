@@ -99,18 +99,6 @@ async function create_clock_in(timestamp) {
     });
 }
 
-function msToHours(ms) { // done
-    let seconds = Math.floor((ms / 1000) % 60);
-    let minutes = Math.floor((ms / (1000 * 60)) % 60);
-    let hours = Math.floor((ms / (1000 * 60 * 60)));
-
-    hours = String(hours).padStart(2, '0');
-    minutes = String(minutes).padStart(2, '0');
-    seconds = String(seconds).padStart(2, '0');
-
-    return `${hours}:${minutes}:${seconds}`;
-}
-
 module.exports = {
     is_running,
     create_clock_in,
@@ -122,6 +110,5 @@ module.exports = {
     checkIfIsFirstClockIn,
     createTimeToday,
     getStudyToday,
-    msToHours,
     create_total_hours_if_needed
 };

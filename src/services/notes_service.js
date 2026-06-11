@@ -3,23 +3,32 @@ const WeeklyGoals = require("../models/WeeklyGoals");
 const DailyGoals = require("../models/DailyGoals");
 
 
-async function load_page(goals_type) {
-    const data = { notes: "", goals: "" };
+// async function load_page(goals_type) {
+//     const data = { notes: "", goals: "" };
 
-    data.notes = await get_notes()
+//     data.notes = await get_notes()
 
-    if (goals_type === "daily") {
-        data.goals = await DailyGoals.findAll();
-    }
-    if (goals_type === "weekly") {
-        data.goals = await WeeklyGoals.findAll();
-    }
+//     if (goals_type === "daily") {
+//         data.goals = await DailyGoals.findAll();
+//     }
+//     if (goals_type === "weekly") {
+//         data.goals = await WeeklyGoals.findAll();
+//     }
 
-    return data;
-}
+//     return data;
+// }
 
 async function get_notes() {
-    return await Notes.findOne();
+    const notes = await Notes.findOne()
+    return notes.note
+}
+
+async function get_weekly_goals() {
+    return await WeeklyGoals.findAll();
+}
+
+async function get_daily_goals() {
+    return await DailyGoals.findAll();
 }
 
 async function create_notes() {
@@ -58,7 +67,8 @@ async function create_weekly_goal(new_goal) {
 }
 
 module.exports = {
-    load_page,
+    get_daily_goals,
+    get_weekly_goals,
     get_notes,
     create_notes,
     delete_weekly_goal,
