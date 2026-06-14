@@ -1,54 +1,61 @@
+gsap.registerPlugin(ScrollTrigger);
+
 gsap.to("#sky", {
     y: -40,
+    ease: "none",
 
     scrollTrigger:{
         trigger:"#start",
         start:"top top",
         end:"+=500",
-        scrub: 1,
-        ease: "power1.inOut"
+        scrub:true
     }
 });
+
+// gsap.to(".cloud1", {
+//     y: -250,
+//     ease: "none",
+
+//     scrollTrigger:{
+//         trigger:"#start",
+//         start:"top top",
+//         end:"+=500",
+//         scrub:true
+//     }
+// });
+
+// gsap.to(".cloud2", {
+//     y: -400,
+//     ease: "none",
+
+//     scrollTrigger:{
+//         trigger:"#start",
+//         start:"top top",
+//         end:"+=500",
+//         scrub:true
+//     }
+// });
 
 gsap.to("#mountains", {
-    y: -400,
+    y: -570,
+    ease: "power3.out",
 
     scrollTrigger:{
         trigger:"#start",
         start:"top top",
         end:"+=500",
-        scrub: 1,
-        ease: "power4.out",
-        onComplete: () => {
-            gsap.to('.box', {
-                pin: true,
-            });
-        }
+        scrub:true
     }
 });
 
-
-
-gsap.to(".cloud1", {
-    y: -250,
-
-    scrollTrigger:{
-        trigger:"#start",
-        start:"top top",
-        end:"+=500",
-        scrub: 1,
-        ease: "power1.inOut"
-    }
-});
-
-gsap.to(".cloud2", {
-    y: -400,
+gsap.to("#cachoeira", {
+    y: -830,
+    ease: "power1.out",
 
     scrollTrigger:{
         trigger:"#start",
         start:"top top",
         end:"+=500",
-        scrub: 1,
-        ease: "power1.inOut"
+        scrub:true
     }
 });

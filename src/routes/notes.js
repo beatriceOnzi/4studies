@@ -6,6 +6,7 @@ const { get_data } = require("../services/page_service")
 const {
   get_notes,
   create_notes,
+  save_notes,
   delete_weekly_goal,
   delete_daily_goal,
   create_weekly_goal,
@@ -14,15 +15,15 @@ const {
 
 // -- Daily Goals --
 
-router.get("/daily_goals", async (req, res) => { // untested
-  let notes = await get_notes()
-  if (notes == null){
-    notes = await create_notes()
-  }
-  data = await get_data()
-  res.render("index", {data: data});
+// router.get("/daily_goals", async (req, res) => { // untested
+//   let notes = await get_notes()
+//   if (notes == null){
+//     notes = await create_notes()
+//   }
+//   data = await get_data()
+//   res.render("index", {data: data});
 
-});
+// });
 
 router.post("/daily_goals/new", async (req, res) => {
   const newDailyGoal = await create_daily_goal(req.body.value)
@@ -35,14 +36,14 @@ router.delete("/daily_goals/:id", async (req, res) => { // untested
 
 // -- Weekly Goals --
 
-router.get("/weekly_goals", async (req, res) => { // untested
-  let notes = await get_notes()
-  if (!notes){
-    notes = await create_notes();
-  }
-  data = await get_data()
-  res.render("index", {data: data});
-});
+// router.get("/weekly_goals", async (req, res) => { // untested
+//   let notes = await get_notes()
+//   if (!notes){
+//     notes = await create_notes();
+//   }
+//   data = await get_data()
+//   res.render("index", {data: data});
+// });
 
 router.post("/weekly_goals/new", async (req, res) => {
   const newWeeklyGoal = await create_weekly_goal(req.body.value)
@@ -56,13 +57,7 @@ router.delete("/weekly_goals/:id", async (req, res) => { // untested
 // -- Notes --
 
 router.post("/save", async (req, res) => {
-  let notes = await get_notes()
-  if (!notes.note){
-    notes.note= ""
-  }
-  notes.note = req.body.notes
-
-  await notes.save();
+  const notes = await save_notes(req.body.notes);
 
   res.json(notes);
 });

@@ -5,7 +5,7 @@ const ClockIn    = require('../models/ClockIn');
 const TimeToday  = require('../models/TimeToday');
 const TotalHours = require('../models/TotalHours');
 
-const { msToHours } = require("../services/page_service")
+const { msToHours } = require("../services/time_service")
 
 const {
     is_running,

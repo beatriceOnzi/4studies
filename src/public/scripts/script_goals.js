@@ -63,15 +63,13 @@ function createLi(data, goalList) {
     span.textContent =
         data.weekly_goals || data.daily_goals;
     
-    const a =
-        document.createElement('a');
+    const a = document.createElement('a');
     a.className = goalList.querySelector('a').className;
     a.textContent =' x'
 
-    const li =
-            document.createElement('li');
+    const li = document.createElement('li');
     li.className =
-        'group font-semibold text-2xl text-wrap tracking-widest text-branco';
+        'group font-medium text-3xl text-wrap tracking-[0.15em] text-branco';
     li.dataset.id = data.id;
 
     li.appendChild(span)

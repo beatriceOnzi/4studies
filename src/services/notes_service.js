@@ -20,7 +20,7 @@ const DailyGoals = require("../models/DailyGoals");
 
 async function get_notes() {
     const notes = await Notes.findOne()
-    return notes.note
+    return notes
 }
 
 async function get_weekly_goals() {
@@ -33,6 +33,16 @@ async function get_daily_goals() {
 
 async function create_notes() {
   return await Notes.create({})
+}
+
+async function save_notes(new_notes) {
+    let notes = await get_notes()
+    if (!notes.note){
+        notes.note= ""
+    }
+    notes.note = new_notes;
+    return await notes.save()
+    
 }
 
 async function delete_weekly_goal(id) {
@@ -70,6 +80,7 @@ module.exports = {
     get_daily_goals,
     get_weekly_goals,
     get_notes,
+    save_notes,
     create_notes,
     delete_weekly_goal,
     delete_daily_goal,
