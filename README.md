@@ -2,11 +2,24 @@
 
 Controle de metas e tempo, oferecendo um ambiente aconchegante e organizado para os momentos de estudo.
 
-Plataforma desenvolvida para auxiliar estudantes na organização e otimização de seus estudos, reunindo ferramentas que facilitam o acompanhamento do aprendizado e a gestão das atividades acadêmicas, como meta de horas para estudo, controle do tempo diário, anotações e objetivos. O sistema foi projetado para oferecer uma experiência que incentive o estudo, permitindo que os usuários centralizem suas anotações para o aprendizado, monitorem seu progresso e mantenham uma rotina de estudos mais eficiente. Com foco em proporcionar um ambiente aconchegante, com uma visualização do progresso através da paisagem de fundo, que evolui conforme o estudante acumula horas, o 4Studies busca transformar a forma como os estudantes enxergam o estudo, tornando o processo de aprendizagem mais prazeroso e divertido.
+Plataforma desenvolvida para auxiliar estudantes na organização e otimização de seus estudos, reunindo ferramentas que facilitam o aprendizado e a gestão das atividades acadêmicas, como meta de horas para estudo, controle do tempo diário, anotações e objetivos. O sistema foi projetado com foco em proporcionar um ambiente acolhedor e dinâmico, com uma visualização do progresso através da paisagem de fundo, que evolui conforme o estudante acumula horas.
 
-## Página inicial
+## Parallax Background
 
-<img width="959" height="437" alt="image" src="https://github.com/user-attachments/assets/1ca6cec9-64e5-4d89-86ba-aae8abbf4a27" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/cd5c1e7e-70d3-4c8d-bcf7-b4df6e13ca62" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/cdf9b404-fd8f-499d-ac9e-d6b68ff20069" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/163bacd1-ed54-4f03-8f22-07a47d6d6eaf" />
+
+---
+## Funcionalidades
+
+- Registro de sessões de estudo
+- Cronômetro de acompanhamento
+- Controle de horas estudadas
+- Estatísticas diárias
+- Estatísticas semanais
+- Controle de metas
+- Sistema de anotações
 
 ## Requisitos
 
@@ -83,15 +96,3 @@ Para atualizar os estilos durante o desenvolvimento:
 ```
 npm run watch
 ```
-
----
-
-## Funcionalidades
-
-- Registro de sessões de estudo
-- Cronômetro de acompanhamento
-- Controle de horas estudadas
-- Estatísticas diárias
-- Estatísticas semanais
-- Controle de metas
-- Sistema de anotações
