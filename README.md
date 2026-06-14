@@ -6,9 +6,9 @@ Plataforma desenvolvida para auxiliar estudantes na organização e otimização
 
 ## Parallax Background
 
-<img width="450" height="207" alt="image" src="https://github.com/user-attachments/assets/cd5c1e7e-70d3-4c8d-bcf7-b4df6e13ca62" />
-<img width="450" height="207" alt="image" src="https://github.com/user-attachments/assets/cdf9b404-fd8f-499d-ac9e-d6b68ff20069" />
-<img width="959" height="439" alt="image" src="https://github.com/user-attachments/assets/163bacd1-ed54-4f03-8f22-07a47d6d6eaf" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/cd5c1e7e-70d3-4c8d-bcf7-b4df6e13ca62" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/cdf9b404-fd8f-499d-ac9e-d6b68ff20069" />
+<img width="400" height="180" alt="image" src="https://github.com/user-attachments/assets/163bacd1-ed54-4f03-8f22-07a47d6d6eaf" />
 
 ---
 ## Funcionalidades
