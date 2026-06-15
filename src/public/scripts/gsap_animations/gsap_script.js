@@ -12,29 +12,29 @@ gsap.to("#sky", {
     }
 });
 
-// gsap.to(".cloud1", {
-//     y: -250,
-//     ease: "none",
+gsap.to("#cloud1", {
+    y: -1000,
+    ease: "power2.out",
 
-//     scrollTrigger:{
-//         trigger:"#start",
-//         start:"top top",
-//         end:"+=500",
-//         scrub:true
-//     }
-// });
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"+=500",
+        scrub:true
+    }
+});
 
-// gsap.to(".cloud2", {
-//     y: -400,
-//     ease: "none",
+gsap.to("#cloud2", {
+    y: -800,
+    ease: "power2.out",
 
-//     scrollTrigger:{
-//         trigger:"#start",
-//         start:"top top",
-//         end:"+=500",
-//         scrub:true
-//     }
-// });
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"+=500",
+        scrub:true
+    }
+});
 
 gsap.to("#mountains", {
     y: -570,

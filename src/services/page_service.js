@@ -31,7 +31,6 @@ async function get_data() {
     data.time = msToHours(study_today.timeInMsToday);
     notes = await get_notes();
     data.notes = notes.note;
-    console.log(data.is_running)
     return data 
 }
 
