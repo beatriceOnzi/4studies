@@ -577,12 +577,20 @@ video {
   margin-bottom: 5rem;
 }
 
+.mb-24{
+  margin-bottom: 6rem;
+}
+
 .ms-8{
   margin-inline-start: 2rem;
 }
 
 .mt-4{
   margin-top: 1rem;
+}
+
+.mt-56{
+  margin-top: 14rem;
 }
 
 .mt-6{
@@ -945,7 +953,7 @@ video {
   border-width: 8px;
   border-color: rgb(54 46 129 / 0.3);
   background-color: rgb(54 46 129 / var(--tw-bg-opacity, 1));
-  --tw-bg-opacity: 0.75;
+  --tw-bg-opacity: 0.8;
   outline-style: solid;
   outline-width: 0.8rem;
   outline-color: rgb(54 46 129 / 0.4);
