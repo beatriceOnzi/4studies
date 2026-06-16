@@ -1,5 +1,4 @@
 // tests/clock_service.test.js
-// Testes do clock_service — funções de negócio do relógio de estudos
 
 const ClockIn    = require('../models/ClockIn');
 const TimeToday  = require('../models/TimeToday');
@@ -25,14 +24,11 @@ jest.mock('../models/ClockIn');
 jest.mock('../models/TimeToday');
 jest.mock('../models/TotalHours');
 
-// Limpa todos os mocks entre os testes
 beforeEach(() => {
     jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────
 // is_running
-// ─────────────────────────────────────────────
 describe('is_running', () => {
     test('retorna true quando existe clockIn e NÃO existe clockOut', async () => {
         ClockIn.findOne.mockResolvedValue({ clockInTS: Date.now(), clockOutTS: null });
@@ -55,9 +51,7 @@ describe('is_running', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // create_clock_in
-// ─────────────────────────────────────────────
 describe('create_clock_in', () => {
     test('cria registro com clockOutTS nulo e day = hoje', async () => {
         const timestamp = 123456;
@@ -85,9 +79,7 @@ describe('create_clock_in', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // save_clock_out
-// ─────────────────────────────────────────────
 describe('save_clock_out', () => {
     test('busca o último registro por ordem decrescente de createdAt', async () => {
         ClockIn.findOne.mockResolvedValue({
@@ -139,9 +131,7 @@ describe('save_clock_out', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // add_ms_to_TimeToday
-// ─────────────────────────────────────────────
 describe('add_ms_to_TimeToday', () => {
     test('soma os milissegundos no registro do dia', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
@@ -168,9 +158,7 @@ describe('add_ms_to_TimeToday', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // add_ms_to_TotalHours
-// ─────────────────────────────────────────────
 describe('add_ms_to_TotalHours', () => {
     test('soma os milissegundos em totalHoursCompletedInMs', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
@@ -185,9 +173,7 @@ describe('add_ms_to_TotalHours', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // get_time_today
-// ─────────────────────────────────────────────
 describe('get_time_today', () => {
     test('retorna o registro do dia atual', async () => {
         const today = getToday();
@@ -208,9 +194,7 @@ describe('get_time_today', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // getStudyToday
-// ─────────────────────────────────────────────
 describe('getStudyToday', () => {
     test('retorna o registro de estudo de hoje', async () => {
         const today = getToday();
@@ -225,9 +209,7 @@ describe('getStudyToday', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // checkIfIsFirstClockIn
-// ─────────────────────────────────────────────
 describe('checkIfIsFirstClockIn', () => {
     test('retorna true quando não existe registro de TimeToday para hoje', async () => {
         TimeToday.findOne.mockResolvedValue(null);
@@ -240,9 +222,7 @@ describe('checkIfIsFirstClockIn', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // createTimeToday
-// ─────────────────────────────────────────────
 describe('createTimeToday', () => {
     test('chama TimeToday.create uma vez', async () => {
         TimeToday.create.mockResolvedValue({ timeInMsToday: 0 });
@@ -252,9 +232,7 @@ describe('createTimeToday', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // create_total_hours_if_needed
-// ─────────────────────────────────────────────
 describe('create_total_hours_if_needed', () => {
     test('cria TotalHours quando não existe nenhum registro', async () => {
         TotalHours.findOne.mockResolvedValue(null);
@@ -274,9 +252,7 @@ describe('create_total_hours_if_needed', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // getToday
-// ─────────────────────────────────────────────
 describe('getToday', () => {
     test('retorna uma string no formato YYYY-MM-DD', () => {
         const result = getToday();
@@ -284,9 +260,7 @@ describe('getToday', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // msToHours
-// ─────────────────────────────────────────────
 describe('msToHours', () => {
     test('converte 0ms em 00:00:00', () => {
         expect(msToHours(0)).toBe('00:00:00');

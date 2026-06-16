@@ -13,24 +13,24 @@ gsap.to("#sky", {
 });
 
 gsap.to("#cloud1", {
-    y: -1000,
-    ease: "power2.out",
+    y: -600,
+    ease: "power1.in",
 
     scrollTrigger:{
-        trigger:"#start",
-        start:"top top",
-        end:"+=500",
+        trigger:"#cloud1",
+        start:"-25% top",
+        end:"+=100",
         scrub:true
     }
 });
 
 gsap.to("#cloud2", {
-    y: -800,
+    y: -650,
     ease: "power2.out",
 
     scrollTrigger:{
-        trigger:"#start",
-        start:"top top",
+        trigger:"#cloud2",
+        start:"-160% top",
         end:"+=500",
         scrub:true
     }

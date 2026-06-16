@@ -6,10 +6,10 @@ const { get_data } = require("../services/page_service")
 router.get("/time", async (req, res) => {
     const data = get_data()
 
-    res.render("time", {
+    res.status(200).render("time", {
         timeNav: 1,
-        totalHours: total_hours,
-        hoursCompleted: hoursCompleted
+        totalHours: data.total_hours,
+        hoursCompleted: data.hoursCompleted
     });
 })
 

@@ -22,9 +22,7 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-// ─────────────────────────────────────────────
 // get_notes
-// ─────────────────────────────────────────────
 describe('get_notes', () => {
     test('retorna o primeiro registro de Notes', async () => {
         const fakeNote = { id: 1, note: 'minha nota' };
@@ -43,9 +41,7 @@ describe('get_notes', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // create_notes
-// ─────────────────────────────────────────────
 describe('create_notes', () => {
     test('cria e retorna um novo registro de Notes', async () => {
         const fakeNote = { id: 1, note: '' };
@@ -58,58 +54,11 @@ describe('create_notes', () => {
     });
 });
 
-// ─────────────────────────────────────────────
-// load_page — daily
-// ─────────────────────────────────────────────
-describe('load_page', () => {
-    test('"daily" retorna notes + metas diárias', async () => {
-        const fakeNote  = { id: 1, note: 'texto' };
-        const fakeGoals = [{ id: 1, daily_goals: 'estudar' }];
-
-        Notes.findOne.mockResolvedValue(fakeNote);
-        DailyGoals.findAll.mockResolvedValue(fakeGoals);
-
-        const result = await load_page('daily');
-
-        expect(result.notes).toEqual(fakeNote);
-        expect(result.goals).toEqual(fakeGoals);
-        expect(DailyGoals.findAll).toHaveBeenCalledTimes(1);
-        expect(WeeklyGoals.findAll).not.toHaveBeenCalled();
-    });
-
-    test('"weekly" retorna notes + metas semanais', async () => {
-        const fakeNote  = { id: 1, note: 'texto' };
-        const fakeGoals = [{ id: 1, weekly_goals: 'terminar projeto' }];
-
-        Notes.findOne.mockResolvedValue(fakeNote);
-        WeeklyGoals.findAll.mockResolvedValue(fakeGoals);
-
-        const result = await load_page('weekly');
-
-        expect(result.notes).toEqual(fakeNote);
-        expect(result.goals).toEqual(fakeGoals);
-        expect(WeeklyGoals.findAll).toHaveBeenCalledTimes(1);
-        expect(DailyGoals.findAll).not.toHaveBeenCalled();
-    });
-
-    test('tipo desconhecido retorna goals vazio', async () => {
-        Notes.findOne.mockResolvedValue({ id: 1, note: '' });
-
-        const result = await load_page('unknown');
-
-        expect(result.goals).toBe('');
-    });
-});
-
-// ─────────────────────────────────────────────
 // create_daily_goal
-// ─────────────────────────────────────────────
 describe('create_daily_goal', () => {
     test('instancia DailyGoals com o valor e chama save', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
         const fakeGoal = { id: 1, daily_goals: 'ler 30 min', save: saveMock };
-
-        // O serviço usa `new DailyGoals(...)` — mockamos o construtor
         DailyGoals.mockImplementation(() => fakeGoal);
 
         const result = await create_daily_goal('ler 30 min');
@@ -119,9 +68,7 @@ describe('create_daily_goal', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // create_weekly_goal
-// ─────────────────────────────────────────────
 describe('create_weekly_goal', () => {
     test('instancia WeeklyGoals com o valor e chama save', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
@@ -136,9 +83,7 @@ describe('create_weekly_goal', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // delete_daily_goal
-// ─────────────────────────────────────────────
 describe('delete_daily_goal', () => {
     test('chama DailyGoals.destroy com o id correto', async () => {
         DailyGoals.destroy.mockResolvedValue(1);
@@ -149,9 +94,7 @@ describe('delete_daily_goal', () => {
     });
 });
 
-// ─────────────────────────────────────────────
 // delete_weekly_goal
-// ─────────────────────────────────────────────
 describe('delete_weekly_goal', () => {
     test('chama WeeklyGoals.destroy com o id correto', async () => {
         WeeklyGoals.destroy.mockResolvedValue(1);

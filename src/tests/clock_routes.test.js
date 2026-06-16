@@ -5,12 +5,14 @@ jest.mock('../models/TimeToday');
 jest.mock('../models/TotalHours');
 jest.mock('../models/add_stuff');
 jest.mock('../services/clock_service');
+jest.mock('../services/page_service');
 
 beforeAll(() => jest.spyOn(console, 'error').mockImplementation(() => {}));
 afterAll(() => jest.restoreAllMocks());
 
 const express      = require('express');
 const clockService = require('../services/clock_service');
+const pageService  = require('../services/page_service');
 
 function buildApp() {
     const app = express();
@@ -20,7 +22,6 @@ function buildApp() {
     return app;
 }
 
-// Simula req/res sem abrir porta de rede
 function fakeReq(method, path, body = {}) {
     return Object.assign(Object.create(require('events').EventEmitter.prototype), {
         method, path, body,
@@ -33,23 +34,91 @@ function fakeRes() {
     const res = {
         statusCode: 200,
         body: undefined,
+        view: undefined,
+        renderData: undefined,
         status(code) { this.statusCode = code; return this; },
         json(data)   { this.body = data; return this; },
-        render(_v, _d) { this.body = {}; return this; }
+        render(view, data) { this.view = view; this.renderData = data; this.body = {}; return this; }
     };
     return res;
 }
 
 beforeEach(() => jest.clearAllMocks());
 
-// ─── is_running ───────────────────────────────
+// ─── GET
+describe('GET', () => {
+    function getIndexHandler() {
+        const router = require('../routes/clock');
+        const layer = router.stack.find(l => l.route && l.route.path === '/');
+        return layer.route.stack[0].handle;
+    }
+
+    const fakeData = {
+        time: '01:30:00',
+        is_running: true,
+        notes: 'minhas notas',
+        daily_goals: [{ id: 1, daily_goals: 'estudar' }],
+        weekly_goals: [{ id: 1, weekly_goals: 'projeto' }],
+        hours_completed: '10:00:00',
+        goal_hours: '36',
+    };
+
+    test('cria o TimeToday quando é o primeiro clock-in do dia', async () => {
+        clockService.checkIfIsFirstClockIn.mockResolvedValue(true);
+        clockService.createTimeToday.mockResolvedValue();
+        clockService.create_total_hours_if_needed.mockResolvedValue();
+        pageService.get_data.mockResolvedValue(fakeData);
+
+        const handle = getIndexHandler();
+        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
+
+        expect(clockService.createTimeToday).toHaveBeenCalledTimes(1);
+    });
+
+    test('NÃO cria o TimeToday quando já existe registro de hoje', async () => {
+        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
+        clockService.createTimeToday.mockResolvedValue();
+        clockService.create_total_hours_if_needed.mockResolvedValue();
+        pageService.get_data.mockResolvedValue(fakeData);
+
+        const handle = getIndexHandler();
+        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
+
+        expect(clockService.createTimeToday).not.toHaveBeenCalled();
+    });
+
+    test('garante que o registro de TotalHours existe', async () => {
+        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
+        clockService.create_total_hours_if_needed.mockResolvedValue();
+        pageService.get_data.mockResolvedValue(fakeData);
+
+        const handle = getIndexHandler();
+        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
+
+        expect(clockService.create_total_hours_if_needed).toHaveBeenCalledTimes(1);
+    });
+
+    test('renderiza "index" com os dados agregados de todas as seções (clock, notas, metas e tempo)', async () => {
+        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
+        clockService.create_total_hours_if_needed.mockResolvedValue();
+        pageService.get_data.mockResolvedValue(fakeData);
+
+        const res = fakeRes();
+        const handle = getIndexHandler();
+        await handle(fakeReq('GET', '/'), res, () => {});
+
+        expect(res.view).toBe('index');
+        expect(res.renderData).toEqual({ data: fakeData });
+    });
+});
+
+// is_running
 describe('GET /get_is_running', () => {
     test('retorna true quando rodando', async () => {
         clockService.is_running.mockResolvedValue(true);
         const req = fakeReq('GET', '/get_is_running');
         const res = fakeRes();
         const router = require('../routes/clock');
-        // Pega o handler diretamente da camada do router
         const layer = router.stack.find(l => l.route && l.route.path === '/get_is_running');
         await layer.route.stack[0].handle(req, res, () => {});
         expect(res.body).toBe(true);
@@ -66,7 +135,7 @@ describe('GET /get_is_running', () => {
     });
 });
 
-// ─── get_ms_today ─────────────────────────────
+// get_ms_today 
 describe('GET /get_ms_today', () => {
     test('retorna timeInMsToday como número', async () => {
         clockService.get_time_today.mockResolvedValue({ timeInMsToday: 12345 });
@@ -79,7 +148,7 @@ describe('GET /get_ms_today', () => {
     });
 });
 
-// ─── create_clock_in ──────────────────────────
+// create_clock_in 
 describe('POST /create_clock_in', () => {
     test('retorna o novo registro criado', async () => {
         const fakeRecord = { id: 1, clockInTS: 999, clockOutTS: null };
@@ -93,7 +162,7 @@ describe('POST /create_clock_in', () => {
     });
 });
 
-// ─── save_clock_out ───────────────────────────
+// save_clock_out
 describe('POST /save_clock_out', () => {
     test('retorna { ok: true } em sucesso', async () => {
         clockService.save_clock_out.mockResolvedValue(undefined);
@@ -117,7 +186,7 @@ describe('POST /save_clock_out', () => {
     });
 });
 
-// ─── add_ms_to_database ───────────────────────
+// add_ms_to_database 
 describe('POST /add_ms_to_database', () => {
     test('chama ambos os serviços com o intervalo correto', async () => {
         clockService.add_ms_to_TimeToday.mockResolvedValue();

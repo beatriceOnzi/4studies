@@ -1,6 +1,4 @@
 // tests/time_routes.test.js
-// Testa a função msToHours presente no módulo time (routes/time.js)
-// e o comportamento da rota GET /time
 
 const express = require('express');
 const http    = require('node:http');
@@ -11,13 +9,6 @@ jest.mock('../models/TotalHours');
 
 const TotalHours = require('../models/TotalHours');
 
-// ─────────────────────────────────────────────
-// msToHours — testada através da rota
-// A função é privada no módulo, mas o seu efeito é visível na rota.
-// Testamos a lógica de forma isolada replicando-a aqui.
-// ─────────────────────────────────────────────
-
-// Replica local para testes unitários diretos
 function msToHours(ms) {
     let seconds = Math.floor((ms / 1000) % 60);
     let minutes = Math.floor((ms / (1000 * 60)) % 60);
@@ -37,10 +28,6 @@ describe('msToHours (routes/time helper)', () => {
     test('10 horas → 10:00:00', () => expect(msToHours(36_000_000)).toBe('10:00:00'));
     test('100 horas → 100:00:00 (sem corte)', () => expect(msToHours(360_000_000)).toBe('100:00:00'));
 });
-
-// ─────────────────────────────────────────────
-// GET /time (integração leve com mock do modelo)
-// ─────────────────────────────────────────────
 
 function buildApp() {
     const app = express();
@@ -78,3 +65,4 @@ describe('GET /time', () => {
         expect(status).toBe(200);
     });
 });
+

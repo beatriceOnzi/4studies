@@ -25,7 +25,7 @@ function getHandler(router, path) {
 
 beforeEach(() => jest.clearAllMocks());
 
-// ─── POST /notes/daily_goals/new ──────────────
+// new_post
 describe('POST /notes/daily_goals/new', () => {
     test('retorna o novo objetivo diário criado', async () => {
         const fakeGoal = { id: 1, daily_goals: 'estudar 2h' };
@@ -52,7 +52,7 @@ describe('POST /notes/daily_goals/new', () => {
     });
 });
 
-// ─── POST /notes/weekly_goals/new ─────────────
+// new_weekly_goal
 describe('POST /notes/weekly_goals/new', () => {
     test('retorna o novo objetivo semanal criado', async () => {
         const fakeGoal = { id: 1, weekly_goals: 'terminar módulo' };
@@ -68,12 +68,11 @@ describe('POST /notes/weekly_goals/new', () => {
     });
 });
 
-// ─── POST /notes/save ─────────────────────────
+// save_notes
 describe('POST /notes/save', () => {
-    test('salva o texto da nota e retorna o registro atualizado', async () => {
-        const saveMock = jest.fn().mockResolvedValue(true);
-        const fakeNote = { id: 1, note: '', save: saveMock };
-        notesService.get_notes.mockResolvedValue(fakeNote);
+    test('retorna o registro de notas atualizado pelo serviço', async () => {
+        const fakeNote = { id: 1, note: 'novo texto' };
+        notesService.save_notes.mockResolvedValue(fakeNote);
 
         const router = require('../routes/notes');
         const handle = getHandler(router, '/save');
@@ -81,17 +80,42 @@ describe('POST /notes/save', () => {
 
         await handle({ body: { notes: 'novo texto' } }, res, () => {});
 
-        expect(res.body.note).toBe('novo texto');
+        expect(res.body).toEqual(fakeNote);
     });
 
-    test('chama save no objeto retornado por get_notes', async () => {
-        const saveMock = jest.fn().mockResolvedValue(true);
-        notesService.get_notes.mockResolvedValue({ id: 1, note: '', save: saveMock });
+    test('chama save_notes com o texto enviado no body', async () => {
+        notesService.save_notes.mockResolvedValue({ id: 1, note: 'qualquer' });
 
         const router = require('../routes/notes');
         const handle = getHandler(router, '/save');
         await handle({ body: { notes: 'qualquer' } }, fakeRes(), () => {});
 
-        expect(saveMock).toHaveBeenCalledTimes(1);
+        expect(notesService.save_notes).toHaveBeenCalledWith('qualquer');
+    });
+});
+
+// delete_daily_goal
+describe('DELETE /notes/daily_goals/:id', () => {
+    test('chama delete_daily_goal com o id da rota', async () => {
+        notesService.delete_daily_goal.mockResolvedValue();
+
+        const router = require('../routes/notes');
+        const handle = getHandler(router, '/daily_goals/:id');
+        await handle({ params: { id: '5' }, body: {} }, fakeRes(), () => {});
+
+        expect(notesService.delete_daily_goal).toHaveBeenCalledWith('5');
+    });
+});
+
+// delete_weekly_goal
+describe('DELETE /notes/weekly_goals/:id', () => {
+    test('chama delete_weekly_goal com o id da rota', async () => {
+        notesService.delete_weekly_goal.mockResolvedValue();
+
+        const router = require('../routes/notes');
+        const handle = getHandler(router, '/weekly_goals/:id');
+        await handle({ params: { id: '3' }, body: {} }, fakeRes(), () => {});
+
+        expect(notesService.delete_weekly_goal).toHaveBeenCalledWith('3');
     });
 });
