@@ -4,13 +4,16 @@ const router = express.Router();
 const { get_data } = require("../services/page_service")
 
 const {
-  get_notes,
-  create_notes,
-  save_notes,
   delete_weekly_goal,
   delete_daily_goal,
   create_weekly_goal,
   create_daily_goal,
+} = require("../services/goals_service");
+
+const {
+  get_notes,
+  create_notes,
+  save_notes
 } = require("../services/notes_service");
 
 // -- Daily Goals --
@@ -56,10 +59,20 @@ router.delete("/weekly_goals/:id", async (req, res) => { // untested
 
 // -- Notes --
 
-router.post("/save", async (req, res) => {
+router.post("/notes/save", async (req, res) => {
   const notes = await save_notes(req.body.notes);
 
   res.json(notes);
+});
+
+router.get("/notes/new", async (req, res) => {
+  console.log("entrou na rota")
+  // const newWeeklyGoal = await create_weekly_goal(req.body.value)
+  // res.json(newWeeklyGoal);
+});
+
+router.delete("/notes/:id", async (req, res) => { // untested
+  // delete_weekly_goal(req.params.id)
 });
 
 module.exports = router

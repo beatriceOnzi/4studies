@@ -39,18 +39,18 @@ if(dailyGoalsList) {
 function getServerURL(goal_type, action){
     if (goal_type == 'weeklyGoalsList') {
         if (action == 'new') {
-            return '/notes/weekly_goals/new'
+            return '/weekly_goals/new'
         }
         if (action == 'delete') {
-            return '/notes/weekly_goals'
+            return '/weekly_goals'
         }
     }
     if (goal_type == 'dailyGoalsList') {
         if (action == 'new') {
-            return '/notes/daily_goals/new'
+            return '/daily_goals/new'
         }
         if (action == 'delete') {
-            return '/notes/daily_goals'
+            return '/daily_goals'
         }
     }
 }

@@ -11,6 +11,16 @@ form.addEventListener('keydown', () => {
     }, 1000);
 });
 
+
+async function new_note() {
+    const response = await fetch('/notes/new');
+}
+
+async function change_status_daily_goal(id) {
+    console.log("teste ", id)
+}
+
+
 async function saveNote(notesElement) {
     const notes = notesElement.value.trim();
     if (!notes) return;
@@ -29,3 +39,4 @@ async function saveNote(notesElement) {
     });
 
 }
+

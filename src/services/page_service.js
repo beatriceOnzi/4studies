@@ -4,11 +4,13 @@ const {
 } = require("../services/clock_service")
 
 const { 
-    get_notes,
     get_daily_goals,
     get_weekly_goals,    
-} = require("../services/notes_service")
+} = require("./goals_service")
 
+const { 
+    get_notes,    
+} = require("./notes_service")
 
 const { 
     get_goal_hours,
@@ -30,7 +32,7 @@ async function get_data() {
     const study_today = await getStudyToday();
     data.time = msToHours(study_today.timeInMsToday);
     notes = await get_notes();
-    data.notes = notes.note;
+    data.notes = notes.note ?? "";
     return data 
 }
 

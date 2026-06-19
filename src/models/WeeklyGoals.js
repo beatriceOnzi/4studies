@@ -5,6 +5,10 @@ const WeeklyGoals = sequelize.define("WeeklyGoals", {
   weekly_goals: {
     type: DataTypes.TEXT,
     defaultValue: ""
+  },
+  status: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
   }
 });
 

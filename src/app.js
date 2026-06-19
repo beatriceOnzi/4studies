@@ -26,7 +26,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
 // routes
-app.use('/notes', notes_routes);
+app.use('', notes_routes);
 app.use('', clock_routes);
 app.use('', time_routes);
 
