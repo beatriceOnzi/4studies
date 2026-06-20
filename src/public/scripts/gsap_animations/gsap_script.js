@@ -20,7 +20,7 @@ gsap.to("#cloud1", {
         trigger:"#cloud1",
         start:"-50% top",
         end:"+=200",
-        scrub:true
+        scrub: 1
     }
 });
 
@@ -32,8 +32,7 @@ gsap.to("#cloud2", {
         trigger:"body",
         start:"top top",
         end:"+=150",
-        scrub:true,
-        markers: true
+        scrub: 1
     }
 });
 
@@ -45,7 +44,7 @@ gsap.to("#cloud3", {
         trigger:"body",
         start:"top top",
         end:"+=300",
-        scrub:true
+        scrub: 1
     }
 });
 
@@ -57,7 +56,7 @@ gsap.to("#mountains", {
         trigger:"#start",
         start:"top top",
         end:"+=500",
-        scrub:true
+        scrub: 1
     }
 });
 
@@ -69,6 +68,6 @@ gsap.to("#cachoeira", {
         trigger:"#start",
         start:"top top",
         end:"+=500",
-        scrub:true
+        scrub: 1
     }
 });
