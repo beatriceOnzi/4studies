@@ -25,25 +25,26 @@ gsap.to("#cloud1", {
 });
 
 gsap.to("#cloud2", {
-    y: -400,
-    ease: "power1.in",
+    y: -430,
+    ease: "power1.out",
 
     scrollTrigger:{
-        trigger:"#cloud2",
-        start:"-32% top",
+        trigger:"body",
+        start:"top top",
         end:"+=150",
-        scrub:true
+        scrub:true,
+        markers: true
     }
 });
 
 gsap.to("#cloud3", {
-    y: -700,
-    ease: "power1.in",
+    y: -800,
+    ease: "power1.out",
 
     scrollTrigger:{
-        trigger:"#cloud3",
-        start:"-200% top",
-        end:"+=320",
+        trigger:"body",
+        start:"top top",
+        end:"+=300",
         scrub:true
     }
 });
