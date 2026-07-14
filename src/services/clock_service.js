@@ -30,7 +30,7 @@ async function get_id_by_date(date) {
     return today.id;
 }
 
-async function checkIfIsFirstClockIn() { // importante de testar
+async function checkIfIsFirstClockIn() {
     const today = getToday();
     const study_today = await getStudyToday();
 
@@ -58,7 +58,7 @@ async function create_total_hours_if_needed() {
     }
 }
 
-async function is_running() { // done
+async function is_running() {
     const last_clock_record = await ClockIn.findOne({ order: [['createdAt', 'DESC']] });
 
     if (!last_clock_record) return false;
@@ -67,7 +67,7 @@ async function is_running() { // done
     
 }
 
-async function save_clock_out(timestamp) { //done
+async function save_clock_out(timestamp) {
     const last_clock_record = await ClockIn.findOne({ order: [ [ 'createdAt', 'DESC' ] ]});
     if (last_clock_record.clockOutTS) {
         // criar um novo
@@ -78,13 +78,13 @@ async function save_clock_out(timestamp) { //done
     await last_clock_record.save()
 }
 
-async function add_ms_to_TimeToday(interval) { // done
+async function add_ms_to_TimeToday(interval) {
     const time_today = await get_time_today();
     time_today.timeInMsToday += interval
     await time_today.save();
 }
 
-async function add_ms_to_TotalHours(interval) { // done
+async function add_ms_to_TotalHours(interval) {
     let totalHours = await TotalHours.findOne();
     totalHours.totalHoursCompletedInMs += interval;
     await totalHours.save();
@@ -99,6 +99,30 @@ async function create_clock_in(timestamp) {
     });
 }
 
+async function get_clockIns_today(today) {
+    return await ClockIn.findOne({ where: {day: today}});
+}
+
+async function edit_clockIn(id, new_clockIn) {
+    let record = await ClockIn.findByPk(id);
+    if (record){
+        record.clockInTS = new_clockIn
+        await record.save()
+        return record.clockInTS
+    }
+    return "Não Encontrado"
+}
+
+async function edit_clockOut(id, new_clockOut) {
+    let record = await ClockIn.findByPk(id);
+    if (record){
+        record.clockOutTS = new_clockOut
+        await record.save()
+        return record.clockOutTS
+    }
+    return "Não Encontrado"
+}
+
 module.exports = {
     is_running,
     create_clock_in,
@@ -110,5 +134,8 @@ module.exports = {
     checkIfIsFirstClockIn,
     createTimeToday,
     getStudyToday,
-    create_total_hours_if_needed
+    create_total_hours_if_needed,
+    get_clockIns_today,
+    edit_clockIn,
+    edit_clockOut
 };

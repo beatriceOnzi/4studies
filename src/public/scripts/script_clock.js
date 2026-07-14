@@ -1,5 +1,6 @@
 const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
+const clockIn_list_btn = document.getElementById('clockIn_list_btn');
 
 let running_display = null;
 
@@ -9,6 +10,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 clock_btn.addEventListener('click', handle_clock_press);
+clockIn_list_btn.addEventListener('click', edit_clockOut)
 
 
 async function handle_clock_display(is_running){
@@ -66,6 +68,12 @@ async function stop_clock(){
     ]);
     clearInterval(running_display);
     clock_text.textContent = msToHours(await get_ms_today());
+}
+
+async function open_list() {
+    console.log((await fetch("/get_clockIns_today")).json())
+    // get today, exibe todas os clockIns (em cima pode ter lista com os dias futuramente)
+    // usar tabulator
 }
 
 
@@ -152,6 +160,42 @@ async function save_interval_to_database(interval_in_ms) {
             interval_in_ms
         })
     });
+}
 
-    
+
+async function edit_clockIn() {
+    const response = await fetch("/edit_clockIn", {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            id: 1,
+            new_clockIn: 1782763967652
+        })
+    });
+
+    console.log(await response.json())
+}
+
+
+async function edit_clockOut() {
+    const response = await fetch("/edit_clockOut", {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            id: 1,
+            new_clockOut: 1782763967652
+        })
+    });
+
+    console.log(await response.json())
 }

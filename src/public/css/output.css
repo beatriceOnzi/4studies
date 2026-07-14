@@ -601,6 +601,14 @@ video {
   margin-top: 2rem;
 }
 
+.ml-2{
+  margin-left: 0.5rem;
+}
+
+.mr-2{
+  margin-right: 0.5rem;
+}
+
 .inline-block{
   display: inline-block;
 }
@@ -683,6 +691,10 @@ video {
   list-style-type: disc;
 }
 
+.flex-row{
+  flex-direction: row;
+}
+
 .flex-col{
   flex-direction: column;
 }
@@ -707,8 +719,8 @@ video {
   gap: 1.75rem;
 }
 
-.gap-2{
-  gap: 0.5rem;
+.self-end{
+  align-self: flex-end;
 }
 
 .overflow-hidden{
@@ -846,6 +858,14 @@ video {
   padding-top: 1rem;
 }
 
+.pb-2{
+  padding-bottom: 0.5rem;
+}
+
+.pb-4{
+  padding-bottom: 1rem;
+}
+
 .text-center{
   text-align: center;
 }
@@ -858,12 +878,12 @@ video {
   font-family: Marck Script, sans-serif;
 }
 
-.font-soul{
-  font-family: My Soul, sans-serif;
-}
-
 .font-sans{
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.font-soul{
+  font-family: My Soul, sans-serif;
 }
 
 .text-2xl{
@@ -886,6 +906,11 @@ video {
   line-height: 1;
 }
 
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .text-xl{
   font-size: 1.25rem;
   line-height: 1.75rem;
@@ -894,11 +919,6 @@ video {
 .text-lg{
   font-size: 1.125rem;
   line-height: 1.75rem;
-}
-
-.text-base{
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 
 .font-bold{
@@ -934,6 +954,15 @@ video {
   color: rgb(244 237 255 / var(--tw-text-opacity, 1));
 }
 
+.text-branco\/80{
+  color: rgb(244 237 255 / 0.8);
+}
+
+.text-red-800{
+  --tw-text-opacity: 1;
+  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
+}
+
 .text-roxo-escuro{
   --tw-text-opacity: 1;
   color: rgb(40 33 97 / var(--tw-text-opacity, 1));
@@ -944,21 +973,12 @@ video {
   color: rgb(224 242 254 / var(--tw-text-opacity, 1));
 }
 
-.text-red-800{
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
-}
-
 .text-opacity-0{
   --tw-text-opacity: 0;
 }
 
 .no-underline{
   text-decoration-line: none;
-}
-
-.opacity-0{
-  opacity: 0;
 }
 
 .outline-none{
@@ -980,18 +1000,6 @@ video {
 
 .outline-azul\/40{
   outline-color: rgb(54 46 129 / 0.4);
-}
-
-.transition-opacity{
-  transition-property: opacity;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.transition-colors{
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
 }
 
 .card{
@@ -1102,10 +1110,6 @@ video {
   --tw-text-opacity: 1;
 }
 
-.hover\:line-through:hover{
-  text-decoration-line: line-through;
-}
-
 .focus\:border-roxo-claro:focus{
   --tw-border-opacity: 1;
   border-color: rgb(193 140 237 / var(--tw-border-opacity, 1));
@@ -1125,57 +1129,7 @@ video {
   --tw-text-opacity: 1;
 }
 
-.group:hover .group-hover\:opacity-100{
-  opacity: 1;
-}
-
-.peer\/delete:hover ~ .peer-hover\/delete\:text-red-500{
-  --tw-text-opacity: 1;
-  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
-}
-
-.peer\/status:hover ~ .peer-hover\/status\:line-through{
-  text-decoration-line: line-through;
-}
-
-.peer.is-dirty ~ .peer-\[\.is-dirty\]\:text-red-800{
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
-}
-
-.peerhover:deleteDailyGoal ~ .peer-\[hover\:deleteDailyGoal\]\:text-red-800{
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:line-clamp-4{
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:text-lg{
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:text-red-900{
-  --tw-text-opacity: 1;
-  color: rgb(127 29 29 / var(--tw-text-opacity, 1));
-}
-
 .group:has(a:hover) .group-has-\[a\:hover\]\:text-red-800{
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
-}
-
-.group:has(a#deleteDailyGoal:hover) .group-has-\[a\#deleteDailyGoal\:hover\]\:text-red-800{
-  --tw-text-opacity: 1;
-  color: rgb(153 27 27 / var(--tw-text-opacity, 1));
-}
-
-.group:has(#deleteDailyGoal:hover) .group-has-\[\#deleteDailyGoal\:hover\]\:text-red-800{
   --tw-text-opacity: 1;
   color: rgb(153 27 27 / var(--tw-text-opacity, 1));
 }
@@ -1185,14 +1139,6 @@ video {
 }
 
 .group:has(a:hover) .group-has-\[a\:hover\]\:line-through{
-  text-decoration-line: line-through;
-}
-
-.group:has(a#deleteDailyGoal:hover) .group-has-\[a\#deleteDailyGoal\:hover\]\:line-through{
-  text-decoration-line: line-through;
-}
-
-.group:has(#deleteDailyGoal:hover) .group-has-\[\#deleteDailyGoal\:hover\]\:line-through{
   text-decoration-line: line-through;
 }
 
