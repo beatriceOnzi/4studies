@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 clock_btn.addEventListener('click', handle_clock_press);
-clockIn_list_btn.addEventListener('click', edit_clockOut)
+clockIn_list_btn.addEventListener('click', open_list)
 
 
 async function handle_clock_display(is_running){
@@ -71,9 +71,31 @@ async function stop_clock(){
 }
 
 async function open_list() {
-    console.log((await fetch("/get_clockIns_today")).json())
-    // get today, exibe todas os clockIns (em cima pode ter lista com os dias futuramente)
-    // usar tabulator
+    const table_data = await get_clockIn_table_data()
+
+    var clockIn_table = new Tabulator("#clockIn_table", {
+        height: "100%",
+        data: table_data,
+        layout: "fitColumns",
+        columns: [
+            { title: "ClockIn", field: "clockIn", hozAlign: "center", headerSort: false },
+            { title: "ClockOut", field: "clockOut", hozAlign: "left", headerSort: false },
+            { title: "Total Time", field: "time", hozAlign: "left", headerSort: false },
+        ],
+    });
+}
+
+async function get_clockIn_table_data() {
+    let clockIn_table_data = await get_clockIns()
+
+    const clockIn_data = clockIn_table_data.map(record => ({
+        id: record.id,
+        clockIn: record.clockInTS,
+        clockOut: record.clockOutTS,
+        time: record.time
+    }));
+
+    return clockIn_data
 }
 
 
@@ -111,6 +133,12 @@ async function get_ms_today() {
 
 async function get_last_clock_in() {
     const response = await fetch("/get_last_clock_in")
+    const data = await response.json();
+    return data
+}
+
+async function get_clockIns() {
+    const response = await fetch("/get_clockIns")
     const data = await response.json();
     return data
 }

@@ -20,6 +20,7 @@ const {
     getStudyToday,
     get_time_today,
     create_total_hours_if_needed,
+    get_clockIns,
     get_clockIns_today,
     edit_clockIn,
     edit_clockOut
@@ -83,6 +84,11 @@ router.get("/get_clockIns_today", async (req, res) => {
     const today = req.body.today;
     const clockIns_today = await get_clockIns_today(today)
     res.json(clockIns_today)
+});
+
+router.get("/get_clockIns", async (req, res) => {
+    const clockIns = await get_clockIns()
+    res.json(clockIns)
 });
 
 router.post("/edit_clockIn", async (req, res) => {

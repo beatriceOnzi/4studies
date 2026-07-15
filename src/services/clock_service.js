@@ -103,6 +103,13 @@ async function get_clockIns_today(today) {
     return await ClockIn.findOne({ where: {day: today}});
 }
 
+async function get_clockIns() {
+    clockIns = await ClockIn.findAll()
+    formated_clockIns = format_clockIns(clockIns)
+    console.log(formated_clockIns)
+    return formated_clockIns
+}
+
 async function edit_clockIn(id, new_clockIn) {
     let record = await ClockIn.findByPk(id);
     if (record){
@@ -123,6 +130,38 @@ async function edit_clockOut(id, new_clockOut) {
     return "Não Encontrado"
 }
 
+function format_clockIns(clockIns) {
+    return clockIns.map(record => ({
+        id: record.id,
+        clockInTS: format_timestamp(record.clockInTS),
+        clockOutTS: format_timestamp(record.clockOutTS),
+        time: set_formated_inteval(record.clockOutTS - record.clockInTS)
+    }));
+}
+
+function format_timestamp(timestamp){
+    time = new Date(timestamp).toLocaleTimeString("pt-BR", {
+        timeZone: "America/Sao_Paulo",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
+    return time
+}
+
+function set_formated_inteval(interval) {
+    let seconds = Math.floor((interval / 1000) % 60);
+    let minutes = Math.floor((interval / (1000 * 60)) % 60);
+    let hours = Math.floor((interval / (1000 * 60 * 60)));
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+
 module.exports = {
     is_running,
     create_clock_in,
@@ -136,6 +175,7 @@ module.exports = {
     getStudyToday,
     create_total_hours_if_needed,
     get_clockIns_today,
+    get_clockIns,
     edit_clockIn,
     edit_clockOut
 };

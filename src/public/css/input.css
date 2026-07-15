@@ -1,5 +1,7 @@
 @import url('https://googleapis.com');
 
+@import "tabulator-tables/dist/css/tabulator_simple.min.css";
+
 @import url('https://fonts.googleapis.com/css2?family=Italianno&family=Marck+Script&family=My+Soul&display=swap');
 
 @tailwind base;

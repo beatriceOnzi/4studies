@@ -10,7 +10,8 @@
   "dependencies": {
     "express": "^4.18.2",
     "sequelize": "^6.37.8",
-    "sqlite3": "^6.0.1"
+    "sqlite3": "^6.0.1",
+    "tabulator-tables": "^6.5.2"
   },
   "devDependencies": {
     "jest": "^30.4.2",
