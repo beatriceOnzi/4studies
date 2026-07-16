@@ -78,8 +78,8 @@ async function open_list() {
         data: table_data,
         layout: "fitColumns",
         columns: [
-            { title: "ClockIn", field: "clockIn", hozAlign: "center", headerSort: false },
-            { title: "ClockOut", field: "clockOut", hozAlign: "left", headerSort: false },
+            { title: "ClockIn", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
+            { title: "ClockOut", field: "clockOut", hozAlign: "left", headerSort: false, editor:"input", cellEdited: edit_clockOut},
             { title: "Total Time", field: "time", hozAlign: "left", headerSort: false },
         ],
     });
@@ -90,9 +90,11 @@ async function get_clockIn_table_data() {
 
     const clockIn_data = clockIn_table_data.map(record => ({
         id: record.id,
-        clockIn: record.clockInTS,
-        clockOut: record.clockOutTS,
-        time: record.time
+        clockInTS: record.clockInTS,
+        clockOutTS: record.clockOutTS,
+        clockIn: record.clockIn,
+        clockOut: record.clockOut,
+        time: record.time,
     }));
 
     return clockIn_data
@@ -191,7 +193,14 @@ async function save_interval_to_database(interval_in_ms) {
 }
 
 
-async function edit_clockIn() {
+async function edit_clockIn(cell) {
+    const current_clockInTS = cell.getRow().getData().clockInTS
+    const old_hour = cell.getOldValue()
+    const new_hour = cell.getValue()
+
+    const id = cell.getRow().getData().id
+    const new_clockInTS = calculate_new_clockIn(current_clockInTS, old_hour, new_hour)
+
     const response = await fetch("/edit_clockIn", {
 
         method: 'POST',
@@ -201,16 +210,22 @@ async function edit_clockIn() {
         },
 
         body: JSON.stringify({
-            id: 1,
-            new_clockIn: 1782763967652
+            id,
+            new_clockInTS
         })
     });
 
-    console.log(await response.json())
 }
 
 
-async function edit_clockOut() {
+async function edit_clockOut(cell) {
+    const current_clockOutTS = cell.getRow().getData().clockOutTS
+    const old_hour = cell.getOldValue()
+    const new_hour = cell.getValue()
+
+    const id = cell.getRow().getData().id
+    const new_clockOutTS = calculate_new_clockOut(current_clockOutTS, old_hour, new_hour)
+
     const response = await fetch("/edit_clockOut", {
 
         method: 'POST',
@@ -220,10 +235,26 @@ async function edit_clockOut() {
         },
 
         body: JSON.stringify({
-            id: 1,
-            new_clockOut: 1782763967652
+            id,
+            new_clockOutTS
         })
     });
 
-    console.log(await response.json())
+}
+
+function calculate_new_clockIn(current_clockInTS, current_hour, new_hour){
+    time_difference = toMS(new_hour) - toMS(current_hour)
+    new_clockInTS = current_clockInTS + time_difference
+    return new_clockInTS
+}
+
+function calculate_new_clockOut(current_clockOutTS, current_hour, new_hour){
+    time_difference = toMS(new_hour) - toMS(current_hour)
+    new_clockOutTS = current_clockOutTS + time_difference
+    return new_clockOutTS
+}
+
+function toMS(hour){
+    const [hours, minutes] = hour.split(":").map(Number);
+    return (hours * 60 * 60 + minutes * 60) * 1000;
 }

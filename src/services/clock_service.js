@@ -106,14 +106,14 @@ async function get_clockIns_today(today) {
 async function get_clockIns() {
     clockIns = await ClockIn.findAll()
     formated_clockIns = format_clockIns(clockIns)
-    console.log(formated_clockIns)
     return formated_clockIns
 }
 
-async function edit_clockIn(id, new_clockIn) {
+async function edit_clockIn(id, new_clockInTS) {
+    //ver o intervalo que deu de diferente e mudar no timetoday etc
     let record = await ClockIn.findByPk(id);
     if (record){
-        record.clockInTS = new_clockIn
+        record.clockInTS = new_clockInTS
         await record.save()
         return record.clockInTS
     }
@@ -121,6 +121,7 @@ async function edit_clockIn(id, new_clockIn) {
 }
 
 async function edit_clockOut(id, new_clockOut) {
+    //ver o intervalo que deu de diferente e mudar no timetoday etc
     let record = await ClockIn.findByPk(id);
     if (record){
         record.clockOutTS = new_clockOut
@@ -133,8 +134,10 @@ async function edit_clockOut(id, new_clockOut) {
 function format_clockIns(clockIns) {
     return clockIns.map(record => ({
         id: record.id,
-        clockInTS: format_timestamp(record.clockInTS),
-        clockOutTS: format_timestamp(record.clockOutTS),
+        clockInTS: record.clockInTS,
+        clockOutTS: record.clockOutTS,
+        clockIn: format_timestamp(record.clockInTS),
+        clockOut: format_timestamp(record.clockOutTS),
         time: set_formated_inteval(record.clockOutTS - record.clockInTS)
     }));
 }
