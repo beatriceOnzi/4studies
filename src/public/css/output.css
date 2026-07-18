@@ -2424,6 +2424,10 @@ video {
   border-radius: 10px;
 }
 
+.tabulator .tabulator-header{
+  font-family: My Soul;
+}
+
 .selection\:bg-purple-300 *::-moz-selection{
   --tw-bg-opacity:1;
   background-color:rgb(216 180 254 / var(--tw-bg-opacity, 1))

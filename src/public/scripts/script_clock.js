@@ -73,14 +73,14 @@ async function stop_clock(){
 async function open_list() {
     const table_data = await get_clockIn_table_data()
 
-    var clockIn_table = new Tabulator("#clockIn_table", {
+    clockIn_table = new Tabulator("#clockIn_table", {
         height: "100%",
         data: table_data,
         layout: "fitColumns",
         columns: [
-            { title: "ClockIn", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
-            { title: "ClockOut", field: "clockOut", hozAlign: "left", headerSort: false, editor:"input", cellEdited: edit_clockOut},
-            { title: "Total Time", field: "time", hozAlign: "left", headerSort: false },
+            { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
+            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockOut},
+            { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
     });
 }
@@ -215,6 +215,10 @@ async function edit_clockIn(cell) {
         })
     });
 
+    const data = await response.json()
+
+    clockIn_table.updateData([{id: id, time: data}]);
+
 }
 
 
@@ -239,6 +243,10 @@ async function edit_clockOut(cell) {
             new_clockOutTS
         })
     });
+
+    const data = await response.json()
+
+    clockIn_table.updateData([{id: id, time: data}]);
 
 }
 

@@ -115,7 +115,7 @@ async function edit_clockIn(id, new_clockInTS) {
     if (record){
         record.clockInTS = new_clockInTS
         await record.save()
-        return record.clockInTS
+        return set_formated_inteval(record.clockOutTS - record.clockInTS)
     }
     return "Não Encontrado"
 }
@@ -126,7 +126,7 @@ async function edit_clockOut(id, new_clockOut) {
     if (record){
         record.clockOutTS = new_clockOut
         await record.save()
-        return record.clockOutTS
+        return set_formated_inteval(record.clockOutTS - record.clockInTS)
     }
     return "Não Encontrado"
 }

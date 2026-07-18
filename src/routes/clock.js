@@ -92,13 +92,13 @@ router.get("/get_clockIns", async (req, res) => {
 });
 
 router.post("/edit_clockIn", async (req, res) => {
-    const new_clockInTS = await edit_clockIn(req.body.id, req.body.new_clockInTS);
-    res.json(new_clockInTS);
+    const new_time = await edit_clockIn(req.body.id, req.body.new_clockInTS);
+    res.json(new_time);
 });
 
 router.post("/edit_clockOut", async (req, res) => {
-    const new_clockOutTS = await edit_clockOut(req.body.id, req.body.new_clockOutTS);
-    res.json(new_clockOutTS);
+    const new_time = await edit_clockOut(req.body.id, req.body.new_clockOutTS);
+    res.json(new_time);
 });
 
 
