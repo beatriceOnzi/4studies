@@ -21,7 +21,6 @@ const {
     get_time_today,
     create_total_hours_if_needed,
     get_clockIns,
-    get_clockIns_today,
     edit_clockIn,
     edit_clockOut
 } = require('../services/clock_service');
@@ -80,11 +79,11 @@ router.post("/add_ms_to_database", async (req, res) => {
     res.json({ ok: true });
 });
 
-router.get("/get_clockIns_today", async (req, res) => {
-    const today = req.body.today;
-    const clockIns_today = await get_clockIns_today(today)
-    res.json(clockIns_today)
-});
+// router.get("/get_clockIns_today", async (req, res) => {
+//     const today = req.body.today;
+//     const clockIns_today = await get_clockIns_today(today)
+//     res.json(clockIns_today)
+// });
 
 router.get("/get_clockIns", async (req, res) => {
     const clockIns = await get_clockIns()

@@ -2,6 +2,10 @@ const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
 const clockIn_list_btn = document.getElementById('clockIn_list_btn');
 
+const table_box = document.getElementById('table_box');
+const buttons_list = document.getElementById('buttons_list');
+const button = document.querySelector('.button')
+
 let running_display = null;
 
 document.addEventListener("DOMContentLoaded", async function() {
@@ -12,6 +16,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 clock_btn.addEventListener('click', handle_clock_press);
 clockIn_list_btn.addEventListener('click', open_list)
 
+buttons_list.addEventListener("click", (event) => {
+    if (event.target.matches(".button")) {
+        const day = event.target.textContent;
+        apply_filters(day)
+    }
+});
 
 async function handle_clock_display(is_running){
     
@@ -66,16 +76,19 @@ async function stop_clock(){
         save_interval_to_database(interval),
         save_clock_out(current_timestamp)
     ]);
+
     clearInterval(running_display);
     clock_text.textContent = msToHours(await get_ms_today());
 }
 
 async function open_list() {
-    const table_data = await get_clockIn_table_data()
+    const table_data = await get_clockIn_table_data();
+    display_days_buttons(table_data)
 
     clockIn_table = new Tabulator("#clockIn_table", {
         height: "100%",
         data: table_data,
+        height:'100%',
         layout: "fitColumns",
         columns: [
             { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
@@ -83,10 +96,12 @@ async function open_list() {
             { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
     });
+
+    table_box.classList.remove('hidden');
 }
 
 async function get_clockIn_table_data() {
-    let clockIn_table_data = await get_clockIns()
+    let clockIn_table_data = await get_clockIns();
 
     const clockIn_data = clockIn_table_data.map(record => ({
         id: record.id,
@@ -95,11 +110,34 @@ async function get_clockIn_table_data() {
         clockIn: record.clockIn,
         clockOut: record.clockOut,
         time: record.time,
+        day: record.day
     }));
 
     return clockIn_data
 }
 
+
+function display_days_buttons(table_data){
+    const all_clockIn_days = Object.values(table_data).map(obj => obj.day);
+    const days = [...new Set(all_clockIn_days)];
+
+    button.textContent = days[0]
+    days.shift()
+
+    for (day of days){
+        const div = button.cloneNode();
+        div.textContent = day
+        buttons_list.appendChild(div)
+    }
+}
+
+function apply_filters(day) {
+    const filtros = [];
+
+    filtros.push({ field: "day", type: "like", value: day });
+
+    clockIn_table.setFilter(filtros);
+}
 
 function get_timestamp_now() {
     return Date.now();
@@ -194,9 +232,14 @@ async function save_interval_to_database(interval_in_ms) {
 
 
 async function edit_clockIn(cell) {
+    const new_hour = cell.getValue()
+    
+    if (!validate_hour(new_hour)){
+        return
+    }
+
     const current_clockInTS = cell.getRow().getData().clockInTS
     const old_hour = cell.getOldValue()
-    const new_hour = cell.getValue()
 
     const id = cell.getRow().getData().id
     const new_clockInTS = calculate_new_clockIn(current_clockInTS, old_hour, new_hour)
@@ -221,11 +264,16 @@ async function edit_clockIn(cell) {
 
 }
 
-
 async function edit_clockOut(cell) {
+    const new_hour = cell.getValue()
+    
+    if (!validate_hour(new_hour)){     
+        //cell.setValue(cell.getOldValue(), true)
+        return
+    }
+
     const current_clockOutTS = cell.getRow().getData().clockOutTS
     const old_hour = cell.getOldValue()
-    const new_hour = cell.getValue()
 
     const id = cell.getRow().getData().id
     const new_clockOutTS = calculate_new_clockOut(current_clockOutTS, old_hour, new_hour)
@@ -260,6 +308,20 @@ function calculate_new_clockOut(current_clockOutTS, current_hour, new_hour){
     time_difference = toMS(new_hour) - toMS(current_hour)
     new_clockOutTS = current_clockOutTS + time_difference
     return new_clockOutTS
+}
+
+function validate_hour(hour){
+    const hours = hour.split(':')
+
+    if (hours[0] >=60 || hours[0] < 0){
+        return false
+    }
+
+    if (hours[1] >=60 || hours[1] < 0){
+        return false
+    }
+
+    return true
 }
 
 function toMS(hour){

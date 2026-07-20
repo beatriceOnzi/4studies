@@ -99,9 +99,9 @@ async function create_clock_in(timestamp) {
     });
 }
 
-async function get_clockIns_today(today) {
-    return await ClockIn.findOne({ where: {day: today}});
-}
+// async function get_clockIns_today(today) {
+//     return await ClockIn.findOne({ where: {day: today}});
+// }
 
 async function get_clockIns() {
     clockIns = await ClockIn.findAll()
@@ -115,6 +115,7 @@ async function edit_clockIn(id, new_clockInTS) {
     if (record){
         record.clockInTS = new_clockInTS
         await record.save()
+        // se isso der negativo, passa o clock out para dia anterior
         return set_formated_inteval(record.clockOutTS - record.clockInTS)
     }
     return "Não Encontrado"
@@ -122,10 +123,12 @@ async function edit_clockIn(id, new_clockInTS) {
 
 async function edit_clockOut(id, new_clockOut) {
     //ver o intervalo que deu de diferente e mudar no timetoday etc
+
     let record = await ClockIn.findByPk(id);
     if (record){
         record.clockOutTS = new_clockOut
         await record.save()
+        // se isso der negativo, passa o clock out para proximo dia
         return set_formated_inteval(record.clockOutTS - record.clockInTS)
     }
     return "Não Encontrado"
@@ -138,7 +141,8 @@ function format_clockIns(clockIns) {
         clockOutTS: record.clockOutTS,
         clockIn: format_timestamp(record.clockInTS),
         clockOut: format_timestamp(record.clockOutTS),
-        time: set_formated_inteval(record.clockOutTS - record.clockInTS)
+        time: set_formated_inteval(record.clockOutTS - record.clockInTS),
+        day: format_day(record.createdAt)
     }));
 }
 
@@ -165,6 +169,16 @@ function set_formated_inteval(interval) {
 }
 
 
+function format_day(dateString){
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    return `${day}-${month}`;
+}
+
+
 module.exports = {
     is_running,
     create_clock_in,
@@ -177,7 +191,6 @@ module.exports = {
     createTimeToday,
     getStudyToday,
     create_total_hours_if_needed,
-    get_clockIns_today,
     get_clockIns,
     edit_clockIn,
     edit_clockOut
