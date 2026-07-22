@@ -99,10 +99,6 @@ async function create_clock_in(timestamp) {
     });
 }
 
-// async function get_clockIns_today(today) {
-//     return await ClockIn.findOne({ where: {day: today}});
-// }
-
 async function get_clockIns() {
     clockIns = await ClockIn.findAll()
     formated_clockIns = format_clockIns(clockIns)

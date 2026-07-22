@@ -18,12 +18,12 @@ clockIn_list_btn.addEventListener('click', open_list)
 
 buttons_list.addEventListener("click", (event) => {
     if (event.target.matches(".button")) {
-        const day = event.target.textContent;
+        const day = event.target.textContent;        
         apply_filters(day)
     }
 });
 
-async function handle_clock_display(is_running){
+async function handle_clock_display(is_running) {
     
     if (is_running){
         const current_saved_time = await get_ms_today();
@@ -44,7 +44,7 @@ async function handle_clock_display(is_running){
 
 }
 
-async function handle_clock_press(){
+async function handle_clock_press() {
     let is_running = await get_is_running()
 
     if (!is_running) {
@@ -61,12 +61,12 @@ async function handle_clock_press(){
     }
 }
 
-async function start_clock(){
+async function start_clock() {
     handle_clock_display(true)
     enable_clock_running()
 }
 
-async function stop_clock(){
+async function stop_clock() {
     const current_timestamp = get_timestamp_now()
     const last_clock_in_timestamp = await get_last_clock_in();
     
@@ -92,7 +92,7 @@ async function open_list() {
         layout: "fitColumns",
         columns: [
             { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
-            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockOut},
+            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input",  cellEdited: edit_clockOut},
             { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
     });
@@ -117,12 +117,13 @@ async function get_clockIn_table_data() {
 }
 
 
-function display_days_buttons(table_data){
+function display_days_buttons(table_data) {
     const all_clockIn_days = Object.values(table_data).map(obj => obj.day);
     const days = [...new Set(all_clockIn_days)];
 
-    button.textContent = days[0]
-    days.shift()
+    days.reverse()
+
+    button.textContent = "All"
 
     for (day of days){
         const div = button.cloneNode();
@@ -132,8 +133,12 @@ function display_days_buttons(table_data){
 }
 
 function apply_filters(day) {
-    const filtros = [];
+    if(day == "All"){
+        clockIn_table.clearFilter();
+        return
+    }
 
+    const filtros = [];
     filtros.push({ field: "day", type: "like", value: day });
 
     clockIn_table.setFilter(filtros);
@@ -233,10 +238,6 @@ async function save_interval_to_database(interval_in_ms) {
 
 async function edit_clockIn(cell) {
     const new_hour = cell.getValue()
-    
-    if (!validate_hour(new_hour)){
-        return
-    }
 
     const current_clockInTS = cell.getRow().getData().clockInTS
     const old_hour = cell.getOldValue()
@@ -266,11 +267,6 @@ async function edit_clockIn(cell) {
 
 async function edit_clockOut(cell) {
     const new_hour = cell.getValue()
-    
-    if (!validate_hour(new_hour)){     
-        //cell.setValue(cell.getOldValue(), true)
-        return
-    }
 
     const current_clockOutTS = cell.getRow().getData().clockOutTS
     const old_hour = cell.getOldValue()
@@ -310,18 +306,9 @@ function calculate_new_clockOut(current_clockOutTS, current_hour, new_hour){
     return new_clockOutTS
 }
 
-function validate_hour(hour){
-    const hours = hour.split(':')
-
-    if (hours[0] >=60 || hours[0] < 0){
-        return false
-    }
-
-    if (hours[1] >=60 || hours[1] < 0){
-        return false
-    }
-
-    return true
+function validate_hour(cell, hour){
+    const regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+    return (regex.test(hour)); 
 }
 
 function toMS(hour){
