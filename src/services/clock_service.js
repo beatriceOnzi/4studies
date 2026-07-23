@@ -111,7 +111,6 @@ async function edit_clockIn(id, new_clockInTS) {
     if (record){
         record.clockInTS = new_clockInTS
         await record.save()
-        // se isso der negativo, passa o clock out para dia anterior
         return set_formated_inteval(record.clockOutTS - record.clockInTS)
     }
     return "Não Encontrado"

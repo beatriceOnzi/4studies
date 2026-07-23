@@ -97,8 +97,8 @@ async function open_list() {
         height:'100%',
         layout: "fitColumns",
         columns: [
-            { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", cellEdited: edit_clockIn},
-            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input",  cellEdited: edit_clockOut},
+            { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", validator: validate_hour, cellEdited: edit_clockIn},
+            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input", validator: validate_hour, cellEdited: edit_clockOut},
             { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
     });
@@ -304,12 +304,21 @@ async function edit_clockOut(cell) {
 }
 
 function calculate_new_clockIn(current_clockInTS, current_hour, new_hour){
+    // if(new_hour > clockOut hour){
+    // colocoar clock in day = day - 1
+    // }
+
+
     time_difference = toMS(new_hour) - toMS(current_hour)
     new_clockInTS = current_clockInTS + time_difference
     return new_clockInTS
 }
 
 function calculate_new_clockOut(current_clockOutTS, current_hour, new_hour){
+    // if(new_hour < clockIn hour){
+    // colocoar clockOut day = day + 1
+    // }
+    
     time_difference = toMS(new_hour) - toMS(current_hour)
     new_clockOutTS = current_clockOutTS + time_difference
     return new_clockOutTS
