@@ -98,6 +98,12 @@ async function open_list() {
     });
 
     table_box.classList.remove('hidden');
+
+    document.addEventListener("click", (event) => {
+        if (!table_box.contains(event.target)) {
+            table_box.classList.add('hidden');
+        }
+    });
 }
 
 async function get_clockIn_table_data() {
