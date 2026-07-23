@@ -23,6 +23,12 @@ buttons_list.addEventListener("click", (event) => {
     }
 });
 
+document.addEventListener("click", (event) => {
+    if (!table_box.contains(event.target)) {
+        table_box.classList.add('hidden');
+    }
+});
+
 async function handle_clock_display(is_running) {
     
     if (is_running){
@@ -99,11 +105,6 @@ async function open_list() {
 
     table_box.classList.remove('hidden');
 
-    document.addEventListener("click", (event) => {
-        if (!table_box.contains(event.target)) {
-            table_box.classList.add('hidden');
-        }
-    });
 }
 
 async function get_clockIn_table_data() {
@@ -122,19 +123,21 @@ async function get_clockIn_table_data() {
     return clockIn_data
 }
 
-
 function display_days_buttons(table_data) {
-    const all_clockIn_days = Object.values(table_data).map(obj => obj.day);
-    const days = [...new Set(all_clockIn_days)];
+    const days = [...new Set(table_data.map(record => record.day))].reverse();
 
-    days.reverse()
+    const existingDays = new Set(
+        [...buttons_list.children].map(button => button.textContent)
+    );
 
-    button.textContent = "All"
+    for (const day of days) {
+        if (!existingDays.has(day)) {
+            const div = button.cloneNode();
+            div.textContent = day;
+            buttons_list.appendChild(div);
 
-    for (day of days){
-        const div = button.cloneNode();
-        div.textContent = day
-        buttons_list.appendChild(div)
+            existingDays.add(day);
+        }
     }
 }
 
