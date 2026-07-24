@@ -32,8 +32,7 @@ gsap.to("#cloud2", {
         trigger:"body",
         start:"top top",
         end:"+=150",
-        scrub: 1,
-        markers: true
+        scrub: 1
     }
 });
 
@@ -62,13 +61,13 @@ gsap.to("#cloud4", {
 });
 
 gsap.to("#cloud5", {
-    y: -900,
+    y: -880,
     ease: "power1.out",
 
     scrollTrigger:{
         trigger:"body",
         start:"top top",
-        end:"+=500",
+        end:"+=550",
         scrub: 1
     }
 });
