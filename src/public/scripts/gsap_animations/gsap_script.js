@@ -14,36 +14,61 @@ gsap.to("#sky", {
 
 gsap.to("#cloud1", {
     y: -800,
-    ease: "power1.in",
+    ease: "power1.out",
 
     scrollTrigger:{
-        trigger:"#cloud1",
-        start:"-50% top",
+        trigger:"body",
+        start:"top top",
         end:"+=200",
         scrub: 1
     }
 });
 
 gsap.to("#cloud2", {
-    y: -430,
+    y: -700,
     ease: "power1.out",
 
     scrollTrigger:{
         trigger:"body",
         start:"top top",
         end:"+=150",
-        scrub: 1
+        scrub: 1,
+        markers: true
     }
 });
 
 gsap.to("#cloud3", {
-    y: -800,
+    y: -812,
     ease: "power1.out",
 
     scrollTrigger:{
         trigger:"body",
         start:"top top",
-        end:"+=300",
+        end:"+=270",
+        scrub: 1
+    }
+});
+
+gsap.to("#cloud4", {
+    y: -860,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"body",
+        start:"top top",
+        end:"+=450",
+        scrub: 1
+    }
+});
+
+gsap.to("#cloud5", {
+    y: -900,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"body",
+        start:"top top",
+        end:"+=500",
         scrub: 1
     }
 });
