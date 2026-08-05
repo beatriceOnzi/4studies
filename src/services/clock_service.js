@@ -137,7 +137,7 @@ function format_clockIns(clockIns) {
         clockIn: format_timestamp(record.clockInTS),
         clockOut: format_timestamp(record.clockOutTS),
         time: set_formated_inteval(record.clockOutTS - record.clockInTS),
-        day: format_day(record.createdAt)
+        day: record.day
     }));
 }
 
@@ -161,16 +161,6 @@ function set_formated_inteval(interval) {
     seconds = String(seconds).padStart(2, '0');
 
     return `${hours}:${minutes}:${seconds}`;
-}
-
-
-function format_day(dateString){
-    const date = new Date(dateString);
-
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    return `${day}-${month}`;
 }
 
 

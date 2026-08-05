@@ -18,7 +18,7 @@ clockIn_list_btn.addEventListener('click', open_list)
 
 buttons_list.addEventListener("click", (event) => {
     if (event.target.matches(".button")) {
-        const day = event.target.textContent;        
+        const day = event.target.textContent;   
         apply_filters(day)
     }
 });
@@ -117,14 +117,15 @@ async function get_clockIn_table_data() {
         clockIn: record.clockIn,
         clockOut: record.clockOut,
         time: record.time,
-        day: record.day
+        day: record.day,
+        formated_day: format_day(record.day)
     }));
 
     return clockIn_data
 }
 
 function display_days_buttons(table_data) {
-    const days = [...new Set(table_data.map(record => record.day))].reverse();
+    const days = [...new Set(table_data.map(record => record.formated_day))].reverse();
 
     const existingDays = new Set(
         [...buttons_list.children].map(button => button.textContent)
@@ -148,10 +149,20 @@ function apply_filters(day) {
     }
 
     const filtros = [];
-    filtros.push({ field: "day", type: "like", value: day });
+    filtros.push({ field: "formated_day", type: "like", value: day });
 
     clockIn_table.setFilter(filtros);
 }
+
+function format_day(dateString){
+    const date = new Date(dateString);
+
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+
+    return `${day}-${month}`;
+}
+
 
 function get_timestamp_now() {
     return Date.now();
@@ -249,10 +260,17 @@ async function edit_clockIn(cell) {
     const new_hour = cell.getValue()
 
     const current_clockInTS = cell.getRow().getData().clockInTS
+    const clockOut = cell.getRow().getData().clockOut
+
     const old_hour = cell.getOldValue()
 
     const id = cell.getRow().getData().id
-    const new_clockInTS = calculate_new_clockIn(current_clockInTS, old_hour, new_hour)
+    const new_clockInTS = calculate_new_clockIn(current_clockInTS, clockOut, old_hour, new_hour)
+
+    if (new_clockInTS == "Invalid"){
+        clockIn_table.updateData([{id: id, time: new_clockInTS}]);
+        return
+    }
 
     const response = await fetch("/edit_clockIn", {
 
@@ -278,10 +296,16 @@ async function edit_clockOut(cell) {
     const new_hour = cell.getValue()
 
     const current_clockOutTS = cell.getRow().getData().clockOutTS
+    const clockIn = cell.getRow().getData().clockIn
     const old_hour = cell.getOldValue()
 
     const id = cell.getRow().getData().id
-    const new_clockOutTS = calculate_new_clockOut(current_clockOutTS, old_hour, new_hour)
+    const new_clockOutTS = calculate_new_clockOut(current_clockOutTS, clockIn, old_hour, new_hour)
+
+    if (new_clockOutTS == "Invalid"){
+        clockIn_table.updateData([{id: id, time: new_clockOutTS}]);
+        return
+    }
 
     const response = await fetch("/edit_clockOut", {
 
@@ -303,21 +327,20 @@ async function edit_clockOut(cell) {
 
 }
 
-function calculate_new_clockIn(current_clockInTS, current_hour, new_hour){
-    // if(new_hour > clockOut hour){
-    // colocoar clock in day = day - 1
-    // }
-
+function calculate_new_clockIn(current_clockInTS, clockOut, current_hour, new_hour){
+    if(new_hour > clockOut){
+        return "Invalid"
+    }
 
     time_difference = toMS(new_hour) - toMS(current_hour)
     new_clockInTS = current_clockInTS + time_difference
     return new_clockInTS
 }
 
-function calculate_new_clockOut(current_clockOutTS, current_hour, new_hour){
-    // if(new_hour < clockIn hour){
-    // colocoar clockOut day = day + 1
-    // }
+function calculate_new_clockOut(current_clockOutTS, clockIn, current_hour, new_hour){
+    if(new_hour < clockIn){
+        return "Invalid"
+    }
     
     time_difference = toMS(new_hour) - toMS(current_hour)
     new_clockOutTS = current_clockOutTS + time_difference
