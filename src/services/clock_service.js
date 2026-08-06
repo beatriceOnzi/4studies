@@ -106,27 +106,28 @@ async function get_clockIns() {
 }
 
 async function edit_clockIn(id, new_clockInTS) {
-    //ver o intervalo que deu de diferente e mudar no timetoday etc
     let record = await ClockIn.findByPk(id);
-    if (record){
-        record.clockInTS = new_clockInTS
-        await record.save()
-        return set_formated_inteval(record.clockOutTS - record.clockInTS)
+    if (record) {
+        record.clockInTS = new_clockInTS;
+
+        // recalcula o "day" caso o clockIn tenha mudado de data
+        record.day = new Date(new_clockInTS).toISOString().split('T')[0];
+
+        await record.save();
+        return set_formated_inteval(record.clockOutTS - record.clockInTS);
     }
-    return "Não Encontrado"
+    return "Não Encontrado";
 }
 
-async function edit_clockOut(id, new_clockOut) {
-    //ver o intervalo que deu de diferente e mudar no timetoday etc
-
+async function edit_clockOut(id, new_clockOutTS) {
     let record = await ClockIn.findByPk(id);
-    if (record){
-        record.clockOutTS = new_clockOut
-        await record.save()
-        // se isso der negativo, passa o clock out para proximo dia
-        return set_formated_inteval(record.clockOutTS - record.clockInTS)
+    if (record) {
+        record.clockOutTS = new_clockOutTS;
+
+        await record.save();
+        return set_formated_inteval(record.clockOutTS - record.clockInTS);
     }
-    return "Não Encontrado"
+    return "Não Encontrado";
 }
 
 function format_clockIns(clockIns) {

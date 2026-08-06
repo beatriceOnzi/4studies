@@ -7,6 +7,7 @@ const buttons_list = document.getElementById('buttons_list');
 const button = document.querySelector('.button')
 
 let running_display = null;
+let clockIn_table = null;
 
 document.addEventListener("DOMContentLoaded", async function() {
     let is_running = await get_is_running()
@@ -94,11 +95,10 @@ async function open_list() {
     clockIn_table = new Tabulator("#clockIn_table", {
         height: "100%",
         data: table_data,
-        height:'100%',
         layout: "fitColumns",
         columns: [
-            { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor:"input", validator: validate_hour, cellEdited: edit_clockIn},
-            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor:"input", validator: validate_hour, cellEdited: edit_clockOut},
+            { title: "Clock In", field: "clockIn", hozAlign: "center", headerSort: false, editor: "input", validator: validate_datetime, cellEdited: edit_clockIn },
+            { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor: "input", validator: validate_datetime, cellEdited: edit_clockOut },
             { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
     });
@@ -114,8 +114,8 @@ async function get_clockIn_table_data() {
         id: record.id,
         clockInTS: record.clockInTS,
         clockOutTS: record.clockOutTS,
-        clockIn: record.clockIn,
-        clockOut: record.clockOut,
+        clockIn: format_datetime(record.clockInTS),
+        clockOut: format_datetime(record.clockOutTS),
         time: record.time,
         day: record.day,
         formated_day: format_day(record.day)
@@ -163,6 +163,43 @@ function format_day(dateString){
     return `${day}-${month}`;
 }
 
+// -- Data / hora completas (usadas na edição de clockIn / clockOut) --
+
+function format_datetime(ts) {
+    const date = new Date(ts);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+function parse_datetime(str) {
+    const regex = /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/;
+    const match = str.match(regex);
+    if (!match) return null;
+
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3]);
+    const hours = Number(match[4]);
+    const minutes = Number(match[5]);
+
+    const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
+
+    if (isNaN(date.getTime())) return null;
+    // garante que não houve overflow (ex: 31/02 virando março)
+    if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
+        return null;
+    }
+
+    return date.getTime();
+}
+
+function validate_datetime(cell, value) {
+    return parse_datetime(value) !== null;
+}
 
 function get_timestamp_now() {
     return Date.now();
@@ -255,21 +292,18 @@ async function save_interval_to_database(interval_in_ms) {
     });
 }
 
+// -- Edição de clockIn / clockOut --
 
 async function edit_clockIn(cell) {
-    const new_hour = cell.getValue()
+    const new_value = cell.getValue(); // "DD/MM/YYYY HH:mm"
+    const clockOutTS = cell.getRow().getData().clockOutTS;
+    const id = cell.getRow().getData().id;
 
-    const current_clockInTS = cell.getRow().getData().clockInTS
-    const clockOut = cell.getRow().getData().clockOut
+    const new_clockInTS = calculate_new_clockIn(new_value, clockOutTS);
 
-    const old_hour = cell.getOldValue()
-
-    const id = cell.getRow().getData().id
-    const new_clockInTS = calculate_new_clockIn(current_clockInTS, clockOut, old_hour, new_hour)
-
-    if (new_clockInTS == "Invalid"){
-        clockIn_table.updateData([{id: id, time: new_clockInTS}]);
-        return
+    if (new_clockInTS === "Invalid") {
+        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
+        return;
     }
 
     const response = await fetch("/edit_clockIn", {
@@ -288,23 +322,20 @@ async function edit_clockIn(cell) {
 
     const data = await response.json()
 
-    clockIn_table.updateData([{id: id, time: data}]);
+    clockIn_table.updateData([{ id: id, time: data, clockInTS: new_clockInTS }]);
 
 }
 
 async function edit_clockOut(cell) {
-    const new_hour = cell.getValue()
+    const new_value = cell.getValue();
+    const clockInTS = cell.getRow().getData().clockInTS;
+    const id = cell.getRow().getData().id;
 
-    const current_clockOutTS = cell.getRow().getData().clockOutTS
-    const clockIn = cell.getRow().getData().clockIn
-    const old_hour = cell.getOldValue()
+    const new_clockOutTS = calculate_new_clockOut(new_value, clockInTS);
 
-    const id = cell.getRow().getData().id
-    const new_clockOutTS = calculate_new_clockOut(current_clockOutTS, clockIn, old_hour, new_hour)
-
-    if (new_clockOutTS == "Invalid"){
-        clockIn_table.updateData([{id: id, time: new_clockOutTS}]);
-        return
+    if (new_clockOutTS === "Invalid") {
+        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
+        return;
     }
 
     const response = await fetch("/edit_clockOut", {
@@ -323,36 +354,24 @@ async function edit_clockOut(cell) {
 
     const data = await response.json()
 
-    clockIn_table.updateData([{id: id, time: data}]);
+    clockIn_table.updateData([{ id: id, time: data, clockOutTS: new_clockOutTS }]);
 
 }
 
-function calculate_new_clockIn(current_clockInTS, clockOut, current_hour, new_hour){
-    if(new_hour > clockOut){
-        return "Invalid"
+function calculate_new_clockIn(new_value, clockOutTS) {
+    const new_ts = parse_datetime(new_value);
+
+    if (new_ts === null || new_ts >= clockOutTS) {
+        return "Invalid";
     }
-
-    time_difference = toMS(new_hour) - toMS(current_hour)
-    new_clockInTS = current_clockInTS + time_difference
-    return new_clockInTS
+    return new_ts;
 }
 
-function calculate_new_clockOut(current_clockOutTS, clockIn, current_hour, new_hour){
-    if(new_hour < clockIn){
-        return "Invalid"
+function calculate_new_clockOut(new_value, clockInTS) {
+    const new_ts = parse_datetime(new_value);
+
+    if (new_ts === null || new_ts <= clockInTS) {
+        return "Invalid";
     }
-    
-    time_difference = toMS(new_hour) - toMS(current_hour)
-    new_clockOutTS = current_clockOutTS + time_difference
-    return new_clockOutTS
-}
-
-function validate_hour(cell, hour){
-    const regex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
-    return (regex.test(hour)); 
-}
-
-function toMS(hour){
-    const [hours, minutes] = hour.split(":").map(Number);
-    return (hours * 60 * 60 + minutes * 60) * 1000;
+    return new_ts;
 }
