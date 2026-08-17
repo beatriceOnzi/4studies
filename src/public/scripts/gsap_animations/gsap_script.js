@@ -95,3 +95,35 @@ gsap.to("#cachoeira", {
         scrub: 1
     }
 });
+
+// Elements
+
+let tl_clock = gsap.timeline();
+
+tl_clock.from("#clock", {
+    duration: 0.8,
+    opacity: 0.2,
+    scale: 0.2,
+    ease: "power3.out"
+}).from("#clock_button", {
+    opacity: 0,
+    scale: 0.2,
+    duration: 1,
+    ease: "power3.out",
+    clearProps: "transform"
+});
+
+let clockIn_list_tl = gsap.timeline({ paused: true });
+
+clockIn_list_tl.from("#table_box", {
+    opacity: 0,
+    y: 70,
+    ease: "power3.out",
+    duration: 0.7
+});
+
+const open_list_btn = document.getElementById("clockIn_list_btn");
+
+open_list_btn.addEventListener("click", () => {
+  clockIn_list_tl.restart();
+});
