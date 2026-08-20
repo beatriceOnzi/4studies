@@ -1,4 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(Observer);
 
 gsap.to("#sky", {
     y: -300,
@@ -127,3 +128,31 @@ const open_list_btn = document.getElementById("clockIn_list_btn");
 open_list_btn.addEventListener("click", () => {
   clockIn_list_tl.restart();
 });
+
+
+gsap.from("#hours_completed", {
+    x: -400,
+    opacity:0.3,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"#goals",
+        start:"center top",
+        end: "+=300",
+        scrub: 1
+    }
+})
+
+gsap.from("#goal_hours", {
+    x: 400,
+    opacity:0.4,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"#goals",
+        start:"70% top",
+        end: "+=300",
+        scrub: 1
+    }
+})
+

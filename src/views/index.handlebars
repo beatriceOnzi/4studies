@@ -1,9 +1,10 @@
 <section id="clock">
-    <div class="flex flex-col items-center font-soul gap-10 h-full pt-24 mt-4 mb-20">
-        <div id="clock" class="card flex-col pb-4 w-[30rem] items-center justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
-            <div id="clock_time">{{data.time}}</div>
-            <div id="clockIn_list_btn" class="text-xl cursor-pointer text-branco/80">
-                Open List
+    <div class="flex flex-col items-center font-soul gap-10 h-full pt-24 mt-2 mb-20">
+        <div id="clock" class="card flex-col pb-4 w-[30rem] items-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
+            <div class="text-lg font-marck tracking-[0.2rem] text-branco/80 mt-2">Current Session</div>
+            <div id="clock_time" class="-mt-8">{{data.time}}</div>
+            <div id="clockIn_list_btn" class="text-xl tracking-widest cursor-pointer text-branco/90 hover:text-roxo-claro">
+                View Clock In History
             </div>
         </div>
 
@@ -99,10 +100,12 @@
 
 <section id="time">
     <div class="flex flex-col items-center font-soul gap-10 h-full pt-10 mt-56 mb-24">
-        <div id="clock_time" class="card pb-7 w-[30rem] justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
+        <div id="hours_completed" class="card flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
+            <div class="text-lg font-marck tracking-[0.2rem] text-branco/80 mt-3 -mb-6">Hours Completed</div>
             {{data.hours_completed}}
         </div>
-        <div id="clock_time" class="card pb-7 w-[30rem] justify-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
+        <div id="goal_hours" class="card flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-branco overflow-hidden">
+            <div class="text-lg font-marck tracking-[0.2rem] text-branco/80 mt-3 -mb-6">Goal Hours</div>
             {{data.goal_hours}}
         </div>
     </div>

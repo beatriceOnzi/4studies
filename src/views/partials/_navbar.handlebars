@@ -1,8 +1,9 @@
 <div class="flex justify-center font-italianno gap-10 pt-4">
 
-    <div id="start" class="flex overflow-x-auto rounded-xl whitespace-nowrap p-1 mt-4 h-max w-max bg-azul bg-opacity-75 border-8 border-azul/30 outline outline-[0.8em] outline-azul/40">
+    <div id="start" class="flex card xl overflow-x-auto rounded-xl whitespace-nowrap p-1 mt-2 h-max w-max">
+        {{!-- text-4 bg-[radial-gradient(ellipse_70%_70%_at_center,_var(--tw-gradient-stops))] from-roxo-escuro/75 from-30% to-transparent to-75% p-72 py-6 --}}
         <nav>
-            <a href="#clock" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco {{#if clock}} border-4 border-b-0 {{else}} border-b-4 {{/if}} border-roxo-escuro whitespace-nowrap hover:text-roxo-claro">
+            <a href="#clock" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco  whitespace-nowrap hover:text-roxo-claro">
                 <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 class="h-6 w-6" 
@@ -24,7 +25,7 @@
                 </span>
             </a>
 
-            <a href="#notes" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco {{#if notes}} border-4 border-b-0 {{else}} border-b-4 {{/if}} border-roxo-escuro whitespace-nowrap hover:text-roxo-claro">
+            <a href="#notes" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco whitespace-nowrap hover:text-roxo-claro">
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,17 +48,19 @@
                 </span>
             </a>
 
-            <a href="#goals" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco {{#if timeNav}} border-4 border-b-0 {{else}} border-b-4 {{/if}} border-roxo-escuro whitespace-nowrap hover:text-roxo-claro">
+            <a href="#goals" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco  whitespace-nowrap hover:text-roxo-claro">
                 
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="#ffffff"
                 stroke-width="1.3"
                 stroke-linecap="round"
                 stroke-linejoin="round"
+                
                 >
                 <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
                 <path d="M12 7a5 5 0 1 0 5 5" />
@@ -72,7 +75,7 @@
                 </span>
             </a>
 
-            <a href="#time" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco {{#if timeNav}} border-4 border-b-0 {{else}} border-b-4 {{/if}} border-roxo-escuro whitespace-nowrap hover:text-roxo-claro">
+            <a href="#time" class="inline-flex font-extrabold rounded-t-lg items-center h-full px-2 py-1 text-center text-branco whitespace-nowrap hover:text-roxo-claro">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" class="bi bi-hourglass" viewBox="0 0 16 16">
                     <path d="M2 1.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1-.5-.5m2.5.5v1a3.5 3.5 0 0 0 1.989 3.158c.533.256 1.011.791 1.011 1.491v.702c0 .7-.478 1.235-1.011 1.491A3.5 3.5 0 0 0 4.5 13v1h7v-1a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351v-.702c0-.7.478-1.235 1.011-1.491A3.5 3.5 0 0 0 11.5 3V2z"/>
                 </svg>
