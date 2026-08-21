@@ -1,6 +1,7 @@
 const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
 const clockIn_list_btn = document.getElementById('clockIn_list_btn');
+const hours_completed_text = document.getElementById('hours_completed');
 
 const table_box = document.getElementById('table_box');
 const buttons_list = document.getElementById('buttons_list');
@@ -154,6 +155,11 @@ function apply_filters(day) {
     clockIn_table.setFilter(filtros);
 }
 
+function update_data(data){
+    clock_text.textContent = data.new_timeToday;
+    hours_completed_text.textContent = data.new_totalHours;
+}
+
 function format_day(dateString){
     const date = new Date(dateString);
 
@@ -162,8 +168,6 @@ function format_day(dateString){
 
     return `${day}-${month}`;
 }
-
-// -- Data / hora completas (usadas na edição de clockIn / clockOut) --
 
 function format_datetime(ts) {
     const date = new Date(ts);
@@ -189,7 +193,6 @@ function parse_datetime(str) {
     const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
 
     if (isNaN(date.getTime())) return null;
-    // garante que não houve overflow (ex: 31/02 virando março)
     if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
         return null;
     }
@@ -292,10 +295,8 @@ async function save_interval_to_database(interval_in_ms) {
     });
 }
 
-// -- Edição de clockIn / clockOut --
-
 async function edit_clockIn(cell) {
-    const new_value = cell.getValue(); // "DD/MM/YYYY HH:mm"
+    const new_value = cell.getValue();
     const clockOutTS = cell.getRow().getData().clockOutTS;
     const id = cell.getRow().getData().id;
 
@@ -322,8 +323,8 @@ async function edit_clockIn(cell) {
 
     const data = await response.json()
 
-    clockIn_table.updateData([{ id: id, time: data, clockInTS: new_clockInTS }]);
-
+    clockIn_table.updateData([{ id: id, time: data.new_time, clockInTS: new_clockInTS }]);
+    update_data(data)
 }
 
 async function edit_clockOut(cell) {
@@ -354,7 +355,7 @@ async function edit_clockOut(cell) {
 
     const data = await response.json()
 
-    clockIn_table.updateData([{ id: id, time: data, clockOutTS: new_clockOutTS }]);
+    clockIn_table.updateData([{ id: id, time: data.new_time, clockOutTS: new_clockOutTS }]);
 
 }
 

@@ -22,6 +22,10 @@ async function get_time_today() {
     });
 }
 
+async function get_total_hours() {
+    return TotalHours.findOne()
+}
+
 async function get_id_by_date(date) {
     const today = await TimeToday.findOne({ where: {today: date}});
     if (!today) {
@@ -51,7 +55,7 @@ async function createTotalHours() {
 }
 
 async function create_total_hours_if_needed() {
-    let totalHours = await TotalHours.findOne();
+    let totalHours = await get_total_hours();
     
     if (totalHours == null) {
         totalHours = await createTotalHours();
@@ -70,7 +74,6 @@ async function is_running() {
 async function save_clock_out(timestamp) {
     const last_clock_record = await ClockIn.findOne({ order: [ [ 'createdAt', 'DESC' ] ]});
     if (last_clock_record.clockOutTS) {
-        // criar um novo
         return "o ultimo registro já possiu um clockOut"
 
     }
@@ -78,16 +81,50 @@ async function save_clock_out(timestamp) {
     await last_clock_record.save()
 }
 
+async function add_ms_to_db(interval) {
+    await add_ms_to_TimeToday(interval)
+    await add_ms_to_TotalHours(interval)
+}
+
+async function remove_ms_from_db(interval) {
+    await remove_ms_from_TimeToday(interval)
+    await remove_ms_from_TotalHours(interval)
+}
+
 async function add_ms_to_TimeToday(interval) {
-    const time_today = await get_time_today();
+    let time_today = await get_time_today();
     time_today.timeInMsToday += interval
     await time_today.save();
 }
 
+async function remove_ms_from_TimeToday(interval) {
+    let time_today = await get_time_today();
+    time_today.timeInMsToday -= interval
+    await time_today.save();
+}
+
+
 async function add_ms_to_TotalHours(interval) {
-    let totalHours = await TotalHours.findOne();
+    let totalHours = await get_total_hours()
     totalHours.totalHoursCompletedInMs += interval;
     await totalHours.save();
+}
+
+async function remove_ms_from_TotalHours(interval) {
+    let totalHours = await get_total_hours()
+    totalHours.totalHoursCompletedInMs -= interval;
+    await totalHours.save();
+}
+
+async function get_new_data(new_time) {
+    let time_today = await get_time_today();
+    let total_hours = await get_total_hours();
+    let data ={
+        new_time: set_formated_inteval(new_time),
+        new_timeToday: set_formated_inteval(time_today.timeInMsToday), 
+        new_totalHours: set_formated_inteval(total_hours.totalHoursCompletedInMs)
+    }
+    return data
 }
 
 async function create_clock_in(timestamp) {
@@ -107,24 +144,29 @@ async function get_clockIns() {
 
 async function edit_clockIn(id, new_clockInTS) {
     let record = await ClockIn.findByPk(id);
+    await remove_ms_from_db(record.clockOutTS - record.clockInTS);
     if (record) {
         record.clockInTS = new_clockInTS;
 
-        // recalcula o "day" caso o clockIn tenha mudado de data
         record.day = new Date(new_clockInTS).toISOString().split('T')[0];
 
         await record.save();
-        return set_formated_inteval(record.clockOutTS - record.clockInTS);
+        await add_ms_to_db(record.clockOutTS - record.clockInTS);
+
+        let data = await get_new_data(record.clockOutTS - record.clockInTS)
+        return data
     }
     return "Não Encontrado";
 }
 
 async function edit_clockOut(id, new_clockOutTS) {
     let record = await ClockIn.findByPk(id);
+    await remove_ms_from_db(record.clockOutTS - record.clockInTS);
     if (record) {
         record.clockOutTS = new_clockOutTS;
 
         await record.save();
+        await add_ms_to_db(record.clockOutTS - record.clockInTS);
         return set_formated_inteval(record.clockOutTS - record.clockInTS);
     }
     return "Não Encontrado";
