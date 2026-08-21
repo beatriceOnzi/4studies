@@ -1,6 +1,7 @@
 const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
 const clockIn_list_btn = document.getElementById('clockIn_list_btn');
+const hours_completed_text = document.getElementById('hours_completed');
 
 const table_box = document.getElementById('table_box');
 const buttons_list = document.getElementById('buttons_list');
@@ -152,6 +153,11 @@ function apply_filters(day) {
     filtros.push({ field: "formated_day", type: "like", value: day });
 
     clockIn_table.setFilter(filtros);
+}
+
+function update_data(data){
+    clock_text.textContent = data.new_timeToday;
+    hours_completed_text.textContent = data.new_totalHours;
 }
 
 function format_day(dateString){
@@ -318,8 +324,7 @@ async function edit_clockIn(cell) {
     const data = await response.json()
 
     clockIn_table.updateData([{ id: id, time: data.new_time, clockInTS: new_clockInTS }]);
-    console.log(data)
-    //update_data(data)
+    update_data(data)
 }
 
 async function edit_clockOut(cell) {
