@@ -167,7 +167,9 @@ async function edit_clockOut(id, new_clockOutTS) {
 
         await record.save();
         await add_ms_to_db(record.clockOutTS - record.clockInTS);
-        return set_formated_inteval(record.clockOutTS - record.clockInTS);
+        
+        let data = await get_new_data(record.clockOutTS - record.clockInTS)
+        return data
     }
     return "Não Encontrado";
 }

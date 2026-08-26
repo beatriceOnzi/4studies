@@ -117,7 +117,7 @@ async function get_clockIn_table_data() {
         clockOutTS: record.clockOutTS,
         clockIn: format_datetime(record.clockInTS),
         clockOut: format_datetime(record.clockOutTS),
-        time: record.time,
+        time: get_time(record.time, record.clockOutTS),
         day: record.day,
         formated_day: format_day(record.day)
     }));
@@ -170,6 +170,9 @@ function format_day(dateString){
 }
 
 function format_datetime(ts) {
+    if (!ts){
+        return ""
+    }
     const date = new Date(ts);
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -177,6 +180,13 @@ function format_datetime(ts) {
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes()).padStart(2, "0");
     return `${day}/${month}/${year} ${hours}:${minutes}`;
+}
+
+function get_time(time, ts){
+    if (!ts){
+        return ""
+    }
+    return time
 }
 
 function parse_datetime(str) {
@@ -324,7 +334,7 @@ async function edit_clockIn(cell) {
     const data = await response.json()
 
     clockIn_table.updateData([{ id: id, time: data.new_time, clockInTS: new_clockInTS }]);
-    update_data(data)
+    update_data(data);
 }
 
 async function edit_clockOut(cell) {
@@ -356,6 +366,7 @@ async function edit_clockOut(cell) {
     const data = await response.json()
 
     clockIn_table.updateData([{ id: id, time: data.new_time, clockOutTS: new_clockOutTS }]);
+    update_data(data);
 
 }
 
