@@ -1,7 +1,10 @@
 const Notes = require("../models/Notes");
 
 async function get_notes() {
-    const notes = await Notes.findOne()
+    let  notes = await Notes.findOne()
+    if (notes == null){
+        notes = await create_notes()
+    }
     return notes
 }
 
