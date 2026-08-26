@@ -1,3 +1,14 @@
+import {
+    get_clockIn_table_data,
+    calculate_new_clockIn,
+    calculate_new_clockOut,
+    validate_datetime,
+    get_timestamp_now,
+    msToHours
+} from './clock_utils.js';
+
+
+
 const clock_btn = document.getElementById('clock_button');
 const clock_text = document.getElementById('clock_time');
 const clockIn_list_btn = document.getElementById('clockIn_list_btn');
@@ -90,7 +101,8 @@ async function stop_clock() {
 }
 
 async function open_list() {
-    const table_data = await get_clockIn_table_data();
+    let clockIn_table_data = await get_clockIns();
+    const table_data = await get_clockIn_table_data(clockIn_table_data);
     display_days_buttons(table_data)
 
     clockIn_table = new Tabulator("#clockIn_table", {
@@ -106,23 +118,6 @@ async function open_list() {
 
     table_box.classList.remove('hidden');
 
-}
-
-async function get_clockIn_table_data() {
-    let clockIn_table_data = await get_clockIns();
-
-    const clockIn_data = clockIn_table_data.map(record => ({
-        id: record.id,
-        clockInTS: record.clockInTS,
-        clockOutTS: record.clockOutTS,
-        clockIn: format_datetime(record.clockInTS),
-        clockOut: format_datetime(record.clockOutTS),
-        time: get_time(record.time, record.clockOutTS),
-        day: record.day,
-        formated_day: format_day(record.day)
-    }));
-
-    return clockIn_data
 }
 
 function display_days_buttons(table_data) {
@@ -158,77 +153,6 @@ function apply_filters(day) {
 function update_data(data){
     clock_text.textContent = data.new_timeToday;
     hours_completed_text.textContent = data.new_totalHours;
-}
-
-function format_day(dateString){
-    const date = new Date(dateString);
-
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-
-    return `${day}-${month}`;
-}
-
-function format_datetime(ts) {
-    if (!ts){
-        return ""
-    }
-    const date = new Date(ts);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    return `${day}/${month}/${year} ${hours}:${minutes}`;
-}
-
-function get_time(time, ts){
-    if (!ts){
-        return ""
-    }
-    return time
-}
-
-function parse_datetime(str) {
-    const regex = /^(\d{2})\/(\d{2})\/(\d{4}) (\d{2}):(\d{2})$/;
-    const match = str.match(regex);
-    if (!match) return null;
-
-    const day = Number(match[1]);
-    const month = Number(match[2]);
-    const year = Number(match[3]);
-    const hours = Number(match[4]);
-    const minutes = Number(match[5]);
-
-    const date = new Date(year, month - 1, day, hours, minutes, 0, 0);
-
-    if (isNaN(date.getTime())) return null;
-    if (date.getDate() !== day || date.getMonth() !== month - 1 || date.getFullYear() !== year) {
-        return null;
-    }
-
-    return date.getTime();
-}
-
-function validate_datetime(cell, value) {
-    return parse_datetime(value) !== null;
-}
-
-function get_timestamp_now() {
-    return Date.now();
-}
-
-function msToHours(ms) {
-
-    let seconds = Math.floor((ms / 1000) % 60);
-    let minutes = Math.floor((ms / (1000 * 60)) % 60);
-    let hours = Math.floor((ms / (1000 * 60 * 60)));
-
-    hours = String(hours).padStart(2, '0');
-    minutes = String(minutes).padStart(2, '0');
-    seconds = String(seconds).padStart(2, '0');
-
-    return `${hours}:${minutes}:${seconds}`;
 }
 
 // -- Fetch --
@@ -368,22 +292,4 @@ async function edit_clockOut(cell) {
     clockIn_table.updateData([{ id: id, time: data.new_time, clockOutTS: new_clockOutTS }]);
     update_data(data);
 
-}
-
-function calculate_new_clockIn(new_value, clockOutTS) {
-    const new_ts = parse_datetime(new_value);
-
-    if (new_ts === null || new_ts >= clockOutTS) {
-        return "Invalid";
-    }
-    return new_ts;
-}
-
-function calculate_new_clockOut(new_value, clockInTS) {
-    const new_ts = parse_datetime(new_value);
-
-    if (new_ts === null || new_ts <= clockInTS) {
-        return "Invalid";
-    }
-    return new_ts;
 }
