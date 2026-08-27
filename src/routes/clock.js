@@ -22,7 +22,8 @@ const {
     create_total_hours_if_needed,
     get_clockIns,
     edit_clockIn,
-    edit_clockOut
+    edit_clockOut,
+    getToday
 } = require('../services/clock_service');
 
 
@@ -74,16 +75,11 @@ router.post("/save_clock_out", async (req, res) => {
 
 router.post("/add_ms_to_database", async (req, res) => {
     const interval = req.body.interval_in_ms;
-    await add_ms_to_TimeToday(interval);
+    const today = getToday()
+    await add_ms_to_TimeToday(today, interval);
     await add_ms_to_TotalHours(interval);
     res.json({ ok: true });
 });
-
-// router.get("/get_clockIns_today", async (req, res) => {
-//     const today = req.body.today;
-//     const clockIns_today = await get_clockIns_today(today)
-//     res.json(clockIns_today)
-// });
 
 router.get("/get_clockIns", async (req, res) => {
     const clockIns = await get_clockIns()

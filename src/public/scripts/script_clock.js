@@ -198,7 +198,7 @@ async function save_clock_out(timestamp) {
 }
 
 async function enable_clock_running() {
-    timestamp = get_timestamp_now()
+    const timestamp = get_timestamp_now()
     const response = await fetch("/create_clock_in", {
 
         method: 'POST',
