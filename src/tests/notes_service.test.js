@@ -1,5 +1,4 @@
 // tests/notes_service.test.js
-// Testes do notes_service — notas, metas diárias e semanais
 
 const Notes       = require('../models/Notes');
 const WeeklyGoals = require('../models/WeeklyGoals');
@@ -8,11 +7,15 @@ const DailyGoals  = require('../models/DailyGoals');
 const {
     get_notes,
     create_notes,
+} = require('../services/notes_service');
+
+const {
     delete_weekly_goal,
     delete_daily_goal,
     create_daily_goal,
     create_weekly_goal,
-} = require('../services/notes_service');
+} = require('../services/goals_service');
+
 
 jest.mock('../models/Notes');
 jest.mock('../models/WeeklyGoals');

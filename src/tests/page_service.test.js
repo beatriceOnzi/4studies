@@ -1,14 +1,16 @@
 // tests/page_service.test.js
 
-jest.mock('../services/clock_service');
-jest.mock('../services/notes_service');
-jest.mock('../services/time_service');
-
 const clockService = require('../services/clock_service');
 const notesService = require('../services/notes_service');
+const goalsService = require('../services/goals_service');
 const timeService  = require('../services/time_service');
 
 const { get_data } = require('../services/page_service');
+
+jest.mock('../services/clock_service');
+jest.mock('../services/notes_service');
+jest.mock('../services/goals_service');
+jest.mock('../services/time_service');
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -18,8 +20,8 @@ function setupDefaultMocks() {
     clockService.is_running.mockResolvedValue(false);
     clockService.getStudyToday.mockResolvedValue({ timeInMsToday: 3661000 });
 
-    notesService.get_daily_goals.mockResolvedValue([{ id: 1, daily_goals: 'estudar' }]);
-    notesService.get_weekly_goals.mockResolvedValue([{ id: 1, weekly_goals: 'terminar módulo' }]);
+    goalsService.get_daily_goals.mockResolvedValue([{ id: 1, daily_goals: 'estudar' }]);
+    goalsService.get_weekly_goals.mockResolvedValue([{ id: 1, weekly_goals: 'terminar módulo' }]);
     notesService.get_notes.mockResolvedValue({ id: 1, note: 'minhas notas' });
 
     timeService.get_hours_completed.mockResolvedValue('05:00:00');
@@ -78,8 +80,8 @@ describe('get_data', () => {
         setupDefaultMocks();
         const dailyGoals = [{ id: 1, daily_goals: 'a' }, { id: 2, daily_goals: 'b' }];
         const weeklyGoals = [{ id: 1, weekly_goals: 'c' }];
-        notesService.get_daily_goals.mockResolvedValue(dailyGoals);
-        notesService.get_weekly_goals.mockResolvedValue(weeklyGoals);
+        goalsService.get_daily_goals.mockResolvedValue(dailyGoals);
+        goalsService.get_weekly_goals.mockResolvedValue(weeklyGoals);
 
         const data = await get_data();
 

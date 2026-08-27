@@ -9,7 +9,8 @@ const {
 } = require("./goals_service")
 
 const { 
-    get_notes,    
+    get_notes,
+    create_notes,
 } = require("./notes_service")
 
 const { 
@@ -17,6 +18,7 @@ const {
     get_hours_completed,
     msToHours
 } = require("../services/time_service")
+const { create } = require("express-handlebars")
 
 
 async function get_data() {
@@ -32,6 +34,9 @@ async function get_data() {
     const study_today = await getStudyToday();
     data.time = msToHours(study_today.timeInMsToday);
     notes = await get_notes();
+    if (!notes){
+        notes = create_notes();
+    }
     data.notes = notes.note ?? "";
     return data 
 }

@@ -197,7 +197,7 @@ describe('POST /add_ms_to_database', () => {
         const layer = router.stack.find(l => l.route && l.route.path === '/add_ms_to_database');
         await layer.route.stack[0].handle(req, res, () => {});
         expect(res.body).toEqual({ ok: true });
-        expect(clockService.add_ms_to_TimeToday).toHaveBeenCalledWith(500);
+        expect(clockService.add_ms_to_TimeToday).toHaveBeenCalledWith(undefined, 500);
         expect(clockService.add_ms_to_TotalHours).toHaveBeenCalledWith(500);
     });
 });

@@ -139,7 +139,7 @@ describe('add_ms_to_TimeToday', () => {
 
         TimeToday.findOne.mockResolvedValue(fakeRecord);
 
-        await add_ms_to_TimeToday(50);
+        await add_ms_to_TimeToday(undefined, 50);
 
         expect(fakeRecord.timeInMsToday).toBe(150);
         expect(saveMock).toHaveBeenCalledTimes(1);
