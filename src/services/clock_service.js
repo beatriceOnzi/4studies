@@ -1,7 +1,8 @@
 const TimeToday = require("../models/TimeToday");
 const TimeWeek = require("../models/TimeWeek");
 const TotalHours = require("../models/TotalHours");
-const ClockIn = require("../models/ClockIn")
+const ClockIn = require("../models/ClockIn");
+const { where } = require("sequelize");
 
 async function getStudyToday() {
     const today = getToday();
@@ -20,6 +21,10 @@ async function get_time_today() {
     return await TimeToday.findOne({
         where: { today }
     });
+}
+
+async function get_time_today_by_day(day) {
+    return await TimeToday.findOne({where: { today: day}});
 }
 
 async function get_total_hours() {
@@ -81,24 +86,24 @@ async function save_clock_out(timestamp) {
     await last_clock_record.save()
 }
 
-async function add_ms_to_db(interval) {
-    await add_ms_to_TimeToday(interval)
+async function add_ms_to_db(day, interval) {
+    await add_ms_to_TimeToday(day, interval)
     await add_ms_to_TotalHours(interval)
 }
 
-async function remove_ms_from_db(interval) {
-    await remove_ms_from_TimeToday(interval)
+async function remove_ms_from_db(day, interval) {
+    await remove_ms_from_TimeToday(day, interval)
     await remove_ms_from_TotalHours(interval)
 }
 
-async function add_ms_to_TimeToday(interval) {
-    let time_today = await get_time_today();
+async function add_ms_to_TimeToday(day, interval) {
+    let time_today = await get_time_today_by_day(day);
     time_today.timeInMsToday += interval
     await time_today.save();
 }
 
-async function remove_ms_from_TimeToday(interval) {
-    let time_today = await get_time_today();
+async function remove_ms_from_TimeToday(day, interval) {
+    let time_today = await get_time_today_by_day(day);
     time_today.timeInMsToday -= interval
     await time_today.save();
 }
@@ -137,21 +142,25 @@ async function create_clock_in(timestamp) {
 }
 
 async function get_clockIns() {
-    clockIns = await ClockIn.findAll()
+    clockIns = await ClockIn.findAll({
+        order: [
+            ['clockInTS', 'DESC']
+        ]
+    })
     formated_clockIns = format_clockIns(clockIns)
     return formated_clockIns
 }
 
 async function edit_clockIn(id, new_clockInTS) {
     let record = await ClockIn.findByPk(id);
-    await remove_ms_from_db(record.clockOutTS - record.clockInTS);
+    await remove_ms_from_db(record.day, record.clockOutTS - record.clockInTS);
     if (record) {
         record.clockInTS = new_clockInTS;
 
         record.day = new Date(new_clockInTS).toISOString().split('T')[0];
 
         await record.save();
-        await add_ms_to_db(record.clockOutTS - record.clockInTS);
+        await add_ms_to_db(record.day, record.clockOutTS - record.clockInTS);
 
         let data = await get_new_data(record.clockOutTS - record.clockInTS)
         return data
@@ -161,12 +170,12 @@ async function edit_clockIn(id, new_clockInTS) {
 
 async function edit_clockOut(id, new_clockOutTS) {
     let record = await ClockIn.findByPk(id);
-    await remove_ms_from_db(record.clockOutTS - record.clockInTS);
+    await remove_ms_from_db(record.day, record.clockOutTS - record.clockInTS);
     if (record) {
         record.clockOutTS = new_clockOutTS;
 
         await record.save();
-        await add_ms_to_db(record.clockOutTS - record.clockInTS);
+        await add_ms_to_db(record.day, record.clockOutTS - record.clockInTS);
         
         let data = await get_new_data(record.clockOutTS - record.clockInTS)
         return data

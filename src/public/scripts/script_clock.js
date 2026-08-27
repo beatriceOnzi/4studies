@@ -121,7 +121,7 @@ async function open_list() {
 }
 
 function display_days_buttons(table_data) {
-    const days = [...new Set(table_data.map(record => record.formated_day))].reverse();
+    const days = [...new Set(table_data.map(record => record.formated_day))];
 
     const existingDays = new Set(
         [...buttons_list.children].map(button => button.textContent)
