@@ -234,14 +234,18 @@ module.exports = {
     create_clock_in,
     save_clock_out,
     add_ms_to_TimeToday,
+    remove_ms_from_TimeToday,
     add_ms_to_TotalHours,
     get_time_today,
+    get_time_today_by_day,
     getToday,
     checkIfIsFirstClockIn,
     createTimeToday,
+    createTimeToday_by_day,
     getStudyToday,
     create_total_hours_if_needed,
     get_clockIns,
     edit_clockIn,
-    edit_clockOut
+    edit_clockOut,
+    get_new_data
 };

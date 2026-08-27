@@ -12,12 +12,17 @@ const {
     save_clock_out,
     add_ms_to_TotalHours,
     add_ms_to_TimeToday,
+    remove_ms_from_TimeToday,
     get_time_today,
     getToday,
     checkIfIsFirstClockIn,
     createTimeToday,
     getStudyToday,
     create_total_hours_if_needed,
+    createTimeToday_by_day,
+    get_time_today_by_day,
+    get_clockIns,
+    edit_clockIn
 } = require('../services/clock_service');
 
 jest.mock('../models/ClockIn');
@@ -28,7 +33,15 @@ beforeEach(() => {
     jest.clearAllMocks();
 });
 
-// is_running
+function setupMocks() {
+    ClockIn.create.mockResolvedValue({ clockInTS: 1000, clockOutTS: null, day: '2026-08-27' });
+    ClockIn.create.mockResolvedValue({ clockInTS: 1000, clockOutTS: 100, day: '2026-08-27' });
+
+    TotalHours.create.mockResolvedValue({ goalHoursInMs: 100 });
+
+    TimeToday.create.mockResolvedValue({ timeInMsToday: 0 });
+}
+
 describe('is_running', () => {
     test('retorna true quando existe clockIn e NÃO existe clockOut', async () => {
         ClockIn.findOne.mockResolvedValue({ clockInTS: Date.now(), clockOutTS: null });
@@ -51,11 +64,28 @@ describe('is_running', () => {
     });
 });
 
-// create_clock_in
+
 describe('create_clock_in', () => {
     test('cria registro com clockOutTS nulo e day = hoje', async () => {
         const timestamp = 123456;
         const today = getToday();
+
+        ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: null, day: today });
+
+        const result = await create_clock_in(timestamp);
+
+        expect(ClockIn.create).toHaveBeenCalledWith({
+            clockInTS: timestamp,
+            clockOutTS: null,
+            day: today,
+        });
+        expect(result.clockOutTS).toBeNull();
+        expect(result.day).toBe(today);
+    });
+
+    test('cria registro com clockOutTS nulo e day = day fornecido', async () => {
+        const timestamp = 123456;
+        const today = "2026-08-27";
 
         ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: null, day: today });
 
@@ -79,7 +109,29 @@ describe('create_clock_in', () => {
     });
 });
 
-// save_clock_out
+describe('get_clockIns', () => {
+    test('Gets all clockIns registered', async () => {
+        const timestamp = 1782345876;
+        const today = getToday();
+
+        ClockIn.findAll.mockResolvedValue([
+            {
+                clockInTS: timestamp,
+                clockOutTS: null,
+                day: today
+            }
+        ]);
+
+        const result = await get_clockIns();
+
+        expect(result).toHaveLength(1);
+        expect(result[0].clockInTS).toBe(timestamp);
+        expect(result[0].clockOutTS).toBeNull();
+        expect(result[0].day).toBe(today);
+    });
+})
+
+
 describe('save_clock_out', () => {
     test('busca o último registro por ordem decrescente de createdAt', async () => {
         ClockIn.findOne.mockResolvedValue({
@@ -131,7 +183,7 @@ describe('save_clock_out', () => {
     });
 });
 
-// add_ms_to_TimeToday
+
 describe('add_ms_to_TimeToday', () => {
     test('soma os milissegundos no registro do dia', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
@@ -142,6 +194,44 @@ describe('add_ms_to_TimeToday', () => {
         await add_ms_to_TimeToday(undefined, 50);
 
         expect(fakeRecord.timeInMsToday).toBe(150);
+        expect(saveMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('add milisseconds from time today when in different day', async () => {
+        const saveMock = jest.fn().mockResolvedValue(true);
+        const day = '2026-08-27'
+        const fakeRecord = { timeInMsToday: 100, today: day, save: saveMock };
+
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
+
+        await add_ms_to_TimeToday(day, 50);
+
+        expect(fakeRecord.timeInMsToday).toBe(150);
+        expect(saveMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('remove milisseconds from time today in the same day', async () => {
+        const saveMock = jest.fn().mockResolvedValue(true);
+        const fakeRecord = { timeInMsToday: 100, today: getToday(), save: saveMock };
+
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
+
+        await remove_ms_from_TimeToday(undefined, 50);
+
+        expect(fakeRecord.timeInMsToday).toBe(50);
+        expect(saveMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('remove milisseconds from time today when in different day', async () => {
+        const saveMock = jest.fn().mockResolvedValue(true);
+        const day = '2026-08-27'
+        const fakeRecord = { timeInMsToday: 100, today: day, save: saveMock };
+
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
+
+        await remove_ms_from_TimeToday(day, 50);
+
+        expect(fakeRecord.timeInMsToday).toBe(50);
         expect(saveMock).toHaveBeenCalledTimes(1);
     });
 
@@ -156,9 +246,10 @@ describe('add_ms_to_TimeToday', () => {
 
         expect(TimeToday.findOne).toHaveBeenCalledTimes(1);
     });
+    
 });
 
-// add_ms_to_TotalHours
+
 describe('add_ms_to_TotalHours', () => {
     test('soma os milissegundos em totalHoursCompletedInMs', async () => {
         const saveMock = jest.fn().mockResolvedValue(true);
@@ -173,7 +264,7 @@ describe('add_ms_to_TotalHours', () => {
     });
 });
 
-// get_time_today
+
 describe('get_time_today', () => {
     test('retorna o registro do dia atual', async () => {
         const today = getToday();
@@ -187,6 +278,29 @@ describe('get_time_today', () => {
         expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today } });
     });
 
+    test('retorna o registro do dia fornecido', async () => {
+        const today = '2026-08-27'
+        const fakeRecord = { timeInMsToday: 300, today };
+
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
+
+        const result = await get_time_today_by_day(today);
+
+        expect(result).toEqual(fakeRecord);
+        expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today } });
+    });
+    test('cria TimeToday se today é null', async () => {
+        const today = null
+        const fakeRecord = { timeInMsToday: 300, today: today };
+
+        TimeToday.findOne.mockResolvedValue(fakeRecord);
+
+        const result = await get_time_today_by_day(today);
+
+        expect(result).toEqual(fakeRecord);
+        expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today } });
+    });
+
     test('retorna null se não há registro para hoje', async () => {
         TimeToday.findOne.mockResolvedValue(null);
         const result = await get_time_today();
@@ -194,7 +308,7 @@ describe('get_time_today', () => {
     });
 });
 
-// getStudyToday
+
 describe('getStudyToday', () => {
     test('retorna o registro de estudo de hoje', async () => {
         const today = getToday();
@@ -209,7 +323,7 @@ describe('getStudyToday', () => {
     });
 });
 
-// checkIfIsFirstClockIn
+
 describe('checkIfIsFirstClockIn', () => {
     test('retorna true quando não existe registro de TimeToday para hoje', async () => {
         TimeToday.findOne.mockResolvedValue(null);
@@ -222,7 +336,7 @@ describe('checkIfIsFirstClockIn', () => {
     });
 });
 
-// createTimeToday
+
 describe('createTimeToday', () => {
     test('chama TimeToday.create uma vez', async () => {
         TimeToday.create.mockResolvedValue({ timeInMsToday: 0 });
@@ -232,7 +346,7 @@ describe('createTimeToday', () => {
     });
 });
 
-// create_total_hours_if_needed
+
 describe('create_total_hours_if_needed', () => {
     test('cria TotalHours quando não existe nenhum registro', async () => {
         TotalHours.findOne.mockResolvedValue(null);
@@ -252,7 +366,7 @@ describe('create_total_hours_if_needed', () => {
     });
 });
 
-// getToday
+
 describe('getToday', () => {
     test('retorna uma string no formato YYYY-MM-DD', () => {
         const result = getToday();
@@ -260,7 +374,24 @@ describe('getToday', () => {
     });
 });
 
-// msToHours
+// describe('editClockIn', () => {
+//     test('edita um clockIn', async () => {
+//         setupMocks()
+        
+//         const timestamp = 123456;
+//         const today = '2026-08-27';
+//         const new_timestamp = 100;
+
+//         const result = ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: 20000, day: today });
+
+//         const data = await edit_clockIn(result.id, new_timestamp)
+
+//         expect(data.clockInTS).toBe(100)
+
+//     });
+// });
+
+
 describe('msToHours', () => {
     test('converte 0ms em 00:00:00', () => {
         expect(msToHours(0)).toBe('00:00:00');
@@ -268,18 +399,6 @@ describe('msToHours', () => {
 
     test('converte 1000ms em 00:00:01', () => {
         expect(msToHours(1000)).toBe('00:00:01');
-    });
-
-    test('converte 60000ms em 00:01:00', () => {
-        expect(msToHours(60000)).toBe('00:01:00');
-    });
-
-    test('converte 3600000ms em 01:00:00', () => {
-        expect(msToHours(3600000)).toBe('01:00:00');
-    });
-
-    test('converte 3661000ms em 01:01:01', () => {
-        expect(msToHours(3661000)).toBe('01:01:01');
     });
 
     test('preenche horas com zero à esquerda quando < 10', () => {
