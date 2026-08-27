@@ -2,21 +2,6 @@ const WeeklyGoals = require("../models/WeeklyGoals");
 const DailyGoals = require("../models/DailyGoals");
 
 
-// async function load_page(goals_type) {
-//     const data = { notes: "", goals: "" };
-
-//     data.notes = await get_notes()
-
-//     if (goals_type === "daily") {
-//         data.goals = await DailyGoals.findAll();
-//     }
-//     if (goals_type === "weekly") {
-//         data.goals = await WeeklyGoals.findAll();
-//     }
-
-//     return data;
-// }
-
 async function get_weekly_goals() {
     return await WeeklyGoals.findAll();
 }

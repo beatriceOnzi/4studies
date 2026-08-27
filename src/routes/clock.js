@@ -51,11 +51,11 @@ router.get("/get_last_clock_in", async (req, res) => {
     res.json(last_clock_record.clockInTS);
 })
 
-router.get("/get_is_running", async (req, res) => { //done
+router.get("/get_is_running", async (req, res) => {
     res.json(await is_running());
 });
 
-router.post("/create_clock_in", async (req, res) => { //done
+router.post("/create_clock_in", async (req, res) => {
     const new_clock = await create_clock_in(req.body.timestamp);
 
     res.json(new_clock);

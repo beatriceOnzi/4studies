@@ -4,7 +4,6 @@ const path = require("path");
 
 const notes_routes = require("./routes/notes");
 const clock_routes = require("./routes/clock");
-const time_routes = require("./routes/time");
 
 const app = express();
 
@@ -28,6 +27,5 @@ app.use(express.static(path.join(__dirname, "public")));
 // routes
 app.use('', notes_routes);
 app.use('', clock_routes);
-app.use('', time_routes);
 
 module.exports = app;
