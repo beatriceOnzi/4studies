@@ -31,7 +31,8 @@ async function add_stuff(){
     // })
     // bq.save()
 
-    // TimeToday.destroy({where: { id: 3 }})
+    ClockIn.destroy({where: { id: 16 }})
+    ClockIn.destroy({where: { id: 2 }})
     // ClockIn.destroy({where: {id: 2}})
 }
     

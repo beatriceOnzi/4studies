@@ -24,7 +24,12 @@ async function get_time_today() {
 }
 
 async function get_time_today_by_day(day) {
-    return await TimeToday.findOne({where: { today: day}});
+    let time_today = await TimeToday.findOne({where: { today: day}});
+    if (!time_today){
+        createTimeToday_by_day(day)
+        time_today = await get_time_today_by_day(day);
+    }
+    return time_today;
 }
 
 async function get_total_hours() {
@@ -51,6 +56,13 @@ async function checkIfIsFirstClockIn() {
 
 async function createTimeToday() {
     await TimeToday.create({});
+}
+
+async function createTimeToday_by_day(day) {
+    return await TimeToday.create({
+        timeInMsToday: 0,
+        today: day
+    });
 }
 
 async function createTotalHours() {
@@ -108,7 +120,6 @@ async function remove_ms_from_TimeToday(day, interval) {
     await time_today.save();
 }
 
-
 async function add_ms_to_TotalHours(interval) {
     let totalHours = await get_total_hours()
     totalHours.totalHoursCompletedInMs += interval;
@@ -142,12 +153,12 @@ async function create_clock_in(timestamp) {
 }
 
 async function get_clockIns() {
-    clockIns = await ClockIn.findAll({
+    const clockIns = await ClockIn.findAll({
         order: [
             ['clockInTS', 'DESC']
         ]
     })
-    formated_clockIns = format_clockIns(clockIns)
+    const formated_clockIns = format_clockIns(clockIns)
     return formated_clockIns
 }
 
