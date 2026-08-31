@@ -55,7 +55,7 @@
                     <ul id="dailyGoalsList" class="flex-1 list-disc list-inside mt-4 h-72 w-96 overflow-y-auto">
                         {{#each data.daily_goals}}
                             <li data-id="{{ id }}" class="group font-medium text-3xl text-wrap tracking-[0.15em] text-branco">
-                                {{!-- <input type="button" class="changeStatusDailyGoal text-branco font-sans text-base" value="[]" onclick="change_status_daily_goal({{ id }})"> --}}
+                                <input type="button" class="changeStatusDailyGoal text-branco font-sans text-base" value="[]" onclick="change_status_daily_goal({{ id }})">
                                 <span class="group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                                     {{ this.daily_goals }}
                                 </span>

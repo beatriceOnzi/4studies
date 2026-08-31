@@ -1,39 +1,35 @@
-const dailyGoalsList =
-    document.querySelector('#dailyGoalsList');
-const weeklyGoalsList =
-    document.querySelector('#weeklyGoalsList');
+const dailyGoalsList = document.querySelector('#dailyGoalsList');
+const weeklyGoalsList = document.querySelector('#weeklyGoalsList');
+const weekly_goal_input = document.querySelector('#weekly_goals_input');
+const daily_goal_input = document.querySelector('#daily_goals_input');
 
 
-if(weeklyGoalsList) {
-    const weekly_goal_input = 
-        document.querySelector('#weekly_goals_input');
+weekly_goal_input.addEventListener('keydown', async (event) => {
+    if (event.key !== 'Enter') 
+        return;
+    newGoal(weekly_goal_input, weeklyGoalsList)
+});
+weeklyGoalsList.addEventListener('click', async (event) => {
+    if (!event.target.classList.contains('deleteWeeklyGoal'))
+        return;
+    deleteGoal(event, weeklyGoalsList);
+});
 
-    weekly_goal_input.addEventListener('keydown', async (event) => {
-        if (event.key !== 'Enter') 
-            return;
-        newGoal(weekly_goal_input, weeklyGoalsList)
-    });
-    weeklyGoalsList.addEventListener('click', async (event) => {
-        if (!event.target.classList.contains('deleteWeeklyGoal'))
-            return;
-        deleteGoal(event, weeklyGoalsList);
-    });
-}
 
-if(dailyGoalsList) {
-    const daily_goal_input = 
-        document.querySelector('#daily_goals_input');
+daily_goal_input.addEventListener('keydown', async (event) => {
+    if (event.key !== 'Enter') 
+        return;
+    newGoal(daily_goal_input, dailyGoalsList)
+});
+dailyGoalsList.addEventListener('click', async (event) => {
+    if (!event.target.classList.contains('deleteDailyGoal'))
+        return;
+    deleteGoal(event, dailyGoalsList);
+})
 
-    daily_goal_input.addEventListener('keydown', async (event) => {
-        if (event.key !== 'Enter') 
-            return;
-        newGoal(daily_goal_input, dailyGoalsList)
-    });
-    dailyGoalsList.addEventListener('click', async (event) => {
-        if (!event.target.classList.contains('deleteDailyGoal'))
-            return;
-        deleteGoal(event, dailyGoalsList);
-    });
+
+function change_status_daily_goal(id){
+    console.log("implement")
 }
 
 function getServerURL(goal_type, action){

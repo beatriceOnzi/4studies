@@ -17,7 +17,6 @@ async function save_notes(new_notes) {
     }
     notes.note = new_notes;
     return await notes.save()
-    
 }
 
 module.exports = {
