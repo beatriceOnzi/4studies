@@ -29,7 +29,7 @@ function setupDefaultMocks() {
     timeService.msToHours.mockReturnValue('01:01:01');
 }
 
-// get_data
+
 describe('get_data', () => {
     test('agrega em um único objeto os dados de clock, notas, metas e horas', async () => {
         setupDefaultMocks();

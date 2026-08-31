@@ -20,7 +20,6 @@ async function get_goal_hours() {
     return goal_hours
 }
 
-
 function msToHours(ms) {
     let seconds = Math.floor((ms / 1000) % 60);
     let minutes = Math.floor((ms / (1000 * 60)) % 60);
@@ -35,14 +34,14 @@ function msToHours(ms) {
 
 function msToOnlyHours(ms) {
     let hours = Math.floor((ms / (1000 * 60 * 60)));
-
     hours = String(hours).padStart(2, '0');
-
     return hours
 }
 
 module.exports = {
+    get_totalHours,
     get_goal_hours,
     get_hours_completed,
-    msToHours
+    msToHours,
+    msToOnlyHours
 }
