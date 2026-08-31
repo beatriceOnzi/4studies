@@ -8,7 +8,7 @@ const TimeToday = sequelize.define("TimeToday", {
   },
   today: {
     type: DataTypes.DATEONLY,
-    defaultValue: DataTypes.NOW
+    defaultValue: () => new Date().toISOString().split('T')[0]
   }
 });
 

@@ -18,7 +18,7 @@ beforeEach(() => {
 
 function setupDefaultMocks() {
     clockService.is_running.mockResolvedValue(false);
-    clockService.getStudyToday.mockResolvedValue({ timeInMsToday: 3661000 });
+    clockService.get_time_today.mockResolvedValue({ timeInMsToday: 3661000 });
 
     goalsService.get_daily_goals.mockResolvedValue([{ id: 1, daily_goals: 'estudar' }]);
     goalsService.get_weekly_goals.mockResolvedValue([{ id: 1, weekly_goals: 'terminar módulo' }]);
@@ -58,7 +58,7 @@ describe('get_data', () => {
 
     test('converte o tempo estudado hoje (timeInMsToday) usando msToHours', async () => {
         setupDefaultMocks();
-        clockService.getStudyToday.mockResolvedValue({ timeInMsToday: 7200000 });
+        clockService.get_time_today.mockResolvedValue({ timeInMsToday: 7200000 });
         timeService.msToHours.mockReturnValue('02:00:00');
 
         const data = await get_data();
