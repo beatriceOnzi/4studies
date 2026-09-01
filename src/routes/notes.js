@@ -6,6 +6,8 @@ const {
   delete_daily_goal,
   create_weekly_goal,
   create_daily_goal,
+  toggleState_dailyGoals,
+  toggleState_weeklyGoals,
 } = require("../services/goals_service");
 
 const {
@@ -20,6 +22,11 @@ const {
 router.post("/daily_goals/new", async (req, res) => {
   const newDailyGoal = await create_daily_goal(req.body.value)
   res.json(newDailyGoal);
+});
+
+router.post("/daily_goals/switch/:id", async (req, res) => {
+  const new_state = await toggleState_dailyGoals(req.params.id)
+  res.json(new_state);
 });
 
 router.delete("/daily_goals/:id", async (req, res) => {

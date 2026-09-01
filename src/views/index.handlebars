@@ -55,8 +55,8 @@
                     <ul id="dailyGoalsList" class="flex-1 list-disc list-inside mt-4 h-72 w-96 overflow-y-auto">
                         {{#each data.daily_goals}}
                             <li data-id="{{ id }}" class="group font-medium text-3xl text-wrap tracking-[0.15em] text-branco">
-                                <input type="button" class="changeStatusDailyGoal text-branco font-sans text-base" value="[]" onclick="change_status_daily_goal({{ id }})">
-                                <span class="group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
+                                <input type="button" class="group-has-[a:hover]:text-red-800 changeStatusDailyGoal text-branco font-sans text-base" value="[{{#if this.status }}X{{/if}}]" onclick="change_status_daily_goal({{ id }}, this)">
+                                <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                                     {{ this.daily_goals }}
                                 </span>
                                 <a class="deleteDailyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
@@ -76,10 +76,12 @@
                     <ul id="weeklyGoalsList" class="flex-1 list-disc list-inside mt-4 h-72 w-96 overflow-y-auto border-s-4 border-roxo-escuro ps-3">
                         {{#each data.weekly_goals}}
                             <li data-id="{{ id }}" class="group font-medium text-3xl text-wrap tracking-widest text-branco">
-                                <span class="group-has-[a:hover]:line-through">
+                                <input type="button" class="group-has-[a:hover]:text-red-800 changeStatusWeeklyGoal text-branco font-sans text-base" value="[{{#if this.status }}X{{/if}}]" onclick="change_status_weekly_goal({{ id }}, this)">
+                                <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                                     {{ this.weekly_goals }}
                                 </span>
-                                <a class="deleteWeeklyGoal hover:cursor-pointer text-branco text-opacity-0 group-hover:text-opacity-100 no-underline text-3xl font-extrabold">x</a>
+                                <a class="deleteWeeklyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
+                            </li>
 
                             </li>
                         {{/each}}

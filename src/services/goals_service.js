@@ -52,6 +52,7 @@ async function create_weekly_goal(new_goal) {
 
 async function toggleState_dailyGoals(id) {
     let goal = await get_daily_goal_by_id(id);
+    if (!goal) return;
 
     if (goal.status == 0) {
         goal.status = 1;
@@ -65,6 +66,7 @@ async function toggleState_dailyGoals(id) {
 
 async function toggleState_weeklyGoals(id) {
     let goal = await get_weekly_goal_by_id(id);
+    if (!goal) return;
 
     if (goal.status == 0) {
         goal.status = 1;

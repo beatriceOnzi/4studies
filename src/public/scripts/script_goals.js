@@ -27,11 +27,6 @@ dailyGoalsList.addEventListener('click', async (event) => {
     deleteGoal(event, dailyGoalsList);
 })
 
-
-function change_status_daily_goal(id){
-    console.log("implement")
-}
-
 function getServerURL(goal_type, action){
     if (goal_type == 'weeklyGoalsList') {
         if (action == 'new') {
@@ -101,6 +96,49 @@ async function newGoal(goalInput, goalList) {
     goalList.insertBefore(li, lastElement);
 
     goalInput.value = '';
+}
+
+async function change_status_daily_goal(id, el){
+    const response = await fetch(`/daily_goals/switch/${id}`, {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            id
+        })
+    });
+
+    switch_status_goal(el)
+}
+
+
+async function change_status_weekly_goal(id, el){
+    const response = await fetch(`/weekly_goals/switch/${id}`, {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            id
+        })
+    });
+
+    switch_status_goal(el)
+}
+
+function switch_status_goal(el){
+    const li = el.closest('li');
+    const span = li.querySelector('span');
+
+    span.classList.toggle("line-through");
+    el.value = el.value === "[]" ? "[X]" : "[]";
 }
 
 async function deleteGoal(event, goalList) {
