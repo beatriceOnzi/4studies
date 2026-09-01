@@ -41,7 +41,12 @@ router.post("/weekly_goals/new", async (req, res) => {
   res.json(newWeeklyGoal);
 });
 
-router.delete("/weekly_goals/:id", async (req, res) => { // untested
+router.post("/weekly_goals/switch/:id", async (req, res) => {
+  const new_state = await toggleState_weeklyGoals(req.params.id)
+  res.json(new_state);
+});
+
+router.delete("/weekly_goals/:id", async (req, res) => {
   delete_weekly_goal(req.params.id)
 });
 

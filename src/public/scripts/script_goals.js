@@ -21,6 +21,7 @@ daily_goal_input.addEventListener('keydown', async (event) => {
         return;
     newGoal(daily_goal_input, dailyGoalsList)
 });
+
 dailyGoalsList.addEventListener('click', async (event) => {
     if (!event.target.classList.contains('deleteDailyGoal'))
         return;
@@ -45,26 +46,41 @@ function getServerURL(goal_type, action){
         }
     }
 }
-
 function createLi(data, goalList) {
-    const span =
-        document.createElement('span');
-    span.className = 
-        'group-has-[a:hover]:line-through';
-    span.textContent =
-        data.weekly_goals || data.daily_goals;
+    let type = null
     
-    const a = document.createElement('a');
-    a.className = goalList.querySelector('a').className;
-    a.textContent =' x'
+    console.log(goalList.id)
+    console.log(goalList)
 
-    const li = document.createElement('li');
-    li.className =
-        'group font-medium text-3xl text-wrap tracking-[0.15em] text-branco';
-    li.dataset.id = data.id;
+    if (goalList.id == 'dailyGoalsList'){
+        type = 'daily_goals'
+    } else if (goalList.id == 'weeklyGoalsList'){
+        type = 'weekly_goals'
+    }
 
-    li.appendChild(span)
-    li.appendChild(a)
+    const status = data.status;
+    const text = data.weekly_goals || data.daily_goals;
+
+    const template = document.createElement('template');
+    template.innerHTML = `
+        <li data-id="${data.id}" class="flex group font-medium text-3xl text-wrap tracking-widest text-branco">
+            <svg data-type="${type}" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco"
+                width="21" height="21" viewBox="0 0 24 24">
+                <g id="not_completed" fill="currentColor">
+                    <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
+                </g>
+            </svg>
+            <span class="${status ? 'line-through ' : ''}group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
+                ${text}
+            </span>
+            <a class="${type === 'weekly_goals' ? 'deleteWeeklyGoal' : 'deleteDailyGoal'} hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
+            </li>
+        `;
+
+    const li = template.content.firstElementChild;
+    li.querySelector('svg').addEventListener('click', function () {
+        change_status_goal(data.id, this);
+    });
 
     return li;
 }
@@ -98,8 +114,10 @@ async function newGoal(goalInput, goalList) {
     goalInput.value = '';
 }
 
-async function change_status_daily_goal(id, el){
-    const response = await fetch(`/daily_goals/switch/${id}`, {
+
+async function change_status_goal(id, el){
+    const type = el.dataset.type 
+    const response = await fetch(`/${type}/switch/${id}`, {
 
         method: 'POST',
 
@@ -112,33 +130,35 @@ async function change_status_daily_goal(id, el){
         })
     });
 
-    switch_status_goal(el)
+    update_visualy_status_goal(el)
 }
 
-
-async function change_status_weekly_goal(id, el){
-    const response = await fetch(`/weekly_goals/switch/${id}`, {
-
-        method: 'POST',
-
-        headers: {
-            'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-            id
-        })
-    });
-
-    switch_status_goal(el)
-}
-
-function switch_status_goal(el){
-    const li = el.closest('li');
+function update_visualy_status_goal(svg_el){
+    const li = svg_el.closest('li');
     const span = li.querySelector('span');
 
+    const g_path_completed = `
+        <g id="completed" fill="none" stroke="#f4edff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="m9 11l3 3l8-8"/>
+            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>
+        </g>`
+
+    const g_path_not_completed = `
+        <g id="not_completed">
+            <path fill="#f4edff" d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
+        </g>`
+
+    const g_svg = svg_el.querySelector('g');
+
+    if (g_svg.id == "completed"){
+        svg_el.innerHTML = g_path_not_completed
+    }
+    else if (g_svg.id == "not_completed"){
+        svg_el.innerHTML = g_path_completed
+    }
+
     span.classList.toggle("line-through");
-    el.value = el.value === "[]" ? "[X]" : "[]";
+ 
 }
 
 async function deleteGoal(event, goalList) {
