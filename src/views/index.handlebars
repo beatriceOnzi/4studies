@@ -52,12 +52,10 @@
 
             <div class="flex">
 
-                    <ul id="dailyGoalsList" class="flex-1 list-none list-inside mt-4 h-72 w-96 overflow-y-auto">
+                    <ul id="dailyGoalsList" class="list-none list-inside mt-4 h-72 w-96 overflow-y-auto">
                         {{#each data.daily_goals}}
                             <li data-id="{{ id }}" class="flex group font-medium text-3xl text-wrap tracking-[0.15em] text-branco">
-                                <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco"
-                                    width="21" 
-                                    height="21" 
+                                <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco check_icon_size"
                                     viewBox="0 0 24 24" 
                                     onclick="change_status_goal({{ id }}, this)">
                                 {{#if this.status }}
@@ -74,13 +72,11 @@
                                 <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                                     {{ this.daily_goals }}
                                 </span>
-                                <a class="deleteDailyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
+                                <a class="deleteDailyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
                             </li>
                         {{/each}}
                         <li class="flex text-branco font-medium text-3xl text-wrap tracking-widest">
-                            <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class=" mt-1.5 mx-2 text-branco"
-                                    width="21" 
-                                    height="21" 
+                            <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class=" mt-1.5 mx-2 text-branco check_icon_size" 
                                     viewBox="0 0 24 24">
                                 <g id="not_completed" fill="currentColor">
                                     <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
@@ -96,12 +92,10 @@
                     </ul>    
 
 
-                    <ul id="weeklyGoalsList" class="flex-1 list-inside mt-4 h-72 w-96 overflow-y-auto border-s-4 border-roxo-escuro ps-3">
+                    <ul id="weeklyGoalsList" class="list-inside mt-4 h-72 w-96 overflow-y-auto border-s-4 border-roxo-escuro ps-3">
                         {{#each data.weekly_goals}}
                             <li data-id="{{ id }}" class="flex group font-medium text-3xl text-wrap tracking-widest text-branco">
-                                <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco"
-                                    width="21" 
-                                    height="21" 
+                                <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco check_icon_size"
                                     viewBox="0 0 24 24" 
                                     onclick="change_status_goal({{ id }}, this)">
                                 {{#if this.status }}
@@ -118,15 +112,13 @@
                                 <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                                     {{ this.weekly_goals }}
                                 </span>
-                                <a class="deleteWeeklyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
+                                <a class="deleteWeeklyGoal hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
                             </li>
 
                             </li>
                         {{/each}}
                         <li class="flex text-branco font-medium text-3xl text-wrap tracking-widest">
-                            <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="mt-1.5 mx-2 text-branco"
-                                width="21" 
-                                height="21" 
+                            <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="mt-1.5 mx-2 text-branco check_icon_size"
                                 viewBox="0 0 24 24" 
                                 onclick="change_status_goal({{ id }}, this)">
                                 <g id="not_completed" fill="currentColor">

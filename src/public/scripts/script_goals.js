@@ -64,8 +64,8 @@ function createLi(data, goalList) {
     const template = document.createElement('template');
     template.innerHTML = `
         <li data-id="${data.id}" class="flex group font-medium text-3xl text-wrap tracking-widest text-branco">
-            <svg data-type="${type}" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco"
-                width="21" height="21" viewBox="0 0 24 24">
+            <svg data-type="${type}" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-red-800 mt-1.5 mx-2 text-branco check_icon_size"
+                viewBox="0 0 24 24">
                 <g id="not_completed" fill="currentColor">
                     <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
                 </g>
@@ -73,7 +73,7 @@ function createLi(data, goalList) {
             <span class="${status ? 'line-through ' : ''}group-has-[a:hover]:line-through group-has-[a:hover]:text-red-800 group-has-[input:hover]:line-through">
                 ${text}
             </span>
-            <a class="${type === 'weekly_goals' ? 'deleteWeeklyGoal' : 'deleteDailyGoal'} hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold">x</a>
+            <a class="${type === 'weekly_goals' ? 'deleteWeeklyGoal' : 'deleteDailyGoal'} hover:cursor-pointer hover:text-opacity-100 text-red-800 text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
             </li>
         `;
 

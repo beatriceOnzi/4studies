@@ -1980,14 +1980,14 @@ video {
   margin-right:0.25rem
 }
 
-.my-24{
-  margin-top:6rem;
-  margin-bottom:6rem
-}
-
 .mx-2{
   margin-left:0.5rem;
   margin-right:0.5rem
+}
+
+.my-24{
+  margin-top:6rem;
+  margin-bottom:6rem
 }
 
 .-mb-6{
@@ -2010,6 +2010,10 @@ video {
   margin-inline-start:2rem
 }
 
+.mt-1\.5{
+  margin-top:0.375rem
+}
+
 .mt-2{
   margin-top:0.5rem
 }
@@ -2030,16 +2034,12 @@ video {
   margin-top:2rem
 }
 
-.mr-2{
-  margin-right:0.5rem
+.ml-1{
+  margin-left:0.25rem
 }
 
-.mt-1{
-  margin-top:0.25rem
-}
-
-.mt-1\.5{
-  margin-top:0.375rem
+.mb-1{
+  margin-bottom:0.25rem
 }
 
 .inline-block{
@@ -2066,6 +2066,10 @@ video {
   height:18rem
 }
 
+.h-\[1\.32rem\]{
+  height:1.32rem
+}
+
 .h-\[23rem\]{
   height:23rem
 }
@@ -2083,8 +2087,16 @@ video {
   height:max-content
 }
 
+.max-h-\[1\.32rem\]{
+  max-height:1.32rem
+}
+
 .min-h-10{
   min-height:2.5rem
+}
+
+.min-h-\[1\.32rem\]{
+  min-height:1.32rem
 }
 
 .w-3\/5{
@@ -2097,6 +2109,10 @@ video {
 
 .w-96{
   width:24rem
+}
+
+.w-\[1\.32rem\]{
+  width:1.32rem
 }
 
 .w-\[30rem\]{
@@ -2116,8 +2132,12 @@ video {
   min-width:2rem
 }
 
-.flex-1{
-  flex:1 1 0%
+.min-w-\[1\.32rem\]{
+  min-width:1.32rem
+}
+
+.max-w-\[1\.32rem\]{
+  max-width:1.32rem
 }
 
 .-translate-x-1\/2{
@@ -2146,10 +2166,6 @@ video {
   list-style-position:inside
 }
 
-.list-disc{
-  list-style-type:disc
-}
-
 .list-none{
   list-style-type:none
 }
@@ -2172,10 +2188,6 @@ video {
 
 .gap-64{
   gap:16rem
-}
-
-.self-start{
-  align-self:flex-start
 }
 
 .self-center{
@@ -2245,6 +2257,10 @@ video {
 
 .border-s-4{
   border-inline-start-width:4px
+}
+
+.border-none{
+  border-style:none
 }
 
 .border-roxo-escuro{
@@ -2374,10 +2390,6 @@ video {
   font-family:Marck Script, sans-serif
 }
 
-.font-sans{
-  font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
-}
-
 .font-soul{
   font-family:My Soul, sans-serif
 }
@@ -2400,11 +2412,6 @@ video {
 .text-9xl{
   font-size:8rem;
   line-height:1
-}
-
-.text-base{
-  font-size:1rem;
-  line-height:1.5rem
 }
 
 .text-lg{
@@ -2477,16 +2484,6 @@ video {
   color:rgb(224 242 254 / var(--tw-text-opacity, 1))
 }
 
-.text-\[\#f4edff\]{
-  --tw-text-opacity:1;
-  color:rgb(244 237 255 / var(--tw-text-opacity, 1))
-}
-
-.text-\[\#7A1A58\]{
-  --tw-text-opacity:1;
-  color:rgb(122 26 88 / var(--tw-text-opacity, 1))
-}
-
 .text-opacity-0{
   --tw-text-opacity:0
 }
@@ -2533,6 +2530,13 @@ video {
   outline-style:solid;
   outline-width:0.8rem;
   outline-color:rgb(54 46 129 / 0.4)
+}
+
+.check_icon_size{
+  max-height:1.32rem;
+  min-height:1.32rem;
+  min-width:1.32rem;
+  max-width:1.32rem
 }
 
 ::-webkit-scrollbar {
@@ -2656,27 +2660,9 @@ video {
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
 }
 
-.group:has(a:hover) .group-has-\[a\:hover\]\:bg-red-800{
-  --tw-bg-opacity:1;
-  background-color:rgb(153 27 27 / var(--tw-bg-opacity, 1))
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:fill-red-800{
-  fill:#991b1b
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:fill-\[\#7A1A58\]{
-  fill:#7A1A58
-}
-
 .group:has(a:hover) .group-has-\[a\:hover\]\:text-red-800{
   --tw-text-opacity:1;
   color:rgb(153 27 27 / var(--tw-text-opacity, 1))
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:text-\[\#7A1A58\]{
-  --tw-text-opacity:1;
-  color:rgb(122 26 88 / var(--tw-text-opacity, 1))
 }
 
 .group:has(span:hover) .group-has-\[span\:hover\]\:text-opacity-100{
