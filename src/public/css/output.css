@@ -1963,6 +1963,10 @@ video {
   position:absolute
 }
 
+.relative{
+  position:relative
+}
+
 .left-0{
   left:0px
 }
@@ -1981,6 +1985,10 @@ video {
 
 .z-\[-9\]{
   z-index:-9
+}
+
+.z-20{
+  z-index:20
 }
 
 .m-1{
@@ -2050,22 +2058,6 @@ video {
   margin-top:2rem
 }
 
-.mb-2{
-  margin-bottom:0.5rem
-}
-
-.mb-3{
-  margin-bottom:0.75rem
-}
-
-.mb-4{
-  margin-bottom:1rem
-}
-
-.mb-6{
-  margin-bottom:1.5rem
-}
-
 .inline-block{
   display:inline-block
 }
@@ -2080,6 +2072,10 @@ video {
 
 .hidden{
   display:none
+}
+
+.h-5{
+  height:1.25rem
 }
 
 .h-52{
@@ -2111,20 +2107,8 @@ video {
   height:max-content
 }
 
-.h-5{
-  height:1.25rem
-}
-
-.h-\[1\.7rem\]{
-  height:1.7rem
-}
-
-.h-\[1\.3rem\]{
-  height:1.3rem
-}
-
-.h-\[1\.4rem\]{
-  height:1.4rem
+.h-auto{
+  height:auto
 }
 
 .min-h-10{
@@ -2133,6 +2117,10 @@ video {
 
 .w-3\/5{
   width:60%
+}
+
+.w-5{
+  width:1.25rem
 }
 
 .w-6{
@@ -2156,20 +2144,40 @@ video {
   width:max-content
 }
 
-.w-5{
-  width:1.25rem
+.w-20{
+  width:5rem
 }
 
-.w-\[1\.7rem\]{
-  width:1.7rem
+.w-\[50rem\]{
+  width:50rem
 }
 
-.w-\[1\.3rem\]{
-  width:1.3rem
+.w-\[40rem\]{
+  width:40rem
 }
 
-.w-\[1\.4rem\]{
-  width:1.4rem
+.w-\[0rem\]{
+  width:0rem
+}
+
+.w-\[38rem\]{
+  width:38rem
+}
+
+.w-\[36rem\]{
+  width:36rem
+}
+
+.w-\[32rem\]{
+  width:32rem
+}
+
+.w-\[34rem\]{
+  width:34rem
+}
+
+.w-\[35rem\]{
+  width:35rem
 }
 
 .min-w-8{
@@ -2326,6 +2334,46 @@ video {
   background-image:linear-gradient(to bottom, var(--tw-gradient-stops))
 }
 
+.bg-gradient-to-l{
+  background-image:linear-gradient(to left, var(--tw-gradient-stops))
+}
+
+.bg-gradient-to-r{
+  background-image:linear-gradient(to right, var(--tw-gradient-stops))
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c \#4d5799_15\%\2c \#4d5799_85\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,#4d5799 15%,#4d5799 85%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c \#362E81_15\%\2c \#362E81_85\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,#362E81 15%,#362E81 85%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c \#362E81_10\%\2c \#362E81_90\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,#362E81 10%,#362E81 90%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c \#362E81\/70_10\%\2c \#362E81_90\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,#362E81/70 10%,#362E81 90%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c rgba\(54\2c 46\2c 129\2c 0\.7\)_25\%\2c rgba\(54\2c 46\2c 129\2c 0\.7\)_75\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,rgba(54,46,129,0.7) 25%,rgba(54,46,129,0.7) 75%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_25\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_75\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,rgba(54,46,129,0.8) 25%,rgba(54,46,129,0.8) 75%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_10\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_90\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,rgba(54,46,129,0.8) 10%,rgba(54,46,129,0.8) 90%,transparent 100%)
+}
+
+.bg-\[linear-gradient\(to_right\2c transparent_0\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_15\%\2c rgba\(54\2c 46\2c 129\2c 0\.8\)_85\%\2c transparent_100\%\)\]{
+  background-image:linear-gradient(to right,transparent 0%,rgba(54,46,129,0.8) 15%,rgba(54,46,129,0.8) 85%,transparent 100%)
+}
+
 .from-roxo-escuro\/75{
   --tw-gradient-from:rgb(40 33 97 / 0.75) var(--tw-gradient-from-position);
   --tw-gradient-to:rgb(40 33 97 / 0) var(--tw-gradient-to-position);
@@ -2338,8 +2386,45 @@ video {
   --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
 }
 
+.from-azul{
+  --tw-gradient-from:#362E81 var(--tw-gradient-from-position);
+  --tw-gradient-to:rgb(54 46 129 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
+.from-transparent{
+  --tw-gradient-from:transparent var(--tw-gradient-from-position);
+  --tw-gradient-to:rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
 .from-30\%{
   --tw-gradient-from-position:30%
+}
+
+.via-azul{
+  --tw-gradient-to:rgb(54 46 129 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), #362E81 var(--tw-gradient-via-position), var(--tw-gradient-to)
+}
+
+.via-\[\#4d5799\]{
+  --tw-gradient-to:rgb(77 87 153 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), #4d5799 var(--tw-gradient-via-position), var(--tw-gradient-to)
+}
+
+.via-pink-medium{
+  --tw-gradient-to:rgb(199 20 140 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), #C7148C var(--tw-gradient-via-position), var(--tw-gradient-to)
+}
+
+.via-\[\#362E81\]{
+  --tw-gradient-to:rgb(54 46 129 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), #362E81 var(--tw-gradient-via-position), var(--tw-gradient-to)
+}
+
+.via-\[\#362E81\]\/70{
+  --tw-gradient-to:rgb(54 46 129 / 0)  var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), rgb(54 46 129 / 0.7) var(--tw-gradient-via-position), var(--tw-gradient-to)
 }
 
 .to-transparent{
@@ -2392,6 +2477,10 @@ video {
   padding-bottom:1.5rem
 }
 
+.pb-0\.5{
+  padding-bottom:0.125rem
+}
+
 .pb-2{
   padding-bottom:0.5rem
 }
@@ -2420,12 +2509,8 @@ video {
   padding-top:6rem
 }
 
-.pb-1{
-  padding-bottom:0.25rem
-}
-
-.pb-0\.5{
-  padding-bottom:0.125rem
+.pt-3{
+  padding-top:0.75rem
 }
 
 .text-center{
@@ -2578,13 +2663,8 @@ video {
   width:max-content;
   white-space:nowrap;
   border-radius:0.75rem;
-  border-width:8px;
-  border-color:rgb(54 46 129 / 0.3);
   background-color:rgb(54 46 129 / var(--tw-bg-opacity, 1));
-  --tw-bg-opacity:0.8;
-  outline-style:solid;
-  outline-width:0.8rem;
-  outline-color:rgb(54 46 129 / 0.4)
+  --tw-bg-opacity:0.7
 }
 
 .check_icon_size{
