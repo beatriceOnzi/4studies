@@ -9,6 +9,14 @@ module.exports = {
         roxo:{
           claro: '#C18CED',
           escuro: '#282161',
+        },
+        pink:{
+          medium: '#C7148C',
+          dark: '#7A1A58',
+          light: '#df81d1'
+        },
+        blue:{
+          medium: '#337AD6'
         }
       },
       fontFamily: {
