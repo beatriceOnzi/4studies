@@ -38,7 +38,7 @@
 
 <section id="notes">
     <div class="flex justify-center gap-10 my-24">
-        <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-1 ms-8 mt-8">
+        <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-4 ms-8 mt-8">
                 <h1 class="font-bold font-soul text-branco text-3xl">Notes:</h1>
                 {{!-- <input type="button" class="rounded-md text-roxo-escuro bg-azul" value="New Notes" onclick="new_note()"> --}}
                 <form id="notes_form" class="mt-4 h-72 w-full">
@@ -52,10 +52,10 @@
 <section id="goals">
     <div class="flex justify-center gap-10 my-24">
 
-        <div class="card inline-block h-[23rem] w-max p-1 ms-8 mt-8">
-            <div class="flex gap-64">
-                <a href="/notes/daily_goals" class="font-extrabold font-soul text-branco text-2xl hover:text-roxo-claro {{#if daily_goals_selected }} border-b-4 border-roxo-escuro{{/if}}">Daily Goals</a>
-                <a href="/notes/weekly_goals" class="font-extrabold font-soul text-sky-100 text-2xl hover:text-roxo-claro {{#if weekly_goals_selected }} border-b-4 border-roxo-escuro{{/if}}">Weekly Goals</a>
+        <div class="card inline-block h-[23rem] w-max pl-4 pt-3 ms-8 mt-8">
+            <div class="flex gap-64 cursor-default">
+                <div class="font-extrabold font-soul text-branco text-2xl border-b-[1px] border-branco pb-1 pr-8">Daily Goals</div>
+                <div class="font-extrabold font-soul text-branco text-2xl border-b-[1px] border-branco pb-1 pr-8">Weekly Goals</div>
             </div>
 
             <div class="flex">
