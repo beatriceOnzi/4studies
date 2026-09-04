@@ -2,7 +2,7 @@ const TimeToday = require("../models/TimeToday");
 const TimeWeek = require("../models/TimeWeek");
 const TotalHours = require("../models/TotalHours");
 const ClockIn = require("../models/ClockIn");
-const { where } = require("sequelize"); 29-30,40-44,61,101-107,129-142,165-193
+const { where } = require("sequelize");
 
 function getToday(){
     const today = new Intl.DateTimeFormat('en-CA').format(new Date());
@@ -11,10 +11,11 @@ function getToday(){
 
 async function get_time_today() {
     const today = getToday();
-
-    return await TimeToday.findOne({
-        where: { today }
-    });
+    let time_today = await TimeToday.findOne({where: { today}});
+    if (!time_today){
+        time_today = await createTimeToday()
+    }
+    return time_today;
 }
 
 async function get_time_today_by_day(day) {
@@ -39,7 +40,7 @@ async function checkIfIsFirstClockIn() {
 }
 
 async function createTimeToday() {
-    await TimeToday.create({});
+    return await TimeToday.create({});
 }
 
 async function createTimeToday_by_day(day) {

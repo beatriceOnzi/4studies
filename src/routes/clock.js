@@ -17,7 +17,6 @@ const {
     add_ms_to_TimeToday,
     checkIfIsFirstClockIn,
     createTimeToday,
-    getStudyToday,
     get_time_today,
     create_total_hours_if_needed,
     get_clockIns,
@@ -29,10 +28,10 @@ const {
 
 // -- Routes --
 router.get("/", async (req, res) => {
-    if (await checkIfIsFirstClockIn()) {
-        await createTimeToday();
-    }
-    create_total_hours_if_needed()
+    // if (await checkIfIsFirstClockIn()) {
+    //     await createTimeToday();
+    // }
+    // create_total_hours_if_needed()
 
     const data = await get_data()
     res.render("index", {data: data});

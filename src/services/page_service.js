@@ -1,6 +1,5 @@
 const { 
     is_running,
-    getStudyToday,
     get_time_today,
 } = require("../services/clock_service")
 
