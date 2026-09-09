@@ -3,16 +3,15 @@
         <div class="relative flex flex-col items-center">
 
            <img
-                src="/images/top_frame.png"
-                class="absolute -top-[1.62rem] z-19 pointer-events-none w-[32rem] opacity-95" 
-                {{!-- change z-index via js or ajust to the table  --}}
+                src="/images/frame_top.png"
+                class="absolute -top-[1.62rem] z-20 pointer-events-none w-[32rem] opacity-95" 
             >
             <img
-                src="/images/bottom_frame.png"
-                class="absolute top-44 z-19 pointer-events-none w-80 opacity-95"
+                src="/images/frame_bottom.png"
+                class="absolute top-44 z-20 pointer-events-none w-80 opacity-95"
             >
 
-            <div id="clock" class="flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center text-9xl font-medium text-branco overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
+            <div id="clock" class="relative z-10 flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center text-9xl font-medium text-branco overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
                 <div class="text-lg font-marck tracking-[0.2rem] text-branco/80 mt-2">Current Session</div>
                 <div id="clock_time" class="-mt-8">{{data.time}}</div>
                 <div id="clockIn_list_btn" class="text-xl tracking-widest cursor-pointer text-branco/90 hover:text-roxo-claro">
@@ -22,7 +21,7 @@
 
         </div>
 
-        <div id="table_box" class="card flex-col w-3/5 p-2 h-[28rem] hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div id="table_box" class="card flex-col w-3/5 p-2 h-[28rem] hidden absolute z-30 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
 
              <div id="buttons_list" class="flex overflow-x-scroll overflow-y-clip p-2">
                  <div class="button px-3 pb-2 m-1 rounded-lg text-xl font-semibold bg-roxo-claro text-roxo-escuro hover:text-branco cursor-pointer transition-all duration-200 transform hover:scale-105">All</div>
@@ -32,8 +31,7 @@
 
         </div>
 
-
-        <div id="clock_button" class="card cursor-pointer text-4xl font-medium tracking-widest text-branco mt-16 px-4 py-2 outline-8 hover:bg-roxo-claro/80 hover:font-semibold active:bg-roxo-claro">
+        <div id="clock_button" class="card cursor-pointer text-4xl font-medium tracking-widest text-branco mt-6 px-4 py-2 outline-8 hover:bg-roxo-claro/80 hover:font-semibold active:bg-roxo-claro">
              {{#if data.is_running}}
                  Stop
              {{else}}
