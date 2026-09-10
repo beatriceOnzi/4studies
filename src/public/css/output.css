@@ -2355,6 +2355,12 @@ video {
   --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
 }
 
+.from-blue-medium\/60{
+  --tw-gradient-from:rgb(93 140 227 / 0.6) var(--tw-gradient-from-position);
+  --tw-gradient-to:rgb(93 140 227 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
+}
+
 .from-30\%{
   --tw-gradient-from-position:30%
 }
@@ -2726,6 +2732,11 @@ video {
 .hover\:text-roxo-claro:hover{
   --tw-text-opacity:1;
   color:rgb(193 140 237 / var(--tw-text-opacity, 1))
+}
+
+.hover\:text-white:hover{
+  --tw-text-opacity:1;
+  color:rgb(255 255 255 / var(--tw-text-opacity, 1))
 }
 
 .hover\:text-opacity-100:hover{
