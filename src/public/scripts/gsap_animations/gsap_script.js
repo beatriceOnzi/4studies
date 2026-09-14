@@ -74,7 +74,7 @@ gsap.to("#cloud5", {
 });
 
 gsap.to("#mountains", {
-    y: -570,
+    y: -560,
     ease: "power3.out",
 
     scrollTrigger:{
@@ -85,7 +85,7 @@ gsap.to("#mountains", {
     }
 });
 
-gsap.to("#cachoeira", {
+gsap.to("#waterfall", {
     y: -830,
     ease: "power1.out",
 
@@ -93,6 +93,18 @@ gsap.to("#cachoeira", {
         trigger:"#start",
         start:"top top",
         end:"+=500",
+        scrub: 1
+    }
+});
+
+gsap.to("#tree", {
+    y: -890,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"#clock",
+        start:"center top",
+        end:"+=1200",
         scrub: 1
     }
 });
