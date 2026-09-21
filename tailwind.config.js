@@ -13,10 +13,12 @@ module.exports = {
         pink:{
           medium: '#C7148C',
           dark: '#7A1A58',
-          light: '#df81d1'
+          light: '#df81d1',
+          darker: '#4F0C2F'
         },
         blue:{
-          medium: '#5D8CE3'
+          medium: '#5D8CE3',
+          dark:'#20113B'
         }
       },
       fontFamily: {
