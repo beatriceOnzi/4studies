@@ -2307,22 +2307,22 @@ video {
   border-inline-start-width:4px
 }
 
-.border-branco{
+.border-white{
   --tw-border-opacity:1;
   border-color:rgb(244 237 255 / var(--tw-border-opacity, 1))
 }
 
-.border-roxo-escuro{
+.border-purple-dark{
   --tw-border-opacity:1;
   border-color:rgb(40 33 97 / var(--tw-border-opacity, 1))
 }
 
-.bg-azul{
+.bg-blue-medium{
   --tw-bg-opacity:1;
   background-color:rgb(54 46 129 / var(--tw-bg-opacity, 1))
 }
 
-.bg-roxo-claro{
+.bg-purple-light{
   --tw-bg-opacity:1;
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
 }
@@ -2348,14 +2348,8 @@ video {
 }
 
 .from-blue-medium\/60{
-  --tw-gradient-from:rgb(93 140 227 / 0.6) var(--tw-gradient-from-position);
-  --tw-gradient-to:rgb(93 140 227 / 0) var(--tw-gradient-to-position);
-  --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
-}
-
-.from-roxo-escuro\/75{
-  --tw-gradient-from:rgb(40 33 97 / 0.75) var(--tw-gradient-from-position);
-  --tw-gradient-to:rgb(40 33 97 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-from:rgb(54 46 129 / 0.6) var(--tw-gradient-from-position);
+  --tw-gradient-to:rgb(54 46 129 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)
 }
 
@@ -2543,32 +2537,27 @@ video {
   letter-spacing:0.1em
 }
 
-.text-branco{
+.text-pink-darker{
+  --tw-text-opacity:1;
+  color:rgb(79 12 47 / var(--tw-text-opacity, 1))
+}
+
+.text-white{
   --tw-text-opacity:1;
   color:rgb(244 237 255 / var(--tw-text-opacity, 1))
 }
 
-.text-branco\/80{
+.text-white\/80{
   color:rgb(244 237 255 / 0.8)
 }
 
-.text-branco\/90{
+.text-white\/90{
   color:rgb(244 237 255 / 0.9)
 }
 
-.text-pink-dark{
-  --tw-text-opacity:1;
-  color:rgb(122 26 88 / var(--tw-text-opacity, 1))
-}
-
-.text-roxo-escuro{
+.text-purple-dark{
   --tw-text-opacity:1;
   color:rgb(40 33 97 / var(--tw-text-opacity, 1))
-}
-
-.text-pink-darker{
-  --tw-text-opacity:1;
-  color:rgb(79 12 47 / var(--tw-text-opacity, 1))
 }
 
 .text-opacity-0{
@@ -2713,7 +2702,7 @@ video {
   cursor:pointer
 }
 
-.hover\:bg-roxo-claro\/80:hover{
+.hover\:bg-purple-light\/80:hover{
   background-color:rgb(193 140 237 / 0.8)
 }
 
@@ -2721,26 +2710,21 @@ video {
   font-weight:600
 }
 
-.hover\:text-branco:hover{
-  --tw-text-opacity:1;
-  color:rgb(244 237 255 / var(--tw-text-opacity, 1))
-}
-
-.hover\:text-roxo-claro:hover{
+.hover\:text-purple-light:hover{
   --tw-text-opacity:1;
   color:rgb(193 140 237 / var(--tw-text-opacity, 1))
 }
 
 .hover\:text-white:hover{
   --tw-text-opacity:1;
-  color:rgb(255 255 255 / var(--tw-text-opacity, 1))
+  color:rgb(244 237 255 / var(--tw-text-opacity, 1))
 }
 
 .hover\:text-opacity-100:hover{
   --tw-text-opacity:1
 }
 
-.focus\:border-roxo-claro:focus{
+.focus\:border-purple-light:focus{
   --tw-border-opacity:1;
   border-color:rgb(193 140 237 / var(--tw-border-opacity, 1))
 }
@@ -2750,19 +2734,9 @@ video {
   outline-offset:2px
 }
 
-.active\:bg-roxo-claro:active{
+.active\:bg-purple-light:active{
   --tw-bg-opacity:1;
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:text-pink-dark{
-  --tw-text-opacity:1;
-  color:rgb(122 26 88 / var(--tw-text-opacity, 1))
-}
-
-.group:has(a:hover) .group-has-\[a\:hover\]\:text-roxo-escuro{
-  --tw-text-opacity:1;
-  color:rgb(40 33 97 / var(--tw-text-opacity, 1))
 }
 
 .group:has(a:hover) .group-has-\[a\:hover\]\:text-pink-darker{

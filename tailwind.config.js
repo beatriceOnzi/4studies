@@ -4,11 +4,10 @@ module.exports = {
   theme: {
     extend: {
        colors: {
-        branco: '#F4EDFF',
-        azul: '#362E81',
-        roxo:{
-          claro: '#C18CED',
-          escuro: '#282161',
+        white: '#F4EDFF',
+        purple:{
+          light: '#C18CED',
+          dark: '#282161',
         },
         pink:{
           medium: '#C7148C',
@@ -17,7 +16,7 @@ module.exports = {
           darker: '#4F0C2F'
         },
         blue:{
-          medium: '#5D8CE3',
+          medium: '#362E81',
           dark:'#20113B'
         }
       },

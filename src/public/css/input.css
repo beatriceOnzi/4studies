@@ -9,7 +9,7 @@
 @tailwind utilities;
 
 .card {
-    @apply flex rounded-xl whitespace-nowrap h-max w-max bg-azul bg-opacity-70 ;
+    @apply flex rounded-xl whitespace-nowrap h-max w-max bg-blue-medium bg-opacity-70 ;
 }
 
 .check_icon_size{
