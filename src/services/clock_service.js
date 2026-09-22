@@ -147,7 +147,9 @@ async function get_clockIns() {
 }
 
 async function delete_clockIn(id) {
-    await ClockIn.destroy({where: { id: id } });
+    let clockIn = await ClockIn.findByPk(id);
+    await remove_ms_from_db(clockIn.day, clockIn.clockOutTS - clockIn.clockInTS);
+    await clockIn.destroy();
 }
 
 async function edit_clockIn(id, new_clockInTS) {
