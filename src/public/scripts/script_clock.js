@@ -36,8 +36,10 @@ buttons_list.addEventListener("click", (event) => {
     }
 });
 
-document.addEventListener("click", (event) => {
-    if (!table_box.contains(event.target)) {
+document.addEventListener("mousedown", (event) => {
+    const isInsideContextMenu = event.target.closest(".tabulator-menu");
+
+    if (!table_box.contains(event.target) && !isInsideContextMenu) {
         table_box.classList.add('hidden');
     }
 });
@@ -114,6 +116,17 @@ async function open_list() {
             { title: "Clock Out", field: "clockOut", hozAlign: "center", headerSort: false, editor: "input", validator: validate_datetime, cellEdited: edit_clockOut },
             { title: "Total Time", field: "time", hozAlign: "center", headerSort: false },
         ],
+        rowContextMenu:[
+            {
+                label:"Delete Study Session",
+                action:function(e, row){
+                    const data = row.getData();
+                    delete_clockIn(data.id);
+
+                    row.delete();
+                }
+            },
+        ]
     });
 
     table_box.classList.remove('hidden');
@@ -180,6 +193,21 @@ async function get_clockIns() {
     const response = await fetch("/get_clockIns")
     const data = await response.json();
     return data
+}
+
+async function delete_clockIn(id) {
+    const response = await fetch("/delete_clockIn", {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            id
+        })
+    });
 }
 
 async function save_clock_out(timestamp) {

@@ -146,6 +146,10 @@ async function get_clockIns() {
     return formated_clockIns
 }
 
+async function delete_clockIn(id) {
+    await ClockIn.destroy({where: { id: id } });
+}
+
 async function edit_clockIn(id, new_clockInTS) {
     let record = await ClockIn.findByPk(id);
     if (!record) return "Not Found";
@@ -227,6 +231,7 @@ module.exports = {
     createTimeToday_by_day,
     create_total_hours_if_needed,
     get_clockIns,
+    delete_clockIn,
     edit_clockIn,
     edit_clockOut,
     get_new_data,

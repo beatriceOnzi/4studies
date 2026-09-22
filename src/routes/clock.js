@@ -20,6 +20,7 @@ const {
     get_time_today,
     create_total_hours_if_needed,
     get_clockIns,
+    delete_clockIn,
     edit_clockIn,
     edit_clockOut,
     getToday
@@ -28,11 +29,6 @@ const {
 
 // -- Routes --
 router.get("/", async (req, res) => {
-    // if (await checkIfIsFirstClockIn()) {
-    //     await createTimeToday();
-    // }
-    // create_total_hours_if_needed()
-
     const data = await get_data()
     res.render("index", {data: data});
 });
@@ -65,7 +61,6 @@ router.post("/save_clock_out", async (req, res) => {
         await save_clock_out(req.body.timestamp);
         res.json({ ok: true });
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: err.message });
     }
 });
@@ -81,6 +76,15 @@ router.post("/add_ms_to_database", async (req, res) => {
 router.get("/get_clockIns", async (req, res) => {
     const clockIns = await get_clockIns()
     res.json(clockIns)
+});
+
+router.post("/delete_clockIn", async (req, res) => {
+    try {
+        await delete_clockIn(req.body.id);
+        res.json({ ok: true });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 router.post("/edit_clockIn", async (req, res) => {
