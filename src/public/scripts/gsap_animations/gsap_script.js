@@ -98,7 +98,7 @@ gsap.to("#waterfall", {
 });
 
 gsap.to("#tree", {
-    y: -890,
+    y: -950,
     ease: "power1.out",
 
     scrollTrigger:{
