@@ -12,8 +12,9 @@ const {
 
 const {
   get_notes,
-  create_notes,
-  save_notes
+  create_note,
+  delete_note,
+  save_note
 } = require("../services/notes_service");
 
 
@@ -52,17 +53,24 @@ router.delete("/weekly_goals/:id", async (req, res) => {
 
 // -- Notes --
 
-router.post("/notes/save", async (req, res) => {
-  const notes = await save_notes(req.body.notes);
-
-  res.json(notes);
-});
-
-// implement list of notes
 router.get("/notes/new", async (req, res) => {
+  const new_note = await create_note()
+  
+  res.json(new_note);
 });
 
-router.delete("/notes/:id", async (req, res) => {
+router.post("/notes/save/:id", async (req, res) => {
+  const note = await save_note(req.body.note, req.params.id);
+
+  res.json(note);
+});
+
+router.delete("/notes/delete/:id", async (req, res) => {
+    const id = req.params.id;
+
+    await delete_note(id);
+
+    res.sendStatus(204);
 });
 
 module.exports = router

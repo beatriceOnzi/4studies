@@ -2322,6 +2322,11 @@ video {
   background-color:rgb(54 46 129 / var(--tw-bg-opacity, 1))
 }
 
+.bg-purple-dark{
+  --tw-bg-opacity:1;
+  background-color:rgb(40 33 97 / var(--tw-bg-opacity, 1))
+}
+
 .bg-purple-light{
   --tw-bg-opacity:1;
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
@@ -2563,6 +2568,11 @@ video {
 
 .text-white\/90{
   color:rgb(244 237 255 / 0.9)
+}
+
+.text-gray-300{
+  --tw-text-opacity:1;
+  color:rgb(209 213 219 / var(--tw-text-opacity, 1))
 }
 
 .text-opacity-0{

@@ -10,7 +10,7 @@ const {
 
 const { 
     get_notes,
-    create_notes,
+    create_note,
 } = require("./notes_service")
 
 const { 
@@ -34,7 +34,7 @@ async function get_data() {
     const study_today = await get_time_today();
     data.time = msToHours(study_today.timeInMsToday);
     notes = await get_notes();
-    data.notes = notes.note ?? "";
+    data.notes = notes ?? "";
     return data 
 }
 

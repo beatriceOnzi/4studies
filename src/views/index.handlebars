@@ -47,9 +47,14 @@
         <div class="flex justify-center gap-10 my-24">
             <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-4 ms-8 mt-8">
                     <h1 class="font-bold font-soul text-white text-3xl">Notes:</h1>
-                    {{!-- <input type="button" class="rounded-md text-purple-dark bg-azul" value="New Notes" onclick="new_note()"> --}}
-                    <form id="notes_form" class="mt-4 h-72 w-full">
-                        <textarea id="notes_textarea" class="px-2 text-white text-xl font-marck tracking-wide resize-none focus:outline-none focus:border-purple-light rounded-lg h-full w-full bg-blue-medium bg-opacity-50 border-4 border-purple-dark">{{ data.notes }}</textarea>
+                    <input type="button" class="rounded-md text-gray-300 text-xl" value="New Page" onclick="new_note()">
+                    <form id="notes_form" class="flex mt-4 h-72 w-full">
+                        {{#each data.notes}}
+                            <div>
+                                <input onclick="delete_note(this, {{id}})" type="button" class="rounded-md text-pink-light text-xl" value="Delete Note">
+                                <textarea oninput="textarea_edited(this, {{ id }})" class="px-2 text-white text-xl font-marck tracking-wide resize-none focus:outline-none focus:border-purple-light rounded-lg h-full w-full bg-blue-medium bg-opacity-50 border-4 border-purple-dark">{{ note }}</textarea>
+                            </div>
+                        {{/each}}
                     </form>
             </div>
         </div>
