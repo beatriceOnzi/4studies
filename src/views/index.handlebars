@@ -42,27 +42,59 @@
             </div>
         </div>
     </section>
-
+    
     <section id="notes" class="my-24 w-full">
-        <div id="notes_container" class="flex flex-wrap items-center justify-center gap-6 w-full px-6">
+        <div id="notes_container" class="flex flex-wrap items-center justify-center gap-8 w-full px-6">
             {{#each data.notes}}
-                <div class="text-white bg-blue-medium bg-opacity-70 rounded-lg p-3 w-80 h-96 flex flex-col" data-note_id="{{ id }}">
-                    <h1 class="font-bold font-soul text-white text-xl mb-2">{{ title }}</h1>
-                    <textarea oninput="textarea_edited(this, {{ id }})"class="px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none focus:border-purple-light border-purple-dark border-2 flex-1 min-h-0 w-full bg-transparent">{{ note }}</textarea>
-                    <input
-                        onclick="delete_note(this, {{ id }})"
+                <div class="group relative flex flex-col w-80 h-96 p-4 text-white rounded-2xl
+                            bg-blue-medium bg-opacity-70 backdrop-blur-sm
+                            border border-white/10 shadow-lg shadow-black/30
+                            transition-all duration-300 ease-out
+                            hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-dark/40 hover:border-purple-light/60"
+                    data-note_id="{{ id }}">
+
+                    <!-- Cabeçalho -->
+                    <div class="flex items-center justify-between pb-2 mb-3 border-b border-white/10">
+                        <h1 class="font-bold font-soul text-white text-xl truncate">{{ title }}</h1>
+                        <span class="w-2.5 h-2.5 rounded-full bg-purple-light shadow-[0_0_8px] shadow-purple-light"></span>
+                    </div>
+
+                    <!-- Texto -->
+                    <textarea
+                        oninput="textarea_edited(this, {{ id }})"
+                        placeholder="Escreva sua nota..."
+                        class="flex-1 min-h-0 w-full px-3 py-2 text-xl font-marck tracking-wide
+                            bg-black/20 placeholder-white/30 rounded-xl resize-none
+                            border-2 border-transparent transition-colors duration-200
+                            focus:outline-none focus:border-purple-light focus:bg-black/30">{{ note }}</textarea>
+
+                    <!-- Rodapé -->
+                    <button
                         type="button"
-                        class="rounded-md text-pink-light text-xl mt-2 cursor-pointer"
-                        value="Delete Note">
+                        onclick="delete_note(this, {{ id }})"
+                        class="mt-3 w-full py-1.5 rounded-lg text-pink-light text-lg
+                            border border-pink-light/30 bg-transparent
+                            transition-all duration-200
+                            hover:bg-pink-light/10 hover:border-pink-light active:scale-95">
+                        🗑 Delete Note
+                    </button>
                 </div>
             {{/each}}
 
-            <div id="new_note" class="w-80 h-96 rounded-lg border-2 border-dashed border-gray-400 bg-blue-medium bg-opacity-40 flex items-center justify-center cursor-pointer hover:border-purple-light transition-colors" onclick="new_note()">
-                <span class="text-gray-300 text-xl ">+ New Note</span>
+            <!-- Nova nota -->
+            <div id="new_note"
+                onclick="new_note()"
+                class="group flex flex-col items-center justify-center gap-3 w-80 h-96 rounded-2xl cursor-pointer
+                        border-2 border-dashed border-gray-400 bg-blue-medium bg-opacity-40
+                        transition-all duration-300 ease-out
+                        hover:-translate-y-1 hover:border-purple-light hover:bg-opacity-60 hover:shadow-xl hover:shadow-purple-dark/30">
+                <span class="flex items-center justify-center w-14 h-14 rounded-full text-4xl text-gray-300
+                            border-2 border-gray-400 transition-all duration-300
+                            group-hover:border-purple-light group-hover:text-purple-light group-hover:rotate-90">+</span>
+                <span class="text-gray-300 text-xl transition-colors group-hover:text-white">New Note</span>
             </div>
         </div>
     </section>
-
 
     <section id="goals">
         <div class="flex justify-center gap-10 my-24">
