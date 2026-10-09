@@ -43,19 +43,22 @@
         </div>
     </section>
 
-    <section id="notes">
-        <div class="flex justify-center gap-10 my-24">
-            <div class="card inline-block h-[23rem] min-h-10 w-96 min-w-8 p-4 ms-8 mt-8">
-                    <h1 class="font-bold font-soul text-white text-3xl">Notes:</h1>
-                    <input type="button" class="rounded-md text-gray-300 text-xl" value="New Page" onclick="new_note()">
-                    <form id="notes_form" class="flex mt-4 h-72 w-full">
-                        {{#each data.notes}}
-                            <div>
-                                <input onclick="delete_note(this, {{id}})" type="button" class="rounded-md text-pink-light text-xl" value="Delete Note">
-                                <textarea oninput="textarea_edited(this, {{ id }})" class="px-2 text-white text-xl font-marck tracking-wide resize-none focus:outline-none focus:border-purple-light rounded-lg h-full w-full bg-blue-medium bg-opacity-50 border-4 border-purple-dark">{{ note }}</textarea>
-                            </div>
-                        {{/each}}
-                    </form>
+    <section id="notes" class="my-24 w-full">
+        <div id="notes_container" class="flex flex-wrap items-center justify-center gap-6 w-full px-6">
+            {{#each data.notes}}
+                <div class="text-white bg-blue-medium bg-opacity-70 rounded-lg p-3 w-80 h-96 flex flex-col" data-note_id="{{ id }}">
+                    <h1 class="font-bold font-soul text-white text-xl mb-2">{{ title }}</h1>
+                    <textarea oninput="textarea_edited(this, {{ id }})"class="px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none focus:border-purple-light border-purple-dark border-2 flex-1 min-h-0 w-full bg-transparent">{{ note }}</textarea>
+                    <input
+                        onclick="delete_note(this, {{ id }})"
+                        type="button"
+                        class="rounded-md text-pink-light text-xl mt-2 cursor-pointer"
+                        value="Delete Note">
+                </div>
+            {{/each}}
+
+            <div id="new_note" class="w-80 h-96 rounded-lg border-2 border-dashed border-gray-400 bg-blue-medium bg-opacity-40 flex items-center justify-center cursor-pointer hover:border-purple-light transition-colors" onclick="new_note()">
+                <span class="text-gray-300 text-xl ">+ New Note</span>
             </div>
         </div>
     </section>

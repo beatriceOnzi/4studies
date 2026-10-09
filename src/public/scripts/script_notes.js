@@ -52,19 +52,37 @@ async function delete_note(noteElement, id) {
 
     noteElement.parentElement.remove()
 }
-
-function create_new_note(data){
-    const id = data.id;
-    const note = data.note;
+function create_new_note(data) {
+    const { id, note, title } = data;
 
     const template = document.createElement('template');
+
     template.innerHTML = `
-        <div>
-            <input type="button" class="rounded-md text-pink-light text-xl" value="Delete Note" onclick="delete_note(this, ${id})">
-            <textarea oninput="textarea_edited(this, ${id})" class="px-2 text-white text-xl font-marck tracking-wide resize-none focus:outline-none focus:border-purple-light rounded-lg h-full w-full bg-blue-medium bg-opacity-50 border-4 border-purple-dark">${note}</textarea>
-        </div>;`
+        <div
+            class="note text-white bg-blue-medium bg-opacity-50 rounded-lg p-3 w-80 h-96 flex flex-col"
+            data-note_id="${id}"
+        >
+            <h1 class="font-bold font-soul text-white text-xl mb-2">
+                ${title ?? 'New Note'}
+            </h1>
 
-    const div = template.content.firstElementChild;
+            <textarea
+                oninput="textarea_edited(this, ${id})"
+                class="px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none focus:border-purple-light border-purple-dark border-2 flex-1 min-h-0 w-full bg-transparent"
+            >${note ?? ''}</textarea>
 
-    form.append(div)
+            <input
+                onclick="delete_note(this, ${id})"
+                type="button"
+                class="rounded-md text-pink-light text-xl mt-2 cursor-pointer"
+                value="Delete Note"
+            >
+        </div>
+    `;
+
+    const newNote = template.content.firstElementChild;
+    const container = document.getElementById('notes_container');
+    const newNoteButton = document.getElementById('new_note');
+
+    container.insertBefore(newNote, newNoteButton);
 }
