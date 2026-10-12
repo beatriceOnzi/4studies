@@ -2030,6 +2030,11 @@ video {
   margin-bottom:6rem
 }
 
+.my-28{
+  margin-top:7rem;
+  margin-bottom:7rem
+}
+
 .-mb-6{
   margin-bottom:-1.5rem
 }
@@ -2484,6 +2489,11 @@ video {
 .py-6{
   padding-top:1.5rem;
   padding-bottom:1.5rem
+}
+
+.py-28{
+  padding-top:7rem;
+  padding-bottom:7rem
 }
 
 .pb-0\.5{

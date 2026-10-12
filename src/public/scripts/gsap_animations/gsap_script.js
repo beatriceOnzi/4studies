@@ -5,6 +5,10 @@ const container = document.getElementById('notes_container');
 const EDGE = 0.2;
 const MAX_SPEED = 12;
 
+const MIN_SCALE = 0.75;
+const MIN_OPACITY = 0.85;
+let cards = [];
+
 const state = { speed: 0 };
 let setWidth = 0;
 
@@ -39,6 +43,8 @@ function setupLoop() {
     for (let i = 0; i < extra; i++) addAfter();
 
     container.scrollLeft = setWidth;
+    cards = Array.from(container.children);
+    updateScale();
 }
 
 function setSpeed(target) {
@@ -53,6 +59,7 @@ container.addEventListener('mousemove', (e) => {
     else if (x < EDGE) setSpeed(-((EDGE - x) / EDGE) * MAX_SPEED);
     else setSpeed(0);
 });
+
 container.addEventListener('mouseleave', () => setSpeed(0));
 
 gsap.ticker.add(() => {
@@ -60,8 +67,8 @@ gsap.ticker.add(() => {
     const next = container.scrollLeft + state.speed * gsap.ticker.deltaRatio();
     const wrapped = gsap.utils.wrap(setWidth, setWidth * 2, next);
     if (wrapped !== container.scrollLeft) container.scrollLeft = wrapped;
+    updateScale();
 });
-
 
 container.addEventListener('input', (e) => {
     const card = e.target.closest('[data-note_id]');
@@ -71,6 +78,16 @@ container.addEventListener('input', (e) => {
         if (other !== card) other.querySelector(selector).value = e.target.value;
     });
 });
+
+function updateScale() {
+    const half = container.clientWidth / 2;
+    for (const el of cards) {
+        const center = el.offsetLeft + el.offsetWidth / 2 - container.scrollLeft;
+        const dist = Math.min(Math.abs(center - half) / half, 1);
+        el.style.transform = `scale(${gsap.utils.mapRange(0, 1, 1, MIN_SCALE, dist)})`;
+        el.style.opacity = gsap.utils.mapRange(0, 1, 1, MIN_OPACITY, dist);
+    }
+}
 
 setupLoop();
 window.addEventListener('resize', setupLoop);
