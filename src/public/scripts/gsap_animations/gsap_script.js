@@ -3,39 +3,77 @@ gsap.registerPlugin(Observer);
 
 const container = document.getElementById('notes_container');
 const EDGE = 0.2;
-const MAX_SPEED = 10;
+const MAX_SPEED = 12;
 
 const state = { speed: 0 };
+let setWidth = 0;
+
+function setupLoop() {
+    container.querySelectorAll('[data-clone]').forEach(el => el.remove());
+
+    const originals = Array.from(container.children);
+    if (!originals.length) return;
+
+    const makeSet = () => originals.map(el => {
+        const clone = el.cloneNode(true);
+        clone.removeAttribute('id');
+        clone.dataset.clone = 'true';
+        clone.setAttribute('aria-hidden', 'true');
+        return clone;
+    });
+
+    const before = makeSet();
+    before.forEach(el => container.insertBefore(el, originals[0]));
+
+    let lastEl = originals[originals.length - 1];
+    const addAfter = () => makeSet().forEach(el => {
+        lastEl.after(el);
+        lastEl = el;
+    });
+    addAfter();
+
+    const firstAfter = originals[originals.length - 1].nextElementSibling;
+    setWidth = firstAfter.offsetLeft - originals[0].offsetLeft;
+
+    const extra = Math.ceil(container.clientWidth / setWidth) - 1;
+    for (let i = 0; i < extra; i++) addAfter();
+
+    container.scrollLeft = setWidth;
+}
 
 function setSpeed(target) {
-    gsap.to(state, {
-        speed: target,
-        duration: 0.6,
-        ease: 'power2.out',
-        overwrite: true
-    });
+    gsap.to(state, { speed: target, duration: 0.5, ease: 'power2.out', overwrite: true });
 }
 
 container.addEventListener('mousemove', (e) => {
     const rect = container.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
 
-    if (x > 1 - EDGE) {
-        setSpeed(((x - (1 - EDGE)) / EDGE) * MAX_SPEED);
-    } else if (x < EDGE) {
-        setSpeed(-((EDGE - x) / EDGE) * MAX_SPEED);
-    } else {
-        setSpeed(0);
-    }
+    if (x > 1 - EDGE) setSpeed(((x - (1 - EDGE)) / EDGE) * MAX_SPEED);
+    else if (x < EDGE) setSpeed(-((EDGE - x) / EDGE) * MAX_SPEED);
+    else setSpeed(0);
 });
-
 container.addEventListener('mouseleave', () => setSpeed(0));
 
 gsap.ticker.add(() => {
-    if (state.speed !== 0) {
-        container.scrollLeft += state.speed * gsap.ticker.deltaRatio();
-    }
+    if (!setWidth) return;
+    const next = container.scrollLeft + state.speed * gsap.ticker.deltaRatio();
+    const wrapped = gsap.utils.wrap(setWidth, setWidth * 2, next);
+    if (wrapped !== container.scrollLeft) container.scrollLeft = wrapped;
 });
+
+
+container.addEventListener('input', (e) => {
+    const card = e.target.closest('[data-note_id]');
+    if (!card) return;
+    const selector = e.target.tagName === 'TEXTAREA' ? 'textarea' : 'input[type=text]';
+    document.querySelectorAll(`[data-note_id="${card.dataset.note_id}"]`).forEach(other => {
+        if (other !== card) other.querySelector(selector).value = e.target.value;
+    });
+});
+
+setupLoop();
+window.addEventListener('resize', setupLoop);
 
 gsap.to("#sky", {
     y: -300,
