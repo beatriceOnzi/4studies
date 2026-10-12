@@ -52,6 +52,27 @@ async function delete_note(noteElement, id) {
 
     noteElement.parentElement.remove()
 }
+
+async function save_note_title(element, id){
+    if (!id) return;
+
+    const title = element.value;
+
+    const response = await fetch(`/notes/save_title/${id}`, {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            title
+        })
+    });
+
+}
+
 function create_new_note(data) {
     const { id, note, title } = data;
 

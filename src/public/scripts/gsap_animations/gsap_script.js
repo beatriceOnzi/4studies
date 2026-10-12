@@ -1,6 +1,42 @@
 gsap.registerPlugin(ScrollTrigger);
 gsap.registerPlugin(Observer);
 
+const container = document.getElementById('notes_container');
+const EDGE = 0.2;
+const MAX_SPEED = 10;
+
+const state = { speed: 0 };
+
+function setSpeed(target) {
+    gsap.to(state, {
+        speed: target,
+        duration: 0.6,
+        ease: 'power2.out',
+        overwrite: true
+    });
+}
+
+container.addEventListener('mousemove', (e) => {
+    const rect = container.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+
+    if (x > 1 - EDGE) {
+        setSpeed(((x - (1 - EDGE)) / EDGE) * MAX_SPEED);
+    } else if (x < EDGE) {
+        setSpeed(-((EDGE - x) / EDGE) * MAX_SPEED);
+    } else {
+        setSpeed(0);
+    }
+});
+
+container.addEventListener('mouseleave', () => setSpeed(0));
+
+gsap.ticker.add(() => {
+    if (state.speed !== 0) {
+        container.scrollLeft += state.speed * gsap.ticker.deltaRatio();
+    }
+});
+
 gsap.to("#sky", {
     y: -300,
     ease: "power4.out",

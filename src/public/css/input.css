@@ -16,8 +16,12 @@
     @apply min-w-[1.32rem] min-h-[1.32rem] max-w-[1.32rem] max-h-[1.32rem]
 }
 
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
 ::-webkit-scrollbar {
-   width: 8px;
+    width: 8px;
     height: 12px;
 }
 
