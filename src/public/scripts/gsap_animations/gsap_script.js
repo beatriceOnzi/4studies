@@ -85,7 +85,9 @@ function updateScale() {
         const center = el.offsetLeft + el.offsetWidth / 2 - container.scrollLeft;
         const dist = Math.min(Math.abs(center - half) / half, 1);
         el.style.transform = `scale(${gsap.utils.mapRange(0, 1, 1, MIN_SCALE, dist)})`;
-        el.style.opacity = gsap.utils.mapRange(0, 1, 1, MIN_OPACITY, dist);
+
+        const inner = el.firstElementChild;
+        if (inner) inner.style.opacity = gsap.utils.mapRange(0, 1, 1, MIN_OPACITY, dist);
     }
 }
 

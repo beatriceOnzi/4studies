@@ -47,24 +47,51 @@
         <div id="notes_container" class="carousel relative flex items-center justify-start gap-6 w-full px-6 overflow-x-auto overflow-y-hidden">
             {{#each data.notes}}
                 <div class="flex-[0_0_20rem]">
-                    <div class="flex flex-col text-white bg-blue-medium bg-opacity-70 rounded-lg p-3 w-80 h-96 overflow-hidden" data-note_id="{{ id }}">
-                        <input oninput="save_note_title(this, {{ id }})" type="text" value="{{ title }}"
-                            class="w-full min-w-0 font-semibold font-soul text-white text-2xl tracking-widest px-2 mb-1 bg-transparent border-b-2
-                            border-opacity-0 focus:outline-none border-purple-light focus:border-opacity-100">
+                    <div class="flex flex-col text-white bg-blue-medium backdrop-blur-[2px] border border-white/10 hover:border-purple-light/60 bg-opacity-70 rounded-xl p-3 w-80 h-96 overflow-hidden" data-note_id="{{ id }}">
+                        <div class="flex items-center justify-between pb-2 mb-3 border-b border-white/10 focus-within:border-purple-light">
+                            <input oninput="save_note_title(this, {{ id }})" type="text" value="{{ title }}"
+                                class="w-full min-w-0 font-semibold font-soul text-white text-2xl tracking-widest 
+                                px-2 mb-1 bg-transparent focus:outline-none ">
+                            <span class="w-2.5 h-2.5 rounded-full bg-pink-light shadow-[0_0_8px] shadow-pink-light"></span>
+                        </div>
+                    
                         <textarea oninput="textarea_edited(this, {{ id }})"
                             class="flex-1 min-h-0 w-full px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none
-                            focus:border-purple-light border-purple-dark border-2 bg-transparent">{{ note }}</textarea>
-                        <input
-                            onclick="delete_note(this, {{ id }})"
+                            focus:border-purple-light border-blue-medium/80 border-[1px] bg-black/10 focus:bg-black/15">{{ note }}</textarea>
+                        
+                        <button
                             type="button"
-                            class="font-semibold tracking-widest self-end rounded-md text-pink-light text-2xl mt-2 cursor-pointer"
-                            value="Delete Note">
+                            onclick="delete_note(this, {{ id }})"
+                            class="mt-3 w-full py-1.5 rounded-lg text-pink-light text-xl
+                                border border-pink-light/30 bg-transparent 
+                                transition-all duration-200
+                                hover:bg-pink-light/10 hover:border-pink-light active:scale-95">
+                            🗑 Delete Note
+                        </button>
                     </div>
                 </div>
             {{/each}}
+            
+            <div id="new_note"
+                onclick="new_note()"
+                class="group relative flex-none flex flex-col items-center justify-center gap-4 w-80 h-96 rounded-xl cursor-pointer
+                        border-2 border-dashed border-gray-400 bg-blue-medium bg-opacity-40 backdrop-blur-[2px]
+                        transition-[border-color,background-color,box-shadow] duration-300 ease-out
+                        hover:border-purple-light hover:bg-opacity-60 hover:shadow-xl hover:shadow-purple-dark/30">
 
-            <div id="new_note" class="flex-none w-80 h-96 rounded-lg border-2 border-dashed border-gray-400 bg-blue-medium bg-opacity-40 flex items-center justify-center cursor-pointer hover:border-purple-light transition-colors" onclick="new_note()">
-                <span class="text-gray-300 text-xl">+ New Note</span>
+                <span class="absolute top-[1.4rem] right-5 w-2.5 h-2.5 rounded-full bg-current text-pink-light shadow-[0_0_10px_3px_currentColor]"></span>
+                
+                <span class="flex items-center justify-center w-16 h-16 rounded-full text-gray-300
+                            border-2 border-gray-400 transition-colors duration-300
+                            group-hover:border-pink-light group-hover:text-pink-light">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round" class="w-7 h-7">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                </span>
+                <span class="font-soul font-semibold tracking-widest text-gray-300 text-2xl transition-colors duration-300 group-hover:text-white">
+                    New Note
+                </span>
             </div>
         </div>
     </section>

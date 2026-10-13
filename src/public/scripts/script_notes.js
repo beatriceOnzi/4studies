@@ -77,16 +77,27 @@ function create_new_note(data) {
     const template = document.createElement('template');
     template.innerHTML = `
         <div class="flex-[0_0_20rem]">
-            <div class="flex flex-col text-white bg-blue-medium bg-opacity-70 rounded-lg p-3 w-80 h-96 overflow-hidden" data-note_id="${id}">
-                <input oninput="save_note_title(this, ${id})" type="text"
-                    class="w-full min-w-0 font-semibold font-soul text-white text-2xl tracking-widest px-2 mb-1 bg-transparent border-b-2
-                    border-opacity-0 focus:outline-none border-purple-light focus:border-opacity-100">
+            <div class="flex flex-col text-white bg-blue-medium backdrop-blur-[2px] border border-white/10 hover:border-purple-light/60 bg-opacity-70 rounded-xl p-3 w-80 h-96 overflow-hidden" data-note_id="${id}">
+                <div class="flex items-center justify-between pb-2 mb-3 border-b border-white/10 focus-within:border-purple-light">
+                    <input oninput="save_note_title(this, ${id})" type="text"
+                        class="w-full min-w-0 font-semibold font-soul text-white text-2xl tracking-widest
+                        px-2 mb-1 bg-transparent focus:outline-none">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pink-light shadow-[0_0_8px] shadow-pink-light"></span>
+                </div>
+
                 <textarea oninput="textarea_edited(this, ${id})"
                     class="flex-1 min-h-0 w-full px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none
-                    focus:border-purple-light border-purple-dark border-2 bg-transparent"></textarea>
-                <input onclick="delete_note(this, ${id})" type="button"
-                    class="font-semibold tracking-widest self-end rounded-md text-pink-light text-2xl mt-2 cursor-pointer"
-                    value="Delete Note">
+                    focus:border-purple-light border-blue-medium/80 border-[1px] bg-black/10 focus:bg-black/15"></textarea>
+
+                <button
+                    type="button"
+                    onclick="delete_note(this, ${id})"
+                    class="mt-3 w-full py-1.5 rounded-lg text-pink-light text-xl
+                        border border-pink-light/30 bg-transparent
+                        transition-all duration-200
+                        hover:bg-pink-light/10 hover:border-pink-light active:scale-95">
+                    🗑 Delete Note
+                </button>
             </div>
         </div>
     `;
