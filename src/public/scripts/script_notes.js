@@ -34,25 +34,6 @@ async function saveNote(noteElement, id) {
 
 }
 
-async function delete_note(noteElement, id) {
-    if (!id) return;
-
-    const response = await fetch(`/notes/delete/${id}`, {
-
-        method: 'DELETE',
-
-        headers: {
-            'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-            id
-        })
-    });
-
-    noteElement.parentElement.remove()
-}
-
 async function save_note_title(element, id){
     if (!id) return;
 
@@ -73,37 +54,50 @@ async function save_note_title(element, id){
 
 }
 
+async function delete_note(noteElement, id) {
+    if (!id) return;
+
+    const response = await fetch(`/notes/delete/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+    });
+
+    if (!response.ok) return;
+
+    document.querySelectorAll(`[data-note_id="${id}"]`)
+        .forEach(card => card.parentElement.remove());
+
+    setupLoop();
+}
+
 function create_new_note(data) {
     const { id, note, title } = data;
 
     const template = document.createElement('template');
-
     template.innerHTML = `
-        <div
-            class="note text-white bg-blue-medium bg-opacity-50 rounded-lg p-3 w-80 h-96 flex flex-col"
-            data-note_id="${id}"
-        >
-            <h1 class="font-bold font-soul text-white text-xl mb-2">
-                ${title ?? 'New Note'}
-            </h1>
-
-            <textarea
-                oninput="textarea_edited(this, ${id})"
-                class="px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none focus:border-purple-light border-purple-dark border-2 flex-1 min-h-0 w-full bg-transparent"
-            >${note ?? ''}</textarea>
-
-            <input
-                onclick="delete_note(this, ${id})"
-                type="button"
-                class="rounded-md text-pink-light text-xl mt-2 cursor-pointer"
-                value="Delete Note"
-            >
+        <div class="flex-[0_0_20rem]">
+            <div class="flex flex-col text-white bg-blue-medium bg-opacity-70 rounded-lg p-3 w-80 h-96 overflow-hidden" data-note_id="${id}">
+                <input oninput="save_note_title(this, ${id})" type="text"
+                    class="w-full min-w-0 font-semibold font-soul text-white text-2xl tracking-widest px-2 mb-1 bg-transparent border-b-2
+                    border-opacity-0 focus:outline-none border-purple-light focus:border-opacity-100">
+                <textarea oninput="textarea_edited(this, ${id})"
+                    class="flex-1 min-h-0 w-full px-2 text-xl font-marck tracking-wide rounded-lg resize-none focus:outline-none
+                    focus:border-purple-light border-purple-dark border-2 bg-transparent"></textarea>
+                <input onclick="delete_note(this, ${id})" type="button"
+                    class="font-semibold tracking-widest self-end rounded-md text-pink-light text-2xl mt-2 cursor-pointer"
+                    value="Delete Note">
+            </div>
         </div>
     `;
 
-    const newNote = template.content.firstElementChild;
-    const container = document.getElementById('notes_container');
-    const newNoteButton = document.getElementById('new_note');
+    const wrapper = template.content.firstElementChild;
 
-    container.insertBefore(newNote, newNoteButton);
+    wrapper.querySelector('input[type=text]').value = title ?? 'New Note';
+    wrapper.querySelector('textarea').value = note ?? '';
+
+    const container = document.getElementById('notes_container');
+    container.insertBefore(wrapper, document.getElementById('new_note'));
+
+    setupLoop();
 }
