@@ -3,11 +3,11 @@ const DailyGoals = require("../models/DailyGoals");
 
 
 async function get_weekly_goals() {
-    return await WeeklyGoals.findAll();
+    return await WeeklyGoals.findAll({ order: ['status']});
 }
 
 async function get_daily_goals() {
-    return await DailyGoals.findAll();
+    return await DailyGoals.findAll({ order: ['status']});
 }
 
 async function get_daily_goal_by_id(id) {

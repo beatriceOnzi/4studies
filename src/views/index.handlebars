@@ -12,7 +12,7 @@
                     class="absolute top-44 z-20 pointer-events-none w-80 opacity-95"
                 >
 
-                <div id="clock" class="relative z-10 flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center text-9xl font-medium text-white overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
+                <div id="clock" class="relative backdrop-blur-[2px] z-10 flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center text-9xl font-medium text-white overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
                     <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-2">Current Session</div>
                     <div id="clock_time" class="-mt-8">{{data.time}}</div>
                     <div id="clockIn_list_btn" class="text-xl tracking-widest cursor-pointer text-white/90 hover:text-purple-light">
@@ -32,7 +32,7 @@
 
             </div>
 
-            <div id="clock_button" class="card cursor-pointer text-4xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8 hover:bg-purple-light/80 hover:font-semibold active:bg-purple-light">
+            <div id="clock_button" class="card backdrop-blur-[2px] cursor-pointer text-4xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8 hover:bg-purple-light/80 hover:font-semibold active:bg-purple-light">
                 {{#if data.is_running}}
                     Stop
                 {{else}}
@@ -99,7 +99,7 @@
     <section id="goals">
         <div class="flex justify-center gap-10 my-24">
 
-            <div class="card inline-block h-[23rem] w-max pl-4 pt-3 ms-8 mt-8">
+            <div class="card inline-block backdrop-blur-[2px] h-[23rem] w-max pl-4 pt-3 ms-8 mt-8">
                 <div class="flex gap-64 cursor-default">
                     <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Daily Goals</div>
                     <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Weekly Goals</div>
@@ -196,11 +196,11 @@
 
     <section id="time">
         <div class="flex flex-col items-center font-soul gap-10 h-full pt-10 mt-56 mb-24">
-            <div id="hours_completed" class="card flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
+            <div id="hours_completed" class="card backdrop-blur-[2px] flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
                 <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-3 -mb-6">Hours Completed</div>
                 {{data.hours_completed}}
             </div>
-            <div id="goal_hours" class="card flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
+            <div id="goal_hours" class="card backdrop-blur-[2px] flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
                 <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-3 -mb-6">Goal Hours</div>
                 {{data.goal_hours}}
             </div>
