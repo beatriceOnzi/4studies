@@ -179,25 +179,25 @@ gsap.to("#mountains", {
 });
 
 gsap.to("#waterfall", {
-    y: -830,
+    y: -800,
     ease: "power1.out",
 
     scrollTrigger:{
         trigger:"#start",
         start:"top top",
-        end:"+=500",
+        end:"+=600",
         scrub: 1
     }
 });
 
 gsap.to("#tree", {
-    y: -950,
+    y: -880,
     ease: "power1.out",
 
     scrollTrigger:{
         trigger:"#clock",
         start:"center top",
-        end:"+=1200",
+        end:"+=800",
         scrub: 1
     }
 });
