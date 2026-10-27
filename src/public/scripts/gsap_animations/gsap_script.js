@@ -178,6 +178,18 @@ gsap.to("#mountains", {
     }
 });
 
+gsap.to("#fog", {
+    y: -600,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"=530",
+        scrub: 1
+    }
+});
+
 gsap.to("#forest", {
     y: -650,
     ease: "power3.out",
@@ -190,6 +202,17 @@ gsap.to("#forest", {
     }
 });
 
+gsap.to("#fog2", {
+    y: -630,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"=500",
+        scrub: 1
+    }
+});
 
 gsap.to("#waterfall", {
     y: -800,
@@ -199,6 +222,30 @@ gsap.to("#waterfall", {
         trigger:"#start",
         start:"top top",
         end:"+=600",
+        scrub: 1
+    }
+});
+
+gsap.to("#fog2", {
+    y: -630,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"=500",
+        scrub: 1
+    }
+});
+
+gsap.to("#fog3", {
+    y: -660,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#clock",
+        start:"center top",
+        end:"=530",
         scrub: 1
     }
 });

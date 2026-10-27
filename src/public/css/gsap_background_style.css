@@ -27,9 +27,16 @@
     top: 720px;
 }
 
+#fog{
+    top: 715px;
+}
+
 #forest{
-    width: 100%;
-    top: 750px;
+    top: 730px;
+}
+
+#fog2{
+    top: 910px;
 }
 
 #waterfall{
@@ -38,6 +45,10 @@
 
 #tree{
     top: 590px;
+}
+
+#fog3{
+    top: 950px;
 }
 
 #cloud1{
