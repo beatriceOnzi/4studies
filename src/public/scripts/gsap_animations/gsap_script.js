@@ -178,6 +178,19 @@ gsap.to("#mountains", {
     }
 });
 
+gsap.to("#forest", {
+    y: -650,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"=530",
+        scrub: 1
+    }
+});
+
+
 gsap.to("#waterfall", {
     y: -800,
     ease: "power1.out",
