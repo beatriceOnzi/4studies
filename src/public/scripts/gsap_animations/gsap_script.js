@@ -262,6 +262,18 @@ gsap.to("#tree", {
     }
 });
 
+gsap.to("#leaves", {
+    y: -1000,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"#clock",
+        start:"center top",
+        end:"+=600",
+        scrub: 1
+    }
+});
+
 // Elements
 
 let tl_clock = gsap.timeline();
