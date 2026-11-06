@@ -1,8 +1,9 @@
-import {validate_datetime} from '../public/scripts/clock_utils';
+import { validate_datetime } from '../public/scripts/clock_utils';
+
+const cell = null;
 
 describe('validate_datetime', () => {
     test('valida um horario correto', async () => {
-        cell = null;
         const valid_hour ='31/08/2026 09:44';
         expect(validate_datetime(cell, valid_hour)).toBe(true);
     });

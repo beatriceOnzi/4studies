@@ -7,31 +7,16 @@ jest.mock('../models/add_stuff');
 jest.mock('../services/clock_service');
 jest.mock('../services/page_service');
 
-beforeAll(() => jest.spyOn(console, 'error').mockImplementation(() => {}));
-afterAll(() => jest.restoreAllMocks());
-
-const express      = require('express');
 const clockService = require('../services/clock_service');
 const pageService  = require('../services/page_service');
 
-function buildApp() {
-    const app = express();
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-    app.use('/', require('../routes/clock'));
-    return app;
-}
+beforeAll(() => jest.spyOn(console, 'error').mockImplementation(() => {}));
+afterAll(() => jest.restoreAllMocks());
 
-function fakeReq(method, path, body = {}) {
-    return Object.assign(Object.create(require('events').EventEmitter.prototype), {
-        method, path, body,
-        headers: { 'content-type': 'application/json' },
-        params: {}, query: {}
-    });
-}
+beforeEach(() => jest.clearAllMocks());
 
 function fakeRes() {
-    const res = {
+    return {
         statusCode: 200,
         body: undefined,
         view: undefined,
@@ -40,19 +25,21 @@ function fakeRes() {
         json(data)   { this.body = data; return this; },
         render(view, data) { this.view = view; this.renderData = data; this.body = {}; return this; }
     };
+}
+
+// acha o handler da rota no router e executa
+async function call(method, path, body = {}) {
+    const router = require('../routes/clock');
+    const layer = router.stack.find(
+        l => l.route && l.route.path === path && l.route.methods[method]
+    );
+    const res = fakeRes();
+    await layer.route.stack[0].handle({ method, path, body, params: {}, query: {} }, res, () => {});
     return res;
 }
 
-beforeEach(() => jest.clearAllMocks());
-
-// ─── GET
-describe('GET', () => {
-    function getIndexHandler() {
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/');
-        return layer.route.stack[0].handle;
-    }
-
+// ─── GET /
+describe('GET /', () => {
     const fakeData = {
         time: '01:30:00',
         is_running: true,
@@ -63,141 +50,197 @@ describe('GET', () => {
         goal_hours: '36',
     };
 
-    test('cria o TimeToday quando é o primeiro clock-in do dia', async () => {
-        clockService.checkIfIsFirstClockIn.mockResolvedValue(true);
-        clockService.createTimeToday.mockResolvedValue();
-        clockService.create_total_hours_if_needed.mockResolvedValue();
-        pageService.get_data.mockResolvedValue(fakeData);
-
-        const handle = getIndexHandler();
-        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
-
-        expect(clockService.createTimeToday).toHaveBeenCalledTimes(1);
-    });
-
-    test('NÃO cria o TimeToday quando já existe registro de hoje', async () => {
-        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
-        clockService.createTimeToday.mockResolvedValue();
-        clockService.create_total_hours_if_needed.mockResolvedValue();
-        pageService.get_data.mockResolvedValue(fakeData);
-
-        const handle = getIndexHandler();
-        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
-
-        expect(clockService.createTimeToday).not.toHaveBeenCalled();
-    });
-
     test('garante que o registro de TotalHours existe', async () => {
-        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
         clockService.create_total_hours_if_needed.mockResolvedValue();
         pageService.get_data.mockResolvedValue(fakeData);
 
-        const handle = getIndexHandler();
-        await handle(fakeReq('GET', '/'), fakeRes(), () => {});
+        await call('get', '/');
 
         expect(clockService.create_total_hours_if_needed).toHaveBeenCalledTimes(1);
     });
 
-    test('renderiza "index" com os dados agregados de todas as seções (clock, notas, metas e tempo)', async () => {
-        clockService.checkIfIsFirstClockIn.mockResolvedValue(false);
+    test('garante o TotalHours ANTES de montar os dados da página', async () => {
         clockService.create_total_hours_if_needed.mockResolvedValue();
         pageService.get_data.mockResolvedValue(fakeData);
 
-        const res = fakeRes();
-        const handle = getIndexHandler();
-        await handle(fakeReq('GET', '/'), res, () => {});
+        await call('get', '/');
+
+        expect(clockService.create_total_hours_if_needed.mock.invocationCallOrder[0])
+            .toBeLessThan(pageService.get_data.mock.invocationCallOrder[0]);
+    });
+
+    test('renderiza "index" com os dados agregados de todas as seções (clock, notas, metas e tempo)', async () => {
+        clockService.create_total_hours_if_needed.mockResolvedValue();
+        pageService.get_data.mockResolvedValue(fakeData);
+
+        const res = await call('get', '/');
 
         expect(res.view).toBe('index');
         expect(res.renderData).toEqual({ data: fakeData });
     });
 });
 
-// is_running
+// ─── GET /get_is_running
 describe('GET /get_is_running', () => {
     test('retorna true quando rodando', async () => {
         clockService.is_running.mockResolvedValue(true);
-        const req = fakeReq('GET', '/get_is_running');
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/get_is_running');
-        await layer.route.stack[0].handle(req, res, () => {});
+        const res = await call('get', '/get_is_running');
         expect(res.body).toBe(true);
     });
 
     test('retorna false quando parado', async () => {
         clockService.is_running.mockResolvedValue(false);
-        const req = fakeReq('GET', '/get_is_running');
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/get_is_running');
-        await layer.route.stack[0].handle(req, res, () => {});
+        const res = await call('get', '/get_is_running');
         expect(res.body).toBe(false);
     });
 });
 
-// get_ms_today 
+// ─── GET /get_ms_today
 describe('GET /get_ms_today', () => {
     test('retorna timeInMsToday como número', async () => {
         clockService.get_time_today.mockResolvedValue({ timeInMsToday: 12345 });
-        const req = fakeReq('GET', '/get_ms_today');
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/get_ms_today');
-        await layer.route.stack[0].handle(req, res, () => {});
+        const res = await call('get', '/get_ms_today');
         expect(res.body).toBe(12345);
     });
 });
 
-// create_clock_in 
+// ─── GET /get_last_clock_in
+describe('GET /get_last_clock_in', () => {
+    test('retorna o clockInTS quando o relógio está rodando', async () => {
+        clockService.get_last_clock_in.mockResolvedValue({ clockInTS: 555, clockOutTS: null });
+        const res = await call('get', '/get_last_clock_in');
+        expect(res.body).toBe(555);
+    });
+
+    test('avisa que não está rodando quando o último registro já tem clockOut', async () => {
+        clockService.get_last_clock_in.mockResolvedValue({ clockInTS: 555, clockOutTS: 999 });
+        const res = await call('get', '/get_last_clock_in');
+        expect(res.body).toBe('Clock is not running. get_last_clock_in');
+    });
+
+    test('não quebra quando ainda não existe nenhum registro', async () => {
+        clockService.get_last_clock_in.mockResolvedValue(null);
+        const res = await call('get', '/get_last_clock_in');
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toBe('Clock is not running. get_last_clock_in');
+    });
+});
+
+// ─── POST /create_clock_in
 describe('POST /create_clock_in', () => {
     test('retorna o novo registro criado', async () => {
         const fakeRecord = { id: 1, clockInTS: 999, clockOutTS: null };
         clockService.create_clock_in.mockResolvedValue(fakeRecord);
-        const req = fakeReq('POST', '/create_clock_in', { timestamp: 999 });
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/create_clock_in');
-        await layer.route.stack[0].handle(req, res, () => {});
+
+        const res = await call('post', '/create_clock_in', { timestamp: 999 });
+
+        expect(clockService.create_clock_in).toHaveBeenCalledWith(999);
         expect(res.body).toMatchObject(fakeRecord);
     });
 });
 
-// save_clock_out
+// ─── POST /save_clock_out
 describe('POST /save_clock_out', () => {
-    test('retorna { ok: true } em sucesso', async () => {
-        clockService.save_clock_out.mockResolvedValue(undefined);
-        const req = fakeReq('POST', '/save_clock_out', { timestamp: 1000 });
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/save_clock_out');
-        await layer.route.stack[0].handle(req, res, () => {});
-        expect(res.body).toEqual({ ok: true });
+    test('retorna os totais recalculados devolvidos pelo service', async () => {
+        const data = { new_time: '01:00:00', new_timeToday: '02:00:00', new_totalHours: '10:00:00' };
+        clockService.save_clock_out.mockResolvedValue(data);
+
+        const res = await call('post', '/save_clock_out', { timestamp: 1000 });
+
+        expect(clockService.save_clock_out).toHaveBeenCalledWith(1000);
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toEqual(data);
+    });
+
+    test('retorna status 409 quando o service recusa o clock out (ex.: já tinha saída)', async () => {
+        clockService.save_clock_out.mockResolvedValue('Last record has a clock out');
+
+        const res = await call('post', '/save_clock_out', { timestamp: 1000 });
+
+        expect(res.statusCode).toBe(409);
+        expect(res.body).toEqual({ error: 'Last record has a clock out' });
     });
 
     test('retorna status 500 quando lança erro', async () => {
         clockService.save_clock_out.mockRejectedValue(new Error('falha'));
-        const req = fakeReq('POST', '/save_clock_out', { timestamp: 1000 });
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/save_clock_out');
-        await layer.route.stack[0].handle(req, res, () => {});
+
+        const res = await call('post', '/save_clock_out', { timestamp: 1000 });
+
         expect(res.statusCode).toBe(500);
         expect(res.body).toHaveProperty('error');
     });
 });
 
-// add_ms_to_database 
-describe('POST /add_ms_to_database', () => {
-    test('chama ambos os serviços com o intervalo correto', async () => {
-        clockService.add_ms_to_TimeToday.mockResolvedValue();
-        clockService.add_ms_to_TotalHours.mockResolvedValue();
-        const req = fakeReq('POST', '/add_ms_to_database', { interval_in_ms: 500 });
-        const res = fakeRes();
-        const router = require('../routes/clock');
-        const layer = router.stack.find(l => l.route && l.route.path === '/add_ms_to_database');
-        await layer.route.stack[0].handle(req, res, () => {});
+// ─── GET /get_clockIns
+describe('GET /get_clockIns', () => {
+    test('retorna a lista formatada', async () => {
+        const list = [{ id: 1, clockIn: '09:00', clockOut: '10:00', time: '01:00:00', day: '2026-11-05' }];
+        clockService.get_clockIns.mockResolvedValue(list);
+
+        const res = await call('get', '/get_clockIns');
+
+        expect(res.body).toEqual(list);
+    });
+});
+
+// ─── POST /delete_clockIn
+describe('POST /delete_clockIn', () => {
+    test('apaga e retorna { ok: true }', async () => {
+        clockService.delete_clockIn.mockResolvedValue();
+
+        const res = await call('post', '/delete_clockIn', { id: 7 });
+
+        expect(clockService.delete_clockIn).toHaveBeenCalledWith(7);
         expect(res.body).toEqual({ ok: true });
-        expect(clockService.add_ms_to_TimeToday).toHaveBeenCalledWith(undefined, 500);
-        expect(clockService.add_ms_to_TotalHours).toHaveBeenCalledWith(500);
+    });
+
+    test('retorna status 500 quando lança erro', async () => {
+        clockService.delete_clockIn.mockRejectedValue(new Error('falha'));
+
+        const res = await call('post', '/delete_clockIn', { id: 7 });
+
+        expect(res.statusCode).toBe(500);
+        expect(res.body).toHaveProperty('error');
+    });
+});
+
+// ─── POST /edit_clockIn e /edit_clockOut
+describe.each([
+    ['/edit_clockIn',  'edit_clockIn',  'new_clockInTS'],
+    ['/edit_clockOut', 'edit_clockOut', 'new_clockOutTS'],
+])('POST %s', (path, serviceFn, field) => {
+    test('retorna new_time, new_timeToday e new_totalHours', async () => {
+        clockService[serviceFn].mockResolvedValue({
+            new_time: '01:00:00',
+            new_timeToday: '02:00:00',
+            new_totalHours: '10:00:00',
+        });
+
+        const res = await call('post', path, { id: 3, [field]: 1234 });
+
+        expect(clockService[serviceFn]).toHaveBeenCalledWith(3, 1234);
+        expect(res.body).toEqual({
+            new_time: '01:00:00',
+            new_timeToday: '02:00:00',
+            new_totalHours: '10:00:00',
+        });
+    });
+
+    test('retorna status 404 quando o registro não existe', async () => {
+        clockService[serviceFn].mockResolvedValue('Not Found');
+
+        const res = await call('post', path, { id: 999, [field]: 1234 });
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body).toEqual({ error: 'Not Found' });
+    });
+
+    test('retorna status 500 quando lança erro', async () => {
+        clockService[serviceFn].mockRejectedValue(new Error('falha'));
+
+        const res = await call('post', path, { id: 3, [field]: 1234 });
+
+        expect(res.statusCode).toBe(500);
+        expect(res.body).toHaveProperty('error');
     });
 });

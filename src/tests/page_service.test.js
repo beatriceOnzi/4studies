@@ -1,16 +1,16 @@
 // tests/page_service.test.js
 
+jest.mock('../services/clock_service');
+jest.mock('../services/notes_service');
+jest.mock('../services/goals_service');
+jest.mock('../services/time_service');
+
 const clockService = require('../services/clock_service');
 const notesService = require('../services/notes_service');
 const goalsService = require('../services/goals_service');
 const timeService  = require('../services/time_service');
 
 const { get_data } = require('../services/page_service');
-
-jest.mock('../services/clock_service');
-jest.mock('../services/notes_service');
-jest.mock('../services/goals_service');
-jest.mock('../services/time_service');
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -22,7 +22,7 @@ function setupDefaultMocks() {
 
     goalsService.get_daily_goals.mockResolvedValue([{ id: 1, daily_goals: 'estudar' }]);
     goalsService.get_weekly_goals.mockResolvedValue([{ id: 1, weekly_goals: 'terminar módulo' }]);
-    notesService.get_notes.mockResolvedValue({ id: 1, note: 'minhas notas' });
+    notesService.get_notes.mockResolvedValue('minhas notas');
 
     timeService.get_hours_completed.mockResolvedValue('05:00:00');
     timeService.get_goal_hours.mockResolvedValue('10');
@@ -67,16 +67,25 @@ describe('get_data', () => {
         expect(data.time).toBe('02:00:00');
     });
 
-    test('extrai apenas o campo "note" do registro retornado por get_notes', async () => {
+    test('repassa as notas devolvidas por get_notes', async () => {
         setupDefaultMocks();
-        notesService.get_notes.mockResolvedValue({ id: 2, note: 'texto salvo' });
+        notesService.get_notes.mockResolvedValue('texto salvo');
 
         const data = await get_data();
 
         expect(data.notes).toBe('texto salvo');
     });
 
-    test('repassa as listas de metas diárias e semanais vindas do notes_service', async () => {
+    test('usa string vazia quando get_notes não devolve nada', async () => {
+        setupDefaultMocks();
+        notesService.get_notes.mockResolvedValue(null);
+
+        const data = await get_data();
+
+        expect(data.notes).toBe('');
+    });
+
+    test('repassa as listas de metas diárias e semanais vindas do goals_service', async () => {
         setupDefaultMocks();
         const dailyGoals = [{ id: 1, daily_goals: 'a' }, { id: 2, daily_goals: 'b' }];
         const weeklyGoals = [{ id: 1, weekly_goals: 'c' }];

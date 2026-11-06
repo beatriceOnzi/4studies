@@ -1,17 +1,15 @@
-const TimeToday = require("../models/TimeToday");
-const TimeWeek = require("../models/TimeWeek");
 const TotalHours = require("../models/TotalHours");
+
+const { get_total_hours } = require("./clock_service");
 
 
 async function get_totalHours() {
-    let totalHours = await TotalHours.findOne()
-    return totalHours
+    return TotalHours.findOne();
 }
 
 async function get_hours_completed() {
-    const totalHours = await get_totalHours()
-    const hours_completed = msToHours(totalHours.totalHoursCompletedInMs)
-    return hours_completed
+    const totalHours = await get_total_hours();
+    return msToHours(totalHours.totalHoursCompletedInMs);
 }
 
 async function get_goal_hours() {
