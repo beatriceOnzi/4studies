@@ -195,8 +195,16 @@
         </div>
     </section>
 
+    <section id="graphic_section">
+        <div id="mainDisplay" class="flex items-center justify-center mt-56 pt-6">
+            <div class="card backdrop-blur-[2px] p-6 pt-2 w-[45rem] rounded-2xl">
+                <canvas id="graph"></canvas>
+            </div>
+        </div>
+    </section>
+
     <section id="time">
-        <div class="flex flex-col items-center font-soul gap-10 h-full pt-10 mt-56 mb-24">
+        <div class="flex flex-col items-center font-soul gap-10 h-full pt-10 mt-52 mb-24">
             <div id="hours_completed" class="card backdrop-blur-[2px] flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
                 <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-3 -mb-6">Hours Completed</div>
                 {{data.hours_completed}}
@@ -211,4 +219,6 @@
 
     <script src="/scripts/script_goals.js"></script>
     <script src="/scripts/script_notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script type="module" src="/scripts/script_graph.js"></script>
     <script type="module" src="/scripts/script_clock.js"></script>

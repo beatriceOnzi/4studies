@@ -1,10 +1,15 @@
 const TotalHours = require("../models/TotalHours");
+const TimeToday = require("../models/TimeToday")
 
 const { get_total_hours } = require("./clock_service");
 
 
 async function get_totalHours() {
-    return TotalHours.findOne();
+    return await TotalHours.findOne();
+}
+
+async function get_all_TimeToday() {
+    return await TimeToday.findAll()
 }
 
 async function get_hours_completed() {
@@ -38,6 +43,7 @@ function msToOnlyHours(ms) {
 
 module.exports = {
     get_totalHours,
+    get_all_TimeToday,
     get_goal_hours,
     get_hours_completed,
     msToHours,

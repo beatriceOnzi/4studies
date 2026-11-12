@@ -19,6 +19,7 @@ const {
     edit_clockIn,
     edit_clockOut,
 } = require('../services/clock_service');
+const { get_all_TimeToday } = require('../services/time_service');
 
 
 // -- Routes --
@@ -31,6 +32,11 @@ router.get("/", async (req, res) => {
 router.get("/get_ms_today", async (req, res) => {
     const time_today = await get_time_today();
     res.json(time_today.timeInMsToday);
+})
+
+router.get("/get_all_TimeToday", async (req, res) => {
+    const all_tt = await get_all_TimeToday();
+    res.json(all_tt)
 })
 
 router.get("/get_last_clock_in", async (req, res) => {
