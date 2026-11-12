@@ -198,7 +198,10 @@
     <section id="graphic_section">
         <div id="mainDisplay" class="flex items-center justify-center mt-56 pt-6">
             <div class="card backdrop-blur-[2px] p-6 pt-2 w-[45rem] rounded-2xl">
-                <canvas id="graph"></canvas>
+                <div id="chartWrap" style="position: relative;">
+                    <canvas id="graph"></canvas>
+                    <div id="scrollTrack"><div id="scrollThumb"></div></div>
+                </div>
             </div>
         </div>
     </section>
@@ -219,6 +222,9 @@
 
     <script src="/scripts/script_goals.js"></script>
     <script src="/scripts/script_notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script type="module" src="/scripts/script_graph.js"></script>
     <script type="module" src="/scripts/script_clock.js"></script>

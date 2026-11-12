@@ -2171,10 +2171,6 @@ video {
   height:max-content
 }
 
-.h-\[400px\]{
-  height:400px
-}
-
 .min-h-0{
   min-height:0px
 }
@@ -2240,10 +2236,6 @@ video {
   min-width:0px
 }
 
-.max-w-full{
-  max-width:100%
-}
-
 .flex-1{
   flex:1 1 0%
 }
@@ -2254,10 +2246,6 @@ video {
 
 .flex-none{
   flex:none
-}
-
-.shrink-0{
-  flex-shrink:0
 }
 
 .-translate-x-1\/2{
@@ -2858,6 +2846,36 @@ video {
 
 .tabulator .tabulator-header{
   font-family: My Soul;
+}
+
+#chartWrap {
+  position: relative;
+  width: 100%;
+}
+
+#chartWrap canvas {
+  display: block;
+  width: 100% !important;
+}
+
+#scrollTrack {
+  position: absolute;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+#scrollThumb {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: rgba(223, 129, 209, 0.85);
+  touch-action: none;
+}
+
+#scrollThumb:active {
+  cursor: grabbing;
 }
 
 .selection\:bg-purple-300 *::-moz-selection{
