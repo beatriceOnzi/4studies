@@ -1,4 +1,5 @@
 async function renderChart() {
+    console.log("renderChart chamada");
     const response = await fetch("/get_all_TimeToday");
     const data = await response.json();
 
@@ -44,17 +45,28 @@ async function renderChart() {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: "Hours per Day", color: "white" }
+                title: { display: true, text: "Hours per Day", color: "white" },
             },
             interaction: { intersect: false },
             scales: {
                 x: {
                     min: start,
                     max: Math.min(total - 1, start + WINDOW - 1),
-                    ticks: { color: "white" },
-                    title: { display: true, text: "Day", color: "white" },
+                    ticks: {
+                        padding: 15,
+                        color: "rgba(255,255,255,0.8)",
+                        font: { size: 11 },
+                        maxRotation: 0,
+                        minRotation: 0,
+                        callback: function (value) {
+                            const label = this.getLabelForValue(value);
+                            const [, month, day] = label.split("-");
+                            return `${day}/${month}`;
+                        }
+                    },
                     grid: { color: "rgba(255, 255, 255, 0.2)" }
                 },
+                                
                 y: {
                     min: 0,
                     max: 24,
@@ -116,6 +128,7 @@ async function renderChart() {
         e.preventDefault();
         setStart(start + Math.sign(e.deltaY));
     }, { passive: false });
+    
 }
 
 renderChart();
