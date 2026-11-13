@@ -36,7 +36,6 @@ async function renderChart() {
                 data: hours,
                 borderColor: "#df81d1",
                 fill: false,
-                cubicInterpolationMode: "monotone",
                 tension: 0.4
             }]
         },
@@ -45,7 +44,7 @@ async function renderChart() {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: "Hours per Day", color: "white" },
+                title: { display: true, text: "Hours per Day", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } }
             },
             interaction: { intersect: false },
             scales: {
@@ -55,9 +54,9 @@ async function renderChart() {
                     ticks: {
                         padding: 15,
                         color: "rgba(255,255,255,0.8)",
-                        font: { size: 11 },
-                        maxRotation: 0,
-                        minRotation: 0,
+                        font: { family: "'Marck Script', sans-serif", size: 15 },
+                        maxRotation: 35,
+                        minRotation: 35,
                         callback: function (value) {
                             const label = this.getLabelForValue(value);
                             const [, month, day] = label.split("-");
@@ -70,8 +69,8 @@ async function renderChart() {
                 y: {
                     min: 0,
                     max: 24,
-                    ticks: { color: "white" },
-                    title: { display: true, text: "Hours", color: "white" },
+                    ticks: { color: "white", font: { family: "'Italianno', sans-serif", size: 22 }},
+                    title: { display: true, text: "Hours", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
                     grid: { color: "rgba(255, 255, 255, 0.2)" }
                 }
             }
