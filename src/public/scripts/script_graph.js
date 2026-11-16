@@ -2,15 +2,28 @@ async function renderChart() {
     const response = await fetch("/get_all_TimeToday");
     const data = await response.json();
 
-    const days = data.map(day => day.today);
-    const hours = data.map(day => day.timeInMsToday / 1000 / 60 / 60);
+    const byDate = new Map(
+        data.map(day => [day.today, day.timeInMsToday / 1000 / 60 / 60])
+    );
+
+    const sortedKeys = [...byDate.keys()].sort();
+    const startDate = new Date(sortedKeys[0] + "T00:00:00Z");
+    const endDate = new Date(sortedKeys[sortedKeys.length - 1] + "T00:00:00Z");
+
+    const days = [];
+    const hours = [];
+    for (let d = new Date(startDate); d <= endDate; d.setUTCDate(d.getUTCDate() + 1)) {
+        const key = d.toISOString().slice(0, 10);
+        days.push(key);
+        hours.push(byDate.get(key) ?? 0);
+    }
 
     const ctx = document.getElementById("graph").getContext("2d");
     const track = document.getElementById("scrollTrack");
     const thumb = document.getElementById("scrollThumb");
 
     const WINDOW = 30;
-    const max_hours = Math.ceil(Math.max(...hours.values()))
+    const max_hours = Math.ceil(Math.max(...hours))
     
     const total = days.length;
     const maxStart = Math.max(0, total - WINDOW);
