@@ -56,9 +56,9 @@ async function get_ms_today() {
     return time_today.timeInMsToday
 }
 
-// async function get_time_today_by_day(day) {
-//     return refresh_time_today(day);
-// }
+async function get_time_today_by_day(day) {
+    return refresh_time_today(day);
+}
 
 async function createTimeToday_by_day(day) {
     return await TimeToday.create({
@@ -258,7 +258,7 @@ module.exports = {
     get_clockIns,
     get_last_clock_in,
     get_new_data,
-    //get_time_today_by_day,
+    get_time_today_by_day,
     getToday,
     checkIfIsFirstClockIn,
     create_total_hours_if_needed,

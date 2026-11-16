@@ -14,21 +14,18 @@ const {
     is_running,
     create_clock_in,
     save_clock_out,
-    get_time_today,
+    get_ms_today,
     get_time_today_by_day,
     get_total_hours,
     getToday,
     checkIfIsFirstClockIn,
-    createTimeToday,
-    createTimeToday_by_day,
     create_total_hours_if_needed,
     get_clockIns,
     get_last_clock_in,
     delete_clockIn,
     edit_clockIn,
     edit_clockOut,
-    get_new_data,
-    set_formated_interval
+    get_new_data
 } = require('../services/clock_service');
 
 const HOUR = 60 * 60 * 1000;
@@ -46,25 +43,24 @@ afterEach(() => {
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-// fixa o "agora" (getToday usa Date.now)
 function freezeNow(ts) {
     jest.spyOn(Date, 'now').mockReturnValue(ts);
 }
 
-// sessões FECHADAS que "estão no banco": sessions([in, out], [in, out])
 function sessions(...list) {
     ClockIn.findAll.mockResolvedValue(
         list.map(([clockInTS, clockOutTS]) => ({ clockInTS, clockOutTS }))
     );
 }
 
-// TimeToday "em memória": uma linha por dia, criada sob demanda
-function fakeTimeTodayStore() {
+function fakeTimeTodayStore(...seedDays) {
     const store = {};
     const row = (day) => ({ timeInMsToday: 0, today: day, save: jest.fn().mockResolvedValue(true) });
 
     TimeToday.findOne.mockImplementation(async ({ where }) => store[where.today] ?? null);
     TimeToday.create.mockImplementation(async ({ today }) => (store[today] = row(today)));
+
+    seedDays.forEach((day) => { store[day] = row(day); });
 
     return store;
 }
@@ -87,7 +83,6 @@ describe('getToday', () => {
     });
 
     test('usa o fuso de Brasília, não UTC (22:30 local ainda é o mesmo dia)', () => {
-        // 22:30 em Brasília = 01:30 UTC do dia seguinte
         freezeNow(br('2026-11-05T22:30:00'));
         expect(getToday()).toBe('2026-11-05');
     });
@@ -126,7 +121,6 @@ describe('is_running', () => {
 
 describe('create_clock_in', () => {
     test('cria registro com clockOutTS nulo e day = dia do timestamp (Brasília)', async () => {
-        // 22:30 em Brasília já é o dia seguinte em UTC: o day tem que ser o local
         const timestamp = br('2026-11-05T22:30:00');
         ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: null, day: '2026-11-05' });
 
@@ -150,6 +144,29 @@ describe('create_clock_in', () => {
         expect(ClockIn.create).toHaveBeenCalledWith(
             expect.objectContaining({ clockInTS: timestamp })
         );
+    });
+
+    test('cria a linha do TimeToday do dia (com 0 ms) quando ela não existe', async () => {
+        const timestamp = br('2026-11-05T22:30:00');
+        const store = fakeTimeTodayStore();
+        ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: null, day: '2026-11-05' });
+
+        await create_clock_in(timestamp);
+
+        expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today: '2026-11-05' } });
+        expect(TimeToday.create).toHaveBeenCalledTimes(1);
+        expect(TimeToday.create).toHaveBeenCalledWith({ timeInMsToday: 0, today: '2026-11-05' });
+        expect(store['2026-11-05'].timeInMsToday).toBe(0);
+    });
+
+    test('NÃO cria outra linha do TimeToday quando o dia já existe', async () => {
+        const timestamp = br('2026-11-05T10:00:00');
+        fakeTimeTodayStore('2026-11-05');
+        ClockIn.create.mockResolvedValue({ clockInTS: timestamp, clockOutTS: null, day: '2026-11-05' });
+
+        await create_clock_in(timestamp);
+
+        expect(TimeToday.create).not.toHaveBeenCalled();
     });
 });
 
@@ -212,6 +229,34 @@ describe('get_clockIns', () => {
         expect(result[0].clockOut).toBeNull();
         expect(result[0].time).toBe('00:00:00');
     });
+
+    test('formata 1h 1min 1s como 01:01:01', async () => {
+        const start = br('2026-11-05T09:00:00');
+        ClockIn.findAll.mockResolvedValue([{
+            id: 3,
+            clockInTS: start,
+            clockOutTS: start + 3661000,
+            day: '2026-11-05',
+        }]);
+
+        const result = await get_clockIns();
+
+        expect(result[0].time).toBe('01:01:01');
+    });
+
+    test('não zera as horas depois de 24h (25:00:00)', async () => {
+        const start = br('2026-11-05T09:00:00');
+        ClockIn.findAll.mockResolvedValue([{
+            id: 4,
+            clockInTS: start,
+            clockOutTS: start + 25 * HOUR,
+            day: '2026-11-05',
+        }]);
+
+        const result = await get_clockIns();
+
+        expect(result[0].time).toBe('25:00:00');
+    });
 });
 
 describe('get_last_clock_in', () => {
@@ -230,7 +275,7 @@ describe('get_last_clock_in', () => {
 
 describe('get_time_today_by_day (recalcula em vez de somar)', () => {
     test('soma a sessão fechada que está dentro do dia', async () => {
-        const store = fakeTimeTodayStore();
+        const store = fakeTimeTodayStore('2026-11-05');
         sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:30:00')]);
 
         const result = await get_time_today_by_day('2026-11-05');
@@ -241,7 +286,7 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
     });
 
     test('chamar de novo NÃO duplica o tempo (idempotente)', async () => {
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:30:00')]);
 
         await get_time_today_by_day('2026-11-05');
@@ -261,7 +306,7 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
     });
 
     test('sessão que atravessa a meia-noite é dividida entre os dois dias', async () => {
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05', '2026-11-06');
         sessions([br('2026-11-05T23:00:00'), br('2026-11-06T01:00:00')]);
 
         const dia1 = await get_time_today_by_day('2026-11-05');
@@ -272,7 +317,7 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
     });
 
     test('sessão de outro dia não conta (e nunca fica negativo)', async () => {
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         sessions([br('2026-11-04T10:00:00'), br('2026-11-04T11:00:00')]);
 
         const result = await get_time_today_by_day('2026-11-05');
@@ -281,7 +326,7 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
     });
 
     test('consulta só sessões fechadas (clockOutTS diferente de null)', async () => {
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         sessions();
 
         await get_time_today_by_day('2026-11-05');
@@ -290,51 +335,61 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
         expect(where.clockOutTS[Op.ne]).toBeNull();
     });
 
-    test('cria a linha do dia quando ela não existe', async () => {
+    test('quando a linha do dia não existe, retorna 0 e NÃO cria a linha', async () => {
         const store = fakeTimeTodayStore();
-        sessions();
+        sessions([br('2025-08-18T10:00:00'), br('2025-08-18T11:00:00')]);
 
         const result = await get_time_today_by_day('2025-08-18');
 
-        expect(TimeToday.create).toHaveBeenCalledWith({ timeInMsToday: 0, today: '2025-08-18' });
-        expect(result.today).toBe('2025-08-18');
-        expect(store['2025-08-18']).toBe(result);
+        expect(result).toBe(0);
+        expect(TimeToday.create).not.toHaveBeenCalled();
+        expect(store['2025-08-18']).toBeUndefined();
     });
 });
 
-describe('get_time_today', () => {
-    test('retorna o registro do dia atual (fuso de Brasília), já recalculado', async () => {
+describe('get_ms_today', () => {
+    test('retorna os ms de hoje (fuso de Brasília), já recalculados', async () => {
         freezeNow(br('2026-11-05T22:30:00'));
-        const store = fakeTimeTodayStore();
+        const store = fakeTimeTodayStore('2026-11-05');
         sessions([br('2026-11-05T21:00:00'), br('2026-11-05T22:00:00')]);
 
-        const result = await get_time_today();
+        const result = await get_ms_today();
 
         expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today: '2026-11-05' } });
-        expect(result).toBe(store['2026-11-05']);
-        expect(result.timeInMsToday).toBe(HOUR);
+        expect(result).toBe(HOUR);
+        expect(store['2026-11-05'].timeInMsToday).toBe(HOUR);
     });
 
-    test('cria o TimeToday de hoje na primeira leitura do dia', async () => {
+    test('retorna um número, não o registro', async () => {
+        freezeNow(br('2026-11-05T12:00:00'));
+        fakeTimeTodayStore('2026-11-05');
+        sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:00:00')]);
+
+        const result = await get_ms_today();
+
+        expect(typeof result).toBe('number');
+    });
+
+    test('retorna 0 e não cria o TimeToday quando hoje ainda não tem linha', async () => {
         freezeNow(br('2026-11-05T09:00:00'));
         fakeTimeTodayStore();
         sessions();
 
-        const result = await get_time_today();
+        const result = await get_ms_today();
 
-        expect(TimeToday.create).toHaveBeenCalledWith({ timeInMsToday: 0, today: '2026-11-05' });
-        expect(result.timeInMsToday).toBe(0);
+        expect(result).toBe(0);
+        expect(TimeToday.create).not.toHaveBeenCalled();
     });
 
     test('depois da meia-noite, o "hoje" começa do zero (tempo de ontem não entra)', async () => {
         freezeNow(br('2026-11-06T00:10:00'));
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05', '2026-11-06');
         sessions([br('2026-11-05T20:00:00'), br('2026-11-05T22:00:00')]);
 
-        const result = await get_time_today();
+        const result = await get_ms_today();
 
-        expect(result.today).toBe('2026-11-06');
-        expect(result.timeInMsToday).toBe(0);
+        expect(TimeToday.findOne).toHaveBeenCalledWith({ where: { today: '2026-11-06' } });
+        expect(result).toBe(0);
     });
 });
 
@@ -358,31 +413,6 @@ describe('checkIfIsFirstClockIn', () => {
         sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:00:00')]);
 
         expect(await checkIfIsFirstClockIn()).toBe(false);
-    });
-});
-
-describe('createTimeToday', () => {
-    test('cria o registro com day = hoje (Brasília)', async () => {
-        freezeNow(br('2026-11-05T22:30:00'));
-        TimeToday.create.mockResolvedValue({ timeInMsToday: 0, today: '2026-11-05' });
-
-        const record = await createTimeToday();
-
-        expect(TimeToday.create).toHaveBeenCalledWith({ today: '2026-11-05' });
-        expect(record.timeInMsToday).toEqual(0);
-    });
-});
-
-describe('createTimeToday_by_day', () => {
-    test('create time today with 0 ms and day equals to the day provided', async () => {
-        const day = '2026-08-18';
-        TimeToday.create.mockResolvedValue({ timeInMsToday: 0, today: day });
-
-        const record = await createTimeToday_by_day(day);
-
-        expect(record.timeInMsToday).toEqual(0);
-        expect(record.today).toEqual(day);
-        expect(TimeToday.create).toHaveBeenCalledWith({ timeInMsToday: 0, today: day });
     });
 });
 
@@ -515,7 +545,7 @@ describe('save_clock_out', () => {
         const record = { clockInTS: clockIn, clockOutTS: null, save: jest.fn().mockResolvedValue(true) };
         ClockIn.findOne.mockResolvedValue(record);
         sessions([clockIn, clockOut]);
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         const total = fakeTotalHours(0);
 
         const data = await save_clock_out(clockOut);
@@ -536,7 +566,7 @@ describe('save_clock_out', () => {
         const record = { clockInTS: clockIn, clockOutTS: null, save: jest.fn().mockResolvedValue(true) };
         ClockIn.findOne.mockResolvedValue(record);
         sessions([clockIn, clockOut]);
-        const store = fakeTimeTodayStore();
+        const store = fakeTimeTodayStore('2026-11-05', '2026-11-06');
         fakeTotalHours(0);
 
         const data = await save_clock_out(clockOut);
@@ -562,8 +592,9 @@ describe('delete_clockIn', () => {
             destroy: jest.fn().mockResolvedValue(true),
         };
         ClockIn.findByPk.mockResolvedValue(record);
-        sessions(); // depois de apagar não sobra nenhuma sessão
-        const store = fakeTimeTodayStore();
+        sessions(); 
+        const store = fakeTimeTodayStore('2026-11-05');
+        store['2026-11-05'].timeInMsToday = HOUR;
         const total = fakeTotalHours(HOUR);
 
         await delete_clockIn(1);
@@ -571,7 +602,6 @@ describe('delete_clockIn', () => {
         expect(record.destroy).toHaveBeenCalledTimes(1);
         expect(store['2026-11-05'].timeInMsToday).toBe(0);
         expect(total.totalHoursCompletedInMs).toBe(0);
-        // o recálculo acontece DEPOIS do destroy
         expect(record.destroy.mock.invocationCallOrder[0])
             .toBeLessThan(ClockIn.findAll.mock.invocationCallOrder[0]);
     });
@@ -585,7 +615,7 @@ describe('delete_clockIn', () => {
         };
         ClockIn.findByPk.mockResolvedValue(record);
         sessions();
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         const total = fakeTotalHours(0);
 
         await delete_clockIn(1);
@@ -618,7 +648,7 @@ describe('editClockIn', () => {
         const newClockIn = br('2026-11-05T11:00:00');
         const record = setupRecord({ clockInTS: br('2026-11-05T10:00:00'), clockOutTS: clockOut });
         sessions([newClockIn, clockOut]);
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
 
         const data = await edit_clockIn(record.id, newClockIn);
@@ -635,7 +665,6 @@ describe('editClockIn', () => {
 
     test('o day usa o fuso de Brasília, não UTC', async () => {
         freezeNow(br('2026-11-05T23:30:00'));
-        // 22:30 em Brasília = 01:30 UTC do dia 06
         const newClockIn = br('2026-11-05T22:30:00');
         const record = setupRecord({
             clockInTS: br('2026-11-05T21:00:00'),
@@ -643,7 +672,7 @@ describe('editClockIn', () => {
             day: '2026-11-05',
         });
         sessions();
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
 
         await edit_clockIn(record.id, newClockIn);
@@ -657,7 +686,7 @@ describe('editClockIn', () => {
         const newClockIn = br('2026-11-04T10:00:00');
         const record = setupRecord({ clockInTS: br('2026-11-05T10:00:00'), clockOutTS: clockOut });
         sessions([newClockIn, clockOut]);
-        const store = fakeTimeTodayStore();
+        const store = fakeTimeTodayStore('2026-11-04', '2026-11-05');
         fakeTotalHours(0);
 
         await edit_clockIn(record.id, newClockIn);
@@ -671,7 +700,7 @@ describe('editClockIn', () => {
         freezeNow(br('2026-11-05T15:00:00'));
         const record = setupRecord({ clockInTS: br('2026-11-05T10:00:00'), clockOutTS: null });
         sessions();
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
 
         const data = await edit_clockIn(record.id, br('2026-11-05T11:00:00'));
@@ -707,7 +736,7 @@ describe('editClockOut', () => {
         const newClockOut = br('2026-11-05T13:00:00');
         const record = setupRecord({ clockInTS: clockIn, clockOutTS: br('2026-11-05T12:00:00') });
         sessions([clockIn, newClockOut]);
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
 
         const data = await edit_clockOut(record.id, newClockOut);
@@ -728,7 +757,7 @@ describe('editClockOut', () => {
         const newClockOut = br('2026-11-06T01:00:00');
         const record = setupRecord({ clockInTS: clockIn, clockOutTS: br('2026-11-05T23:30:00') });
         sessions([clockIn, newClockOut]);
-        const store = fakeTimeTodayStore();
+        const store = fakeTimeTodayStore('2026-11-05', '2026-11-06');
         fakeTotalHours(0);
 
         await edit_clockOut(record.id, newClockOut);
@@ -743,7 +772,7 @@ describe('editClockOut', () => {
         const newClockOut = br('2026-11-05T11:00:00');
         const record = setupRecord({ clockInTS: clockIn, clockOutTS: null });
         sessions([clockIn, newClockOut]);
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
 
         const data = await edit_clockOut(record.id, newClockOut);
@@ -761,33 +790,50 @@ describe('editClockOut', () => {
     });
 });
 
-// ─── get_new_data / set_formated_interval ───────────────────────────────────
+// ─── get_new_data ────────────────────────────
 
 describe('get_new_data', () => {
-    test('get correct data after change', async () => {
+    beforeEach(() => {
         freezeNow(br('2026-11-05T12:00:00'));
         sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:00:00')]);
-        fakeTimeTodayStore();
+        fakeTimeTodayStore('2026-11-05');
         fakeTotalHours(0);
-
-        const data = await get_new_data(200);
-
-        expect(data.new_time).toEqual(set_formated_interval(200));
-        expect(data.new_timeToday).toEqual(set_formated_interval(HOUR));
-        expect(data.new_totalHours).toEqual(set_formated_interval(HOUR));
-    });
-});
-
-describe('set_formated_interval', () => {
-    test('0 ms vira 00:00:00', () => {
-        expect(set_formated_interval(0)).toBe('00:00:00');
     });
 
-    test('1h 1min 1s', () => {
-        expect(set_formated_interval(3661000)).toBe('01:01:01');
+    test('get correct data after change', async () => {
+        const data = await get_new_data(90 * 1000);
+
+        expect(data).toEqual({
+            new_time: '00:01:30',
+            new_timeToday: '01:00:00',
+            new_totalHours: '01:00:00',
+        });
     });
 
-    test('não zera as horas depois de 24h', () => {
-        expect(set_formated_interval(25 * HOUR)).toBe('25:00:00');
+    test('0 ms vira 00:00:00', async () => {
+        const data = await get_new_data(0);
+
+        expect(data.new_time).toBe('00:00:00');
+    });
+
+    test('1h 1min 1s', async () => {
+        const data = await get_new_data(3661000);
+
+        expect(data.new_time).toBe('01:01:01');
+    });
+
+    test('não zera as horas depois de 24h', async () => {
+        const data = await get_new_data(25 * HOUR);
+
+        expect(data.new_time).toBe('25:00:00');
+    });
+
+    test('new_timeToday é 00:00:00 quando hoje ainda não tem linha no banco', async () => {
+        fakeTimeTodayStore();
+
+        const data = await get_new_data(0);
+
+        expect(data.new_timeToday).toBe('00:00:00');
+        expect(TimeToday.create).not.toHaveBeenCalled();
     });
 });

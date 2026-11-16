@@ -30,7 +30,6 @@ async function get_data() {
         goal_hours: await get_goal_hours()
     }
     data.time = msToHours(await get_ms_today());
-    console.log(data.time);
     let notes = await get_notes();
     data.notes = notes ?? "";
     return data 

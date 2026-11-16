@@ -98,7 +98,7 @@ describe('GET /get_is_running', () => {
 // ─── GET /get_ms_today
 describe('GET /get_ms_today', () => {
     test('retorna timeInMsToday como número', async () => {
-        clockService.get_time_today.mockResolvedValue({ timeInMsToday: 12345 });
+        clockService.get_ms_today.mockResolvedValue(12345);
         const res = await call('get', '/get_ms_today');
         expect(res.body).toBe(12345);
     });
