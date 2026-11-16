@@ -11,7 +11,7 @@ const {
     is_running,
     create_clock_in,
     save_clock_out,
-    get_time_today,
+    get_ms_today,
     get_clockIns,
     get_last_clock_in,
     create_total_hours_if_needed,
@@ -30,8 +30,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/get_ms_today", async (req, res) => {
-    const time_today = await get_time_today();
-    res.json(time_today.timeInMsToday);
+    const time_today = await get_ms_today();
+    res.json(time_today);
 })
 
 router.get("/get_all_TimeToday", async (req, res) => {

@@ -41,24 +41,24 @@ async function refresh_time_today(day) {
 
     let time_today = await TimeToday.findOne({ where: { today: day } });
     if (!time_today) {
-        time_today = await createTimeToday_by_day(day);
+        return 0
     }
     time_today.timeInMsToday = total;
     await time_today.save();
     return time_today;
 }
 
-async function get_time_today() {
-    return refresh_time_today(getToday());
+async function get_ms_today() {
+    const time_today = await refresh_time_today(getToday());
+    if (time_today == 0 ){
+        return 0
+    }
+    return time_today.timeInMsToday
 }
 
-async function get_time_today_by_day(day) {
-    return refresh_time_today(day);
-}
-
-async function createTimeToday() {
-    return await TimeToday.create({ today: getToday() });
-}
+// async function get_time_today_by_day(day) {
+//     return refresh_time_today(day);
+// }
 
 async function createTimeToday_by_day(day) {
     return await TimeToday.create({
@@ -71,7 +71,6 @@ async function checkIfIsFirstClockIn() {
     const [from, to] = day_bounds(getToday());
     return (await sum_ms(from, to)) === 0;
 }
-
 
 async function createTotalHours() {
     return await TotalHours.create({
@@ -119,6 +118,13 @@ async function is_running() {
 }
 
 async function create_clock_in(timestamp) {
+    const day = day_from_timestamp(timestamp)
+
+    let time_today = await TimeToday.findOne({ where: { today: day } });
+    if (!time_today) {
+        await createTimeToday_by_day(day);
+    }
+
     return await ClockIn.create({
         clockInTS: timestamp,
         clockOutTS: null,
@@ -200,11 +206,11 @@ function interval_of(record) {
 }
 
 async function get_new_data(new_time) {
-    const time_today = await get_time_today();
+    const ms_today = await get_ms_today();
     const total_hours = await get_total_hours();
     return {
         new_time: set_formated_interval(new_time),
-        new_timeToday: set_formated_interval(time_today.timeInMsToday),
+        new_timeToday: set_formated_interval(ms_today),
         new_totalHours: set_formated_interval(total_hours.totalHoursCompletedInMs)
     };
 }
@@ -247,19 +253,16 @@ module.exports = {
     is_running,
     create_clock_in,
     save_clock_out,
-    get_time_today,
+    get_ms_today,
     get_total_hours,
-    get_time_today_by_day,
-    getToday,
-    checkIfIsFirstClockIn,
-    createTimeToday,
-    createTimeToday_by_day,
-    create_total_hours_if_needed,
     get_clockIns,
     get_last_clock_in,
+    get_new_data,
+    //get_time_today_by_day,
+    getToday,
+    checkIfIsFirstClockIn,
+    create_total_hours_if_needed,
     delete_clockIn,
     edit_clockIn,
-    edit_clockOut,
-    get_new_data,
-    set_formated_interval
+    edit_clockOut
 };

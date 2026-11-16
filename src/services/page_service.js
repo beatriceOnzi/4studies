@@ -1,6 +1,6 @@
 const { 
     is_running,
-    get_time_today,
+    get_ms_today,
 } = require("../services/clock_service")
 
 const { 
@@ -29,8 +29,8 @@ async function get_data() {
         hours_completed: await get_hours_completed(),
         goal_hours: await get_goal_hours()
     }
-    const study_today = await get_time_today();
-    data.time = msToHours(study_today.timeInMsToday);
+    data.time = msToHours(await get_ms_today());
+    console.log(data.time);
     let notes = await get_notes();
     data.notes = notes ?? "";
     return data 

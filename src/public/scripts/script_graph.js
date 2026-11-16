@@ -8,7 +8,9 @@ async function renderChart() {
 
     const sortedKeys = [...byDate.keys()].sort();
     const startDate = new Date(sortedKeys[0] + "T00:00:00Z");
-    const endDate = new Date(sortedKeys[sortedKeys.length - 1] + "T00:00:00Z");
+    
+    const now = new Date();
+    const endDate = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
 
     const days = [];
     const hours = [];
@@ -96,7 +98,6 @@ async function renderChart() {
         }
     });
 
-    // Converte "2026-11-16" em "16-11-26"
     function formatDate(iso) {
         const [year, month, day] = iso.split("-");
         return `${day}-${month}-${year}`;
