@@ -1,5 +1,4 @@
 async function renderChart() {
-    console.log("renderChart chamada");
     const response = await fetch("/get_all_TimeToday");
     const data = await response.json();
 
@@ -10,7 +9,9 @@ async function renderChart() {
     const track = document.getElementById("scrollTrack");
     const thumb = document.getElementById("scrollThumb");
 
-    const WINDOW = 14;
+    const WINDOW = 30;
+    const max_hours = Math.ceil(Math.max(...hours.values()))
+    
     const total = days.length;
     const maxStart = Math.max(0, total - WINDOW);
     let start = maxStart;
@@ -68,7 +69,7 @@ async function renderChart() {
                                 
                 y: {
                     min: 0,
-                    max: 24,
+                    max: max_hours,
                     ticks: { color: "white", font: { family: "'Italianno', sans-serif", size: 22 }},
                     title: { display: true, text: "Hours", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
                     grid: { color: "rgba(255, 255, 255, 0.2)" }

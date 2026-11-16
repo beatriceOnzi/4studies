@@ -48,10 +48,6 @@ function getServerURL(goal_type, action){
 }
 function createLi(data, goalList) {
     let type = null
-    
-    console.log(goalList.id)
-    console.log(goalList)
-
     if (goalList.id == 'dailyGoalsList'){
         type = 'daily_goals'
     } else if (goalList.id == 'weeklyGoalsList'){

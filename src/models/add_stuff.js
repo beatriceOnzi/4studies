@@ -31,8 +31,13 @@ async function add_stuff(){
     // })
     // bq.save()
 
-    ClockIn.destroy({where: { id: 16 }})
-    ClockIn.destroy({where: { id: 2 }})
+    TimeToday.destroy({where: { id: 14 }})
+    TimeToday.destroy({where: { id: 22 }})
+    TimeToday.destroy({where: { id: 28 }})
+    TimeToday.destroy({where: { id: 44 }})
+    TimeToday.destroy({where: { id: 18 }})
+    TimeToday.destroy({where: { id: 32 }})
+    TimeToday.destroy({where: { id: 45 }})
     // ClockIn.destroy({where: {id: 2}})
 }
     
