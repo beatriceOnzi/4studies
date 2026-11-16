@@ -58,7 +58,12 @@ async function renderChart() {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: "Hours per Day", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } }
+                title: { display: true, text: "Hours per Day", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
+                tooltip: {
+                    callbacks: {
+                        title: (items) => formatDate(items[0].label)
+                    }
+                }
             },
             interaction: { intersect: false },
             scales: {
@@ -90,6 +95,12 @@ async function renderChart() {
             }
         }
     });
+
+    // Converte "2026-11-16" em "16-11-26"
+    function formatDate(iso) {
+        const [year, month, day] = iso.split("-");
+        return `${day}-${month}-${year}`;
+    };
 
     function updateThumb() {
         const trackW = track.clientWidth;
