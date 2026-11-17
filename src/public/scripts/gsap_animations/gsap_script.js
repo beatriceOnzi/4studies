@@ -142,6 +142,19 @@ gsap.to("#cloud3", {
     }
 });
 
+gsap.to("#cloud35", {
+    y: -1000,
+    ease: "power1.out",
+
+    scrollTrigger:{
+        trigger:"body",
+        start:"top top",
+        end:"+=350",
+        scrub: 1
+    }
+});
+
+
 gsap.to("#cloud4", {
     y: -860,
     ease: "power1.out",

@@ -82,6 +82,15 @@
     left: -50px;
 }
 
+#cloud35{
+    width: 530px;
+    height: auto;
+
+    position: absolute;
+    top: 740px;
+    right: -110px;
+}
+
 #cloud4{
     width: 400px;
     height: auto;
