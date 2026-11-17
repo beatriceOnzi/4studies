@@ -143,33 +143,52 @@ async function renderChart() {
         updateThumb();
     }
 
-    function setMode(name) {
-        const m = modes[name];
-        currentMode = name;
+    function applyMode(name) {
+    const m = modes[name];
+    currentMode = name;
 
-        WINDOW = m.window;
-        total = m.labels.length;
-        maxStart = Math.max(0, total - WINDOW);
-        start = maxStart;
-        
-        chart.data.labels = m.labels;
-        chart.data.datasets[0].data = m.data;
-        chart.options.plugins.title.text = m.title;
-        chart.options.scales.y.max = Math.ceil(Math.max(...m.data));
-        chart.options.scales.x.min = start;
-        chart.options.scales.x.max = Math.min(total - 1, start + WINDOW - 1);
+    WINDOW = m.window;
+    total = m.labels.length;
+    maxStart = Math.max(0, total - WINDOW);
+    start = maxStart; // começa mostrando o período mais recente
 
-        chart.update("none");
-        track.style.display = total > WINDOW ? "block" : "none";
-        updateThumb();
+    chart.data.labels = m.labels;
+    chart.data.datasets[0].data = m.data;
+    chart.options.plugins.title.text = m.title;
+    chart.options.scales.y.max = Math.ceil(Math.max(...m.data));
+    chart.options.scales.x.min = start;
+    chart.options.scales.x.max = Math.min(total - 1, start + WINDOW - 1);
 
-        document.querySelectorAll("#modeSwitch button").forEach(b =>
-            b.classList.toggle("active", b.dataset.mode === name)
-        );
+    chart.update("none");
+    track.style.display = total > WINDOW ? "block" : "none";
+    updateThumb();
+}
+
+    const wrap = document.getElementById("mainDisplay"); // pai: só perspectiva
+    const card = document.getElementById("flipCard");    // o que gira
+
+    gsap.set(wrap, { perspective: 1200 });
+
+    let isFlipping = false;
+    const modeOrder = ["day", "week"];
+
+    function flipTo(dir) {
+        if (isFlipping) return;
+
+        const idx = modeOrder.indexOf(currentMode);
+        const name = modeOrder[(idx + dir + modeOrder.length) % modeOrder.length];
+
+        isFlipping = true;
+
+        gsap.timeline({ onComplete: () => { isFlipping = false; } })
+            .to(card, { rotationY: -90 * dir, duration: 0.35, ease: "power2.in" })
+            .add(() => applyMode(name))
+            .set(card, { rotationY: 90 * dir })
+            .to(card, { rotationY: 0, duration: 0.35, ease: "power2.out" });
     }
 
-    document.querySelectorAll("#modeSwitch button").forEach(b =>
-        b.addEventListener("click", () => setMode(b.dataset.mode))
+    document.querySelectorAll(".edge").forEach(el =>
+        el.addEventListener("click", () => flipTo(Number(el.dataset.dir)))
     );
 
     thumb.addEventListener("pointerdown", (e) => {

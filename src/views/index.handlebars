@@ -196,21 +196,21 @@
     </section>
 
     <section id="graphic">
-        <div id="mainDisplay" class="flex items-center justify-center mt-56 pt-6">
-            <div class="card backdrop-blur-[2px] py-1 px-2 w-[45rem] rounded-2xl">
+        <div id="mainDisplay" class="relative flex w-full items-center justify-center mt-56 pt-6">
+            <div id="flipCard" class="card relative backdrop-blur-[2px] py-1 px-2 w-[45rem] max-w-[95vw] rounded-2xl">
                 <div id="chartWrap" class="relative w-full">
                     <canvas id="graph" class="block !w-full"></canvas>
-                    <div id="scrollTrack" class="absolute h-2 rounded bg-white/15">
+                    <div id="scrollTrack" class="absolute h-1 rounded bg-white/15">
                         <div id="scrollThumb"
-                            class="absolute top-0 h-full rounded bg-[#df81d1]/85 active:cursor-grabbing touch-none">
+                            class="absolute top-0 h-full rounded bg-pink-light active:cursor-grabbing touch-none">
                         </div>
                     </div>
                 </div>
+                <div class="edge absolute inset-y-0 left-0 w-[8%] z-10 cursor-pointer rounded-l-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-r from-pink-light/10 to-transparent"
+                    data-dir="-1"></div>
+                <div class="edge absolute inset-y-0 right-0 w-[8%] z-10 cursor-pointer rounded-r-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-l from-pink-light/10 to-transparent"
+                    data-dir="1"></div>
             </div>
-        </div>
-        <div id="modeSwitch">
-            <button data-mode="day" class="active">Dia</button>
-            <button data-mode="week">Semana</button>
         </div>
     </section>
 
