@@ -20,15 +20,33 @@ async function renderChart() {
         hours.push(byDate.get(key) ?? 0);
     }
 
+    const weekStart = (iso) => {
+        const d = new Date(iso + "T00:00:00Z");
+        d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+        return d.toISOString().slice(0, 10);
+    };
+
+    const weekMap = new Map();
+    days.forEach((day, i) => {
+        const key = weekStart(day);
+        weekMap.set(key, (weekMap.get(key) ?? 0) + hours[i]);
+    });
+    const weeks = [...weekMap.keys()];
+    const weekHours = [...weekMap.values()];
+
+    const modes = {
+        day:  { labels: days,  data: hours,     window: 30, title: "Hours per Day" },
+        week: { labels: weeks, data: weekHours, window: 12, title: "Hours per Week" }
+    };
+    let currentMode = "day";
+
     const ctx = document.getElementById("graph").getContext("2d");
     const track = document.getElementById("scrollTrack");
     const thumb = document.getElementById("scrollThumb");
 
-    const WINDOW = 30;
-    const max_hours = Math.ceil(Math.max(...hours))
-    
-    const total = days.length;
-    const maxStart = Math.max(0, total - WINDOW);
+    let WINDOW = modes.day.window;
+    let total = days.length;
+    let maxStart = Math.max(0, total - WINDOW);
     let start = maxStart;
 
     const scrollerPlugin = {
@@ -63,7 +81,13 @@ async function renderChart() {
                 title: { display: true, text: "Hours per Day", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
                 tooltip: {
                     callbacks: {
-                        title: (items) => formatDate(items[0].label)
+                        title: (items) => {
+                            const label = items[0].label;
+                            if (currentMode === "day") return formatDate(label);
+                            const end = new Date(label + "T00:00:00Z");
+                            end.setUTCDate(end.getUTCDate() + 6);
+                            return `${formatDate(label)} → ${formatDate(end.toISOString().slice(0, 10))}`;
+                        }
                     }
                 }
             },
@@ -89,7 +113,7 @@ async function renderChart() {
                                 
                 y: {
                     min: 0,
-                    max: max_hours,
+                    max: Math.ceil(Math.max(...hours)),
                     ticks: { color: "white", font: { family: "'Italianno', sans-serif", size: 22 }},
                     title: { display: true, text: "Hours", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
                     grid: { color: "rgba(255, 255, 255, 0.2)" }
@@ -118,6 +142,35 @@ async function renderChart() {
         chart.update("none");
         updateThumb();
     }
+
+    function setMode(name) {
+        const m = modes[name];
+        currentMode = name;
+
+        WINDOW = m.window;
+        total = m.labels.length;
+        maxStart = Math.max(0, total - WINDOW);
+        start = maxStart;
+        
+        chart.data.labels = m.labels;
+        chart.data.datasets[0].data = m.data;
+        chart.options.plugins.title.text = m.title;
+        chart.options.scales.y.max = Math.ceil(Math.max(...m.data));
+        chart.options.scales.x.min = start;
+        chart.options.scales.x.max = Math.min(total - 1, start + WINDOW - 1);
+
+        chart.update("none");
+        track.style.display = total > WINDOW ? "block" : "none";
+        updateThumb();
+
+        document.querySelectorAll("#modeSwitch button").forEach(b =>
+            b.classList.toggle("active", b.dataset.mode === name)
+        );
+    }
+
+    document.querySelectorAll("#modeSwitch button").forEach(b =>
+        b.addEventListener("click", () => setMode(b.dataset.mode))
+    );
 
     thumb.addEventListener("pointerdown", (e) => {
         e.preventDefault();
