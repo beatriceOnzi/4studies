@@ -1,7 +1,6 @@
 const sequelize = require("./database.js");
 const app = require("./app.js");
 
-require("./models/TimeWeek");
 require("./models/TimeToday");
 require("./models/TotalHours");
 

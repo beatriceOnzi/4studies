@@ -1,7 +1,6 @@
 const Notes = require("./Notes");
 const WeeklyGoals = require("./WeeklyGoals");
 const DailyGoals = require("./DailyGoals");
-const TimeWeek = require("./TimeWeek");
 const TimeToday = require("./TimeToday");
 const TotalHours = require("./TotalHours");
 const ClockIn = require("./ClockIn");
