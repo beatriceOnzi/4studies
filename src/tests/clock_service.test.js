@@ -25,7 +25,8 @@ const {
     delete_clockIn,
     edit_clockIn,
     edit_clockOut,
-    get_new_data
+    get_new_data,
+    delete_time_today
 } = require('../services/clock_service');
 
 const HOUR = 60 * 60 * 1000;
@@ -55,12 +56,23 @@ function sessions(...list) {
 
 function fakeTimeTodayStore(...seedDays) {
     const store = {};
-    const row = (day) => ({ timeInMsToday: 0, today: day, save: jest.fn().mockResolvedValue(true) });
+
+    const row = (day) => ({
+        timeInMsToday: 0,
+        today: day,
+        save: jest.fn().mockResolvedValue(true),
+        destroy: jest.fn().mockImplementation(async () => {
+            delete store[day];
+        })
+    });
 
     TimeToday.findOne.mockImplementation(async ({ where }) => store[where.today] ?? null);
+
     TimeToday.create.mockImplementation(async ({ today }) => (store[today] = row(today)));
 
-    seedDays.forEach((day) => { store[day] = row(day); });
+    seedDays.forEach((day) => {
+        store[day] = row(day);
+    });
 
     return store;
 }
@@ -341,7 +353,7 @@ describe('get_time_today_by_day (recalcula em vez de somar)', () => {
 
         const result = await get_time_today_by_day('2025-08-18');
 
-        expect(result).toBe(0);
+        expect(result).toBe(false);
         expect(TimeToday.create).not.toHaveBeenCalled();
         expect(store['2025-08-18']).toBeUndefined();
     });

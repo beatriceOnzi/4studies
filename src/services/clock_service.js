@@ -173,10 +173,12 @@ async function edit_clockIn(id, new_clockInTS) {
     const record = await ClockIn.findByPk(id);
     if (!record) return "Not Found";
 
+    const old_day = record.day;
+
     const new_day = day_from_timestamp(new_clockInTS);
 
     if (! await get_time_today_by_day(new_day)){
-        await createTimeToday_by_day(new_day)
+        await createTimeToday_by_day(new_day);
     }
 
     record.day = new_day;
@@ -187,7 +189,22 @@ async function edit_clockIn(id, new_clockInTS) {
 
     await refresh_all(old_clockInTS, new_clockInTS, record.clockOutTS);
 
+   
+    const old_tt = await get_time_today_by_day(old_day)
+
+    if (old_tt.timeInMsToday == 0 ){
+        await delete_time_today(old_day)
+    }
+
     return await get_new_data(interval_of(record));
+}
+
+async function delete_time_today(day) {
+    const time_today = await get_time_today_by_day(day);
+
+    if (time_today) {
+        await time_today.destroy();
+    }
 }
 
 async function edit_clockOut(id, new_clockOutTS) {
@@ -269,6 +286,7 @@ module.exports = {
     checkIfIsFirstClockIn,
     create_total_hours_if_needed,
     delete_clockIn,
+    delete_time_today,
     edit_clockIn,
     edit_clockOut
 };

@@ -5,6 +5,8 @@ const TimeToday = require("./TimeToday");
 const TotalHours = require("./TotalHours");
 const ClockIn = require("./ClockIn");
 
+const { Op } = require('sequelize');
+
 async function add_stuff(){
     // let total = await TotalHours.findByPk(1);
     // total.totalHoursCompletedInMs = 0;
@@ -30,7 +32,15 @@ async function add_stuff(){
     // })
     // bq.save()
 
-    // TimeToday.destroy({where: { id: 85 }})
+    await ClockIn.destroy({
+        where: {
+            day: {
+                [Op.gte]: '2026-06-01',
+                [Op.lt]: '2026-10-17'
+            }
+        }
+    });
+
     // ClockIn.destroy({where: {id: 52}})
     // ClockIn.destroy({where: {id: 51}})
 }

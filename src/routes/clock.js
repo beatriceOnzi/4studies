@@ -24,7 +24,7 @@ const { get_all_TimeToday } = require('../services/time_service');
 
 // -- Routes --
 router.get("/", async (req, res) => {
-    await create_total_hours_if_needed();
+    await create_total_hours_if_needed()
     const data = await get_data()
     res.render("index", {data: data});
 });
