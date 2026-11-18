@@ -41,7 +41,7 @@ async function refresh_time_today(day) {
 
     let time_today = await TimeToday.findOne({ where: { today: day } });
     if (!time_today) {
-        return 0
+        return false
     }
     time_today.timeInMsToday = total;
     await time_today.save();
@@ -50,14 +50,14 @@ async function refresh_time_today(day) {
 
 async function get_ms_today() {
     const time_today = await refresh_time_today(getToday());
-    if (time_today == 0 ){
+    if (!time_today){
         return 0
     }
     return time_today.timeInMsToday
 }
 
 async function get_time_today_by_day(day) {
-    return refresh_time_today(day);
+    return await refresh_time_today(day);
 }
 
 async function createTimeToday_by_day(day) {
@@ -173,10 +173,16 @@ async function edit_clockIn(id, new_clockInTS) {
     const record = await ClockIn.findByPk(id);
     if (!record) return "Not Found";
 
-    const old_clockInTS = record.clockInTS;
+    const new_day = day_from_timestamp(new_clockInTS);
 
+    if (! await get_time_today_by_day(new_day)){
+        await createTimeToday_by_day(new_day)
+    }
+
+    record.day = new_day;
+    const old_clockInTS = record.clockInTS;
     record.clockInTS = new_clockInTS;
-    record.day = day_from_timestamp(new_clockInTS);
+    
     await record.save();
 
     await refresh_all(old_clockInTS, new_clockInTS, record.clockOutTS);
