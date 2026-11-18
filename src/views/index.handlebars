@@ -1,6 +1,6 @@
-<div class="opacity-100">    
-    <section id="clock">
-        <div class="flex flex-col items-center font-soul gap-10 h-full pt-24 mt-2 mb-20">
+<div class="opacity-100 space-y-56">
+    <section id="clock" class="scroll-mt-[30vh]">
+        <div class="flex flex-col items-center font-soul gap-10 h-full pt-24 mt-2">
             <div class="relative flex flex-col items-center">
 
             <img
@@ -43,7 +43,7 @@
         </div>
     </section>
 
-    <section id="notes" class="py-28 w-full">
+    <section id="notes" class="scroll-mt-[18vh] w-full"></section>
         <div id="notes_container" class="carousel relative flex items-center justify-start gap-6 w-full px-6 overflow-x-auto overflow-y-hidden">
             {{#each data.notes}}
                 <div class="flex-[0_0_20rem]">
@@ -97,10 +97,10 @@
         </div>
     </section>
 
-    <section id="goals">
-        <div class="flex justify-center gap-10 my-24">
+    <section id="goals" class="scroll-mt-[20vh]">
+        <div class="flex justify-center gap-10">
 
-            <div class="card inline-block backdrop-blur-[2px] h-[23rem] w-max pl-4 pt-3 ms-8 mt-8">
+            <div class="card inline-block backdrop-blur-[2px] h-[23rem] w-max pl-4 ms-8 pt-2">
                 <div class="flex gap-64 cursor-default">
                     <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Daily Goals</div>
                     <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Weekly Goals</div>
@@ -195,8 +195,8 @@
         </div>
     </section>
 
-    <section id="graphic">
-        <div id="mainDisplay" class="relative flex w-full items-center justify-center mt-56 pt-6">
+    <section id="graphic" class="scroll-mt-[20vh]">
+        <div id="mainDisplay" class="relative flex w-full items-center justify-center">
             <div id="flipCard" class="card relative backdrop-blur-[2px] py-1 px-2 pr-6 w-[45rem] max-w-[95vw] rounded-2xl">
                 <div id="chartWrap" class="relative w-full">
                     <canvas id="graph" class="block !w-full"></canvas>
@@ -214,8 +214,8 @@
         </div>
     </section>
 
-    <section id="time">
-        <div class="flex flex-col items-center font-soul gap-10 h-full pt-10 mt-52 mb-24">
+    <section id="time" class="scroll-mt-[15vh]">
+        <div class="flex flex-col items-center font-soul gap-10 h-full pb-28">
             <div id="hours_completed" class="card backdrop-blur-[2px] flex-col pb-6 w-[30rem] justify-center items-center rounded-2xl text-9xl font-medium text-white overflow-hidden">
                 <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-3 -mb-6">Hours Completed</div>
                 {{data.hours_completed}}
