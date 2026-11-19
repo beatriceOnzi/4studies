@@ -254,14 +254,12 @@ async function enable_clock_running() {
 
 async function edit_clockIn(cell) {
     const new_value = cell.getValue();
-    const clockOutTS = cell.getRow().getData().clockOutTS;
     const id = cell.getRow().getData().id;
 
-    const new_clockInTS = calculate_new_clockIn(new_value, clockOutTS);
+    const new_clockInTS = calculate_new_clockIn(new_value);
 
     if (new_clockInTS === "Invalid") {
         clockIn_table.updateData([{ id: id, time: "Invalid" }]);
-        return;
     }
 
     const response = await fetch("/edit_clockIn", {
@@ -291,14 +289,12 @@ async function edit_clockIn(cell) {
 
 async function edit_clockOut(cell) {
     const new_value = cell.getValue();
-    const clockInTS = cell.getRow().getData().clockInTS;
     const id = cell.getRow().getData().id;
 
-    const new_clockOutTS = calculate_new_clockOut(new_value, clockInTS);
+    const new_clockOutTS = calculate_new_clockOut(new_value);
 
     if (new_clockOutTS === "Invalid") {
         clockIn_table.updateData([{ id: id, time: "Invalid" }]);
-        return;
     }
 
     const response = await fetch("/edit_clockOut", {

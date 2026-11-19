@@ -13,22 +13,14 @@ export async function get_clockIn_table_data(clockIn_table_data) {
     return clockIn_data
 }
 
-export function calculate_new_clockIn(new_value, clockOutTS) {
+export function calculate_new_clockIn(new_value) {
     const new_ts = parse_datetime(new_value);
-
-    if (new_ts === null || new_ts >= clockOutTS) {
-        return "Invalid";
-    }
-    return new_ts;
+    return new_ts === null ? "Invalid" : new_ts;
 }
 
-export function calculate_new_clockOut(new_value, clockInTS) {
+export function calculate_new_clockOut(new_value) {
     const new_ts = parse_datetime(new_value);
-
-    if (new_ts === null || new_ts <= clockInTS) {
-        return "Invalid";
-    }
-    return new_ts;
+    return new_ts === null ? "Invalid" : new_ts;
 }
 
 export function validate_datetime(cell, value) {
