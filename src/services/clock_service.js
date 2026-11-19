@@ -29,8 +29,13 @@ async function sum_ms(from, to) {
     });
 
     return clocks.reduce((acc, c) => {
-        const start = Math.max(Number(c.clockInTS), from);
-        const end = Math.min(Number(c.clockOutTS), to);
+        const clockIn = Number(c.clockInTS);
+        const clockOut = Number(c.clockOutTS);
+
+        if (clockOut < clockIn) return acc;
+
+        const start = Math.max(clockIn, from);
+        const end = Math.min(clockOut, to);
         return acc + Math.max(0, end - start);
     }, 0);
 }
@@ -144,7 +149,7 @@ async function save_clock_out(timestamp) {
     await last_clock_record.save();
     await refresh_all(last_clock_record.clockInTS, timestamp);
 
-    return await get_new_data(interval_of(last_clock_record));
+    return await get_new_data(last_clock_record);;
 }
 
 async function get_clockIns() {
@@ -174,37 +179,29 @@ async function edit_clockIn(id, new_clockInTS) {
     if (!record) return "Not Found";
 
     const old_day = record.day;
-
+    const old_clockInTS = record.clockInTS;
     const new_day = day_from_timestamp(new_clockInTS);
 
-    if (! await get_time_today_by_day(new_day)){
-        await createTimeToday_by_day(new_day);
-    }
+    const existing = await TimeToday.findOne({ where: { today: new_day } });
+    if (!existing) await createTimeToday_by_day(new_day);
 
     record.day = new_day;
-    const old_clockInTS = record.clockInTS;
     record.clockInTS = new_clockInTS;
-    
     await record.save();
 
     await refresh_all(old_clockInTS, new_clockInTS, record.clockOutTS);
 
-   
-    const old_tt = await get_time_today_by_day(old_day)
-
-    if (old_tt.timeInMsToday == 0 ){
-        await delete_time_today(old_day)
+    if (old_day !== new_day) {
+        const remaining = await ClockIn.count({ where: { day: old_day } });
+        if (remaining === 0) await delete_time_today(old_day);
     }
 
-    return await get_new_data(interval_of(record));
+    return await get_new_data(record);
 }
 
 async function delete_time_today(day) {
-    const time_today = await get_time_today_by_day(day);
-
-    if (time_today) {
-        await time_today.destroy();
-    }
+    const time_today = await TimeToday.findOne({ where: { today: day } });
+    if (time_today) await time_today.destroy();
 }
 
 async function edit_clockOut(id, new_clockOutTS) {
@@ -218,21 +215,32 @@ async function edit_clockOut(id, new_clockOutTS) {
 
     await refresh_all(record.clockInTS, old_clockOutTS, new_clockOutTS);
 
-    return await get_new_data(interval_of(record));
+    return await get_new_data(record);
 }
 
 // ---------- formatação ----------
 
-function interval_of(record) {
-    if (record.clockOutTS == null) return 0;
-    return record.clockOutTS - record.clockInTS;
+function is_impossible(record) {
+    return record.clockOutTS != null &&
+        Number(record.clockOutTS) <= Number(record.clockInTS);
 }
 
-async function get_new_data(new_time) {
+function interval_of(record) {
+    if (record.clockOutTS == null || is_impossible(record)) return 0;
+    return Number(record.clockOutTS) - Number(record.clockInTS);
+}
+
+function format_record_time(record) {
+    return is_impossible(record)
+        ? "Invalid"
+        : set_formated_interval(interval_of(record));
+}
+
+async function get_new_data(record) {
     const ms_today = await get_ms_today();
     const total_hours = await get_total_hours();
     return {
-        new_time: set_formated_interval(new_time),
+        new_time: format_record_time(record),
         new_timeToday: set_formated_interval(ms_today),
         new_totalHours: set_formated_interval(total_hours.totalHoursCompletedInMs)
     };
@@ -245,7 +253,7 @@ function format_clockIns(clockIns) {
         clockOutTS: record.clockOutTS,
         clockIn: format_timestamp(record.clockInTS),
         clockOut: record.clockOutTS == null ? null : format_timestamp(record.clockOutTS),
-        time: set_formated_interval(interval_of(record)),
+        time: format_record_time(record),
         day: record.day
     }));
 }

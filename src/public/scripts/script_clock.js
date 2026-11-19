@@ -251,78 +251,37 @@ async function enable_clock_running() {
     });
 
 }
-
 async function edit_clockIn(cell) {
-    const new_value = cell.getValue();
-    const clockOutTS = cell.getRow().getData().clockOutTS;
-    const id = cell.getRow().getData().id;
-
-    const new_clockInTS = calculate_new_clockIn(new_value, clockOutTS);
-
-    if (new_clockInTS === "Invalid") {
-        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
-        return;
-    }
-
-    const response = await fetch("/edit_clockIn", {
-
-        method: 'POST',
-
-        headers: {
-            'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-            id,
-            new_clockInTS
-        })
-    });
-
-    if (!response.ok) {
-        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
-        return;
-    }
-
-    const data = await response.json()
-
-    clockIn_table.updateData([{ id: id, time: data.new_time, clockInTS: new_clockInTS }]);
-    update_data(data);
+    const new_clockInTS = calculate_new_clockIn(cell.getValue());
+    await save_edit(cell, "/edit_clockIn", { new_clockInTS }, "clockInTS", new_clockInTS);
 }
 
 async function edit_clockOut(cell) {
-    const new_value = cell.getValue();
-    const clockInTS = cell.getRow().getData().clockInTS;
+    const new_clockOutTS = calculate_new_clockOut(cell.getValue());
+    await save_edit(cell, "/edit_clockOut", { new_clockOutTS }, "clockOutTS", new_clockOutTS);
+}
+
+async function save_edit(cell, route, payload, ts_field, new_ts) {
     const id = cell.getRow().getData().id;
 
-    const new_clockOutTS = calculate_new_clockOut(new_value, clockInTS);
-
-    if (new_clockOutTS === "Invalid") {
-        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
+    if (new_ts === "Invalid") {
+        clockIn_table.updateData([{ id, time: "Invalid" }]);
         return;
     }
 
-    const response = await fetch("/edit_clockOut", {
-
-        method: 'POST',
-
-        headers: {
-            'Content-Type': 'application/json'
-        },
-
-        body: JSON.stringify({
-            id,
-            new_clockOutTS
-        })
+    const response = await fetch(route, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, ...payload })
     });
 
     if (!response.ok) {
-        clockIn_table.updateData([{ id: id, time: "Invalid" }]);
+        clockIn_table.updateData([{ id, time: "Invalid" }]);
         return;
     }
 
-    const data = await response.json()
+    const data = await response.json();
 
-    clockIn_table.updateData([{ id: id, time: data.new_time, clockOutTS: new_clockOutTS }]);
+    clockIn_table.updateData([{ id, time: data.new_time, [ts_field]: new_ts }]);
     update_data(data);
-
 }
