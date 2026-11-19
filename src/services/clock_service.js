@@ -149,7 +149,7 @@ async function save_clock_out(timestamp) {
     await last_clock_record.save();
     await refresh_all(last_clock_record.clockInTS, timestamp);
 
-    return await get_new_data(interval_of(last_clock_record));
+    return await get_new_data(last_clock_record);;
 }
 
 async function get_clockIns() {
@@ -196,7 +196,7 @@ async function edit_clockIn(id, new_clockInTS) {
         if (remaining === 0) await delete_time_today(old_day);
     }
 
-    return await get_new_data(interval_of(record));
+    return await get_new_data(record);
 }
 
 async function delete_time_today(day) {
@@ -215,7 +215,7 @@ async function edit_clockOut(id, new_clockOutTS) {
 
     await refresh_all(record.clockInTS, old_clockOutTS, new_clockOutTS);
 
-    return await get_new_data(interval_of(record));
+    return await get_new_data(record);
 }
 
 // ---------- formatação ----------

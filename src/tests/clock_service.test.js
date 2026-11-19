@@ -803,8 +803,10 @@ describe('editClockOut', () => {
 });
 
 // ─── get_new_data ────────────────────────────
-
 describe('get_new_data', () => {
+    const start = br('2026-11-05T10:00:00');
+    const rec = (ms) => ({ clockInTS: start, clockOutTS: start + ms });
+
     beforeEach(() => {
         freezeNow(br('2026-11-05T12:00:00'));
         sessions([br('2026-11-05T10:00:00'), br('2026-11-05T11:00:00')]);
@@ -813,7 +815,7 @@ describe('get_new_data', () => {
     });
 
     test('get correct data after change', async () => {
-        const data = await get_new_data(90 * 1000);
+        const data = await get_new_data(rec(90 * 1000));
 
         expect(data).toEqual({
             new_time: '00:01:30',
@@ -822,28 +824,28 @@ describe('get_new_data', () => {
         });
     });
 
-    test('0 ms vira 00:00:00', async () => {
-        const data = await get_new_data(0);
-
-        expect(data.new_time).toBe('00:00:00');
-    });
-
-    test('1h 1min 1s', async () => {
-        const data = await get_new_data(3661000);
-
-        expect(data.new_time).toBe('01:01:01');
-    });
-
     test('não zera as horas depois de 24h', async () => {
-        const data = await get_new_data(25 * HOUR);
+        const data = await get_new_data(rec(25 * HOUR));
 
         expect(data.new_time).toBe('25:00:00');
+    });
+
+    test('clock out antes do clock in vira Invalid', async () => {
+        const data = await get_new_data({ clockInTS: start, clockOutTS: start - HOUR });
+
+        expect(data.new_time).toBe('Invalid');
+    });
+
+    test('registro aberto vira 00:00:00', async () => {
+        const data = await get_new_data({ clockInTS: start, clockOutTS: null });
+
+        expect(data.new_time).toBe('00:00:00');
     });
 
     test('new_timeToday é 00:00:00 quando hoje ainda não tem linha no banco', async () => {
         fakeTimeTodayStore();
 
-        const data = await get_new_data(0);
+        const data = await get_new_data(rec(1000));
 
         expect(data.new_timeToday).toBe('00:00:00');
         expect(TimeToday.create).not.toHaveBeenCalled();
