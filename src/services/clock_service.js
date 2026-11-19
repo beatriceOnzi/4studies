@@ -169,8 +169,12 @@ async function delete_clockIn(id) {
     const clockIn = await ClockIn.findByPk(id);
     if (!clockIn) return "Not Found";
 
-    const { clockInTS, clockOutTS } = clockIn;
+    const { clockInTS, clockOutTS, day } = clockIn;
     await clockIn.destroy();
+
+    const remaining = await ClockIn.count({ where: { day:day } });
+    if (remaining === 0) await delete_time_today(day);
+
     await refresh_all(clockInTS, clockOutTS);
 }
 
