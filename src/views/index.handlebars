@@ -108,100 +108,107 @@
         </div>
     </section>
 
-    <section id="goals" class="scroll-mt-[20vh]">
-        <div class="flex justify-center gap-10">
+    <section id="goals" class="scroll-mt-[13vh]">
+        <div class="flex justify-center px-6">
 
-            <div class="card inline-block backdrop-blur-[2px] h-[23rem] w-max pl-4 ms-8 pt-2">
-                <div class="flex gap-64 cursor-default">
-                    <div class="font-bold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Daily Goals</div>
-                    <div class="font-bold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Weekly Goals</div>
-                </div>
+            <div class="flex flex-wrap justify-center items-start gap-4 p-4 w-full max-w-5xl bg-blue-medium bg-opacity-40 hover:border-purple-light/40 rounded-xl backdrop-blur-[2px] border border-white/10">
 
-                <div class="flex">
+                <div class="flex flex-col flex-1 basis-80 min-w-0 text-white bg-blue-medium backdrop-blur-[2px] bg-opacity-40 border border-white/10 hover:border-purple-light/60 transition-colors duration-300 rounded-xl p-3 h-[26rem] overflow-hidden">
 
-                        <ul id="dailyGoalsList" class="list-none list-inside mt-4 h-72 w-96 overflow-y-auto">
-                            {{#each data.daily_goals}}
-                                <li data-id="{{ id }}" class="flex group font-medium text-3xl text-wrap tracking-[0.15em] {{#if this.status }}text-pink-light{{else}}text-white{{/if}}">
-                                    <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size"
-                                        viewBox="0 0 24 24" 
-                                        onclick="change_status_goal({{ id }}, this)">
-                                    {{#if this.status }}
-                                        <g id="completed" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="m9 11l3 3l8-8"/>
-                                            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>
-                                        </g>
-                                    {{else}}
-                                        <g id="not_completed" fill="currentColor">
-                                            <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
-                                        </g>
-                                    {{/if}}
-                                    </svg>
-                                    <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through">
-                                        {{ this.daily_goals }}
-                                    </span>
-                                    <a class="deleteDailyGoal hover:cursor-pointer hover:text-opacity-100 text-pink-darker text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
-                                </li>
-                            {{/each}}
-                            <li class="flex text-white font-medium text-3xl text-wrap tracking-widest">
-                                <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class=" mt-1.5 mx-2 text-white check_icon_size" 
-                                        viewBox="0 0 24 24">
-                                    <g id="not_completed" fill="currentColor">
-                                        <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
-                                    </g>
-                                </svg>
-                                <input
-                                    id="daily_goals_input"
-                                    type="text"
-                                    placeholder="New daily goal"
-                                    class="bg-transparent outline-none placeholder:text-gray-400"
-                                >
-                            </li>
-                        </ul>    
+                    <div class="flex items-center justify-between pb-2 mb-3 border-b border-white/10 cursor-default">
+                        <h2 class="font-semibold font-soul text-white text-2xl tracking-widest px-2 mb-1">Daily Goals</h2>
+                        <span class="w-2.5 h-2.5 rounded-full bg-current text-pink-light shadow-[0_0_10px_3px_currentColor]"></span>
+                    </div>
 
-
-                        <ul id="weeklyGoalsList" class="list-none list-inside mt-4 mr-1 h-72 w-96 overflow-y-auto border-s-4 border-purple-dark ps-3">
-                            {{#each data.weekly_goals}}
-                                <li data-id="{{ id }}" class="flex group font-medium text-3xl text-wrap tracking-[0.15em] {{#if this.status }}text-pink-light{{else}}text-white{{/if}}">
-                                    <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size"
-                                        viewBox="0 0 24 24" 
-                                        onclick="change_status_goal({{ id }}, this)">
-                                    {{#if this.status }}
-                                        <g id="completed" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="m9 11l3 3l8-8"/>
-                                            <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>
-                                        </g>
-                                    {{else}}
-                                        <g id="not_completed" fill="currentColor">
-                                            <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
-                                        </g>
-                                    {{/if}}
-                                    </svg>
-                                    <span class="{{#if this.status }} line-through {{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through">
-                                        {{ this.weekly_goals }}
-                                    </span>
-                                    <a class="deleteWeeklyGoal hover:cursor-pointer hover:text-opacity-100 text-pink-darker text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
-                                </li>
-
-                                </li>
-                            {{/each}}
-                            <li class="flex text-white font-medium text-3xl text-wrap tracking-widest">
-                                <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="mt-1.5 mx-2 text-white check_icon_size"
-                                    viewBox="0 0 24 24" 
+                    <ul id="dailyGoalsList" class="flex-1 min-h-0 list-none overflow-y-auto pr-1 space-y-1">
+                        {{#each data.daily_goals}}
+                            <li data-id="{{ id }}" class="flex items-start group rounded-lg px-1 py-0.5 hover:bg-white/5 transition-colors font-medium text-3xl text-wrap tracking-[0.15em] {{#if this.status }}text-pink-light{{else}}text-white{{/if}}">
+                                <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size shrink-0 cursor-pointer"
+                                    viewBox="0 0 24 24"
                                     onclick="change_status_goal({{ id }}, this)">
+                                {{#if this.status }}
+                                    <g id="completed" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="m9 11l3 3l8-8"/>
+                                        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>
+                                    </g>
+                                {{else}}
                                     <g id="not_completed" fill="currentColor">
                                         <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
                                     </g>
+                                {{/if}}
                                 </svg>
-                                <input
-                                    id="weekly_goals_input"
-                                    type="text"
-                                    placeholder="New weekly goal"
-                                    class="bg-transparent outline-none placeholder:text-gray-400"
-                                >
+                                <span class="flex-1 min-w-0 {{#if this.status }}line-through{{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through">
+                                    {{ this.daily_goals }}
+                                </span>
+                                <a class="deleteDailyGoal hover:cursor-pointer text-pink-darker text-opacity-0 hover:text-opacity-100 group-has-[span:hover]:text-opacity-100 no-underline text-3xl font-extrabold ml-1 leading-none">x</a>
                             </li>
-                        </ul>
+                        {{/each}}
+                    </ul>
+
+                    <div class="flex items-center mt-3 px-2 rounded-lg border border-blue-medium/80 bg-black/10 focus-within:bg-black/15 focus-within:border-purple-light transition-colors">
+                        <svg data-type="daily_goals" xmlns="http://www.w3.org/2000/svg" class="mx-1 text-gray-400 check_icon_size shrink-0" viewBox="0 0 24 24">
+                            <g id="not_completed" fill="currentColor">
+                                <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
+                            </g>
+                        </svg>
+                        <input
+                            id="daily_goals_input"
+                            type="text"
+                            placeholder="New daily goal"
+                            class="w-full py-1.5 px-2 bg-transparent outline-none text-3xl font-medium tracking-[0.15em] text-white placeholder:text-gray-400"
+                        >
+                    </div>
                 </div>
-                
+
+
+
+                <div class="flex flex-col flex-1 basis-80 min-w-0 text-white bg-blue-medium backdrop-blur-[2px] bg-opacity-40 border border-white/10 hover:border-purple-light/60 transition-colors duration-300 rounded-xl p-3 h-[26rem] overflow-hidden">
+
+                    <div class="flex items-center justify-between pb-2 mb-3 border-b border-white/10 cursor-default">
+                        <h2 class="font-semibold font-soul text-white text-2xl tracking-widest px-2 mb-1">Weekly Goals</h2>
+                        <span class="w-2.5 h-2.5 rounded-full bg-current text-pink-light shadow-[0_0_10px_3px_currentColor]"></span>
+                    </div>
+
+                    <ul id="weeklyGoalsList" class="flex-1 min-h-0 list-none overflow-y-auto pr-1 space-y-1">
+                        {{#each data.weekly_goals}}
+                            <li data-id="{{ id }}" class="flex items-start group rounded-lg px-1 py-0.5 hover:bg-white/5 transition-colors font-medium text-3xl text-wrap tracking-[0.15em] {{#if this.status }}text-pink-light{{else}}text-white{{/if}}">
+                                <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size shrink-0 cursor-pointer"
+                                    viewBox="0 0 24 24"
+                                    onclick="change_status_goal({{ id }}, this)">
+                                {{#if this.status }}
+                                    <g id="completed" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="m9 11l3 3l8-8"/>
+                                        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>
+                                    </g>
+                                {{else}}
+                                    <g id="not_completed" fill="currentColor">
+                                        <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
+                                    </g>
+                                {{/if}}
+                                </svg>
+                                <span class="flex-1 min-w-0 {{#if this.status }}line-through{{/if}} group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through">
+                                    {{ this.weekly_goals }}
+                                </span>
+                                <a class="deleteWeeklyGoal hover:cursor-pointer text-pink-darker text-opacity-0 hover:text-opacity-100 group-has-[span:hover]:text-opacity-100 no-underline text-3xl font-extrabold ml-1 leading-none">x</a>
+                            </li>
+                        {{/each}}
+                    </ul>
+
+                    <div class="flex items-center mt-3 px-2 rounded-lg border border-blue-medium/80 bg-black/10 focus-within:bg-black/15 focus-within:border-purple-light transition-colors">
+                        <svg data-type="weekly_goals" xmlns="http://www.w3.org/2000/svg" class="mx-1 text-gray-400 check_icon_size shrink-0" viewBox="0 0 24 24">
+                            <g id="not_completed" fill="currentColor">
+                                <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
+                            </g>
+                        </svg>
+                        <input
+                            id="weekly_goals_input"
+                            type="text"
+                            placeholder="New weekly goal"
+                            class="w-full py-1.5 px-2 bg-transparent outline-none text-3xl font-medium tracking-[0.15em] text-white placeholder:text-gray-400"
+                        >
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -217,9 +224,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="edge absolute inset-y-0 left-0 w-[8%] z-10 cursor-pointer rounded-l-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-r from-pink-light/10 to-transparent"
+                <div class="edge absolute inset-y-0 left-0 w-[6%] z-10 cursor-pointer rounded-l-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-r from-pink-light/10 to-transparent"
                     data-dir="-1"></div>
-                <div class="edge absolute inset-y-0 right-0 w-[8%] z-10 cursor-pointer rounded-r-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-l from-pink-light/10 to-transparent"
+                <div class="edge absolute inset-y-0 right-0 w-[6%] z-10 cursor-pointer rounded-r-2xl transition-colors [@media(hover:hover)]:hover:bg-gradient-to-l from-pink-light/10 to-transparent"
                     data-dir="1"></div>
             </div>
         </div>

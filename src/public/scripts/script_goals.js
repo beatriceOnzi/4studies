@@ -55,25 +55,25 @@ function createLi(data, goalList) {
     }
 
     const status = data.status;
-    const text = data.weekly_goals || data.daily_goals;
+    text = data.weekly_goals || data.daily_goals;
 
     const template = document.createElement('template');
     template.innerHTML = `
-        <li data-id="${data.id}" class="flex group font-medium text-3xl text-wrap tracking-widest ${status ? ' text-pink-light ' : 'text-white'}">
-            <svg data-type="${type}" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size"
+        <li data-id="${data.id}" class="flex items-start group rounded-lg px-1 py-0.5 hover:bg-white/5 transition-colors font-medium text-3xl text-wrap tracking-[0.15em] ${status ? 'text-pink-light' : 'text-white'}">
+            <svg data-type="${type}" xmlns="http://www.w3.org/2000/svg" class="group-has-[a:hover]:text-pink-darker mt-1.5 mx-2 check_icon_size shrink-0 cursor-pointer"
                 viewBox="0 0 24 24">
                 <g id="not_completed" fill="currentColor">
                     <path d="M5 21q-.825 0-1.413-.588T3 19V5q0-.825.588-1.413T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.588 1.413T19 21H5Zm0-2h14V5H5v14Z"/>
                 </g>
             </svg>
-            <span class="${status ? 'line-through text-pink-light ' : ''}group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through">
-                ${text}
-            </span>
-            <a class="${type === 'weekly_goals' ? 'deleteWeeklyGoal' : 'deleteDailyGoal'} hover:cursor-pointer hover:text-opacity-100 text-pink-darker text-opacity-0 group-has-[span:hover]:text-opacity-100 no-underline text-4xl font-extrabold ml-1">x</a>
-            </li>
-        `;
+            <span class="flex-1 min-w-0 ${status ? 'line-through' : ''} group-has-[a:hover]:line-through group-has-[a:hover]:text-pink-darker group-has-[input:hover]:line-through"></span>
+            <a class="${type === 'weekly_goals' ? 'deleteWeeklyGoal' : 'deleteDailyGoal'} hover:cursor-pointer text-pink-darker text-opacity-0 hover:text-opacity-100 group-has-[span:hover]:text-opacity-100 no-underline text-3xl font-extrabold ml-1 leading-none">x</a>
+        </li>
+    `;
 
     const li = template.content.firstElementChild;
+    li.querySelector('span').textContent = text; 
+
     li.querySelector('svg').addEventListener('click', function () {
         change_status_goal(data.id, this);
     });
@@ -105,7 +105,7 @@ async function newGoal(goalInput, goalList) {
     const li = createLi(data, goalList)
 
     const lastElement = goalList.lastElementChild
-    goalList.insertBefore(li, lastElement);
+    goalList.appendChild(li, lastElement);
 
     goalInput.value = '';
 }
