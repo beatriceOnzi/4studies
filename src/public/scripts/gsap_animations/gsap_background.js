@@ -121,6 +121,18 @@ gsap.to("#forest", {
     }
 });
 
+gsap.to("#forest2", {
+    y: -780,
+    ease: "power3.out",
+
+    scrollTrigger:{
+        trigger:"#start",
+        start:"top top",
+        end:"=520",
+        scrub: 1
+    }
+});
+
 gsap.to("#fog2", {
     y: -630,
     ease: "power3.out",
