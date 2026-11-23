@@ -78,7 +78,7 @@ async function renderChart() {
             responsive: true,
             plugins: {
                 legend: { display: false },
-                title: { display: true, text: "Hours per Day", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
+                title: { display: true, text: "Hours per Day", color: "white", font: { family: "'My Soul', sans-serif", size: 24 } },
                 tooltip: {
                     callbacks: {
                         title: (items) => {
@@ -98,8 +98,8 @@ async function renderChart() {
                     max: Math.min(total - 1, start + WINDOW - 1),
                     ticks: {
                         padding: 15,
-                        color: "rgba(255,255,255,0.8)",
-                        font: { family: "'Marck Script', sans-serif", size: 15 },
+                        color: "rgba(255,255,255,0.9)",
+                        font: { family: "'Italianno', sans-serif", size: 15 },
                         maxRotation: 35,
                         minRotation: 35,
                         callback: function (value) {
@@ -115,7 +115,7 @@ async function renderChart() {
                     min: 0,
                     max: Math.ceil(Math.max(...hours)),
                     ticks: { color: "white", font: { family: "'Italianno', sans-serif", size: 22 }},
-                    title: { display: true, text: "Hours", color: "white", font: { family: "'Italianno', sans-serif", size: 28 } },
+                    title: { display: true, text: "Hours", color: "white", font: { family: "'My Soul', sans-serif", size: 24 } },
                     grid: { color: "rgba(255, 255, 255, 0.2)" }
                 }
             }

@@ -2042,11 +2042,6 @@ video {
   margin-right:0.5rem
 }
 
-.my-24{
-  margin-top:6rem;
-  margin-bottom:6rem
-}
-
 .-mb-6{
   margin-bottom:-1.5rem
 }
@@ -2093,26 +2088,6 @@ video {
 
 .mt-6{
   margin-top:1.5rem
-}
-
-.mb-20{
-  margin-bottom:5rem
-}
-
-.mb-24{
-  margin-bottom:6rem
-}
-
-.mt-52{
-  margin-top:13rem
-}
-
-.mt-56{
-  margin-top:14rem
-}
-
-.mt-8{
-  margin-top:2rem
 }
 
 .block{
@@ -2186,6 +2161,14 @@ video {
 .h-max{
   height:-moz-max-content;
   height:max-content
+}
+
+.h-2{
+  height:0.5rem
+}
+
+.h-4{
+  height:1rem
 }
 
 .min-h-0{
@@ -2277,6 +2260,10 @@ video {
   flex:none
 }
 
+.origin-\[3\.5px_6px\]{
+  transform-origin:3.5px 6px
+}
+
 .-translate-x-1\/2{
   --tw-translate-x:-50%;
   transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
@@ -2307,16 +2294,8 @@ video {
   resize:none
 }
 
-.scroll-mt-\[50vh\]{
-  scroll-margin-top:50vh
-}
-
 .scroll-mt-\[15vh\]{
   scroll-margin-top:15vh
-}
-
-.scroll-mt-\[30vh\]{
-  scroll-margin-top:30vh
 }
 
 .scroll-mt-\[18vh\]{
@@ -2327,8 +2306,8 @@ video {
   scroll-margin-top:20vh
 }
 
-.scroll-mt-\[25vh\]{
-  scroll-margin-top:25vh
+.scroll-mt-\[30vh\]{
+  scroll-margin-top:30vh
 }
 
 .list-inside{
@@ -2375,44 +2354,18 @@ video {
   gap:16rem
 }
 
-.gap-96{
-  gap:24rem
+.gap-2{
+  gap:0.5rem
 }
 
-.space-y-96 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse:0;
-  margin-top:calc(24rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom:calc(24rem * var(--tw-space-y-reverse))
-}
-
-.space-y-80 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse:0;
-  margin-top:calc(20rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom:calc(20rem * var(--tw-space-y-reverse))
-}
-
-.space-y-64 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse:0;
-  margin-top:calc(16rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom:calc(16rem * var(--tw-space-y-reverse))
+.gap-1{
+  gap:0.25rem
 }
 
 .space-y-56 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse:0;
   margin-top:calc(14rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom:calc(14rem * var(--tw-space-y-reverse))
-}
-
-.space-y-48 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse:0;
-  margin-top:calc(12rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom:calc(12rem * var(--tw-space-y-reverse))
-}
-
-.space-y-52 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-y-reverse:0;
-  margin-top:calc(13rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom:calc(13rem * var(--tw-space-y-reverse))
 }
 
 .overflow-hidden{
@@ -2651,11 +2604,6 @@ video {
   padding-bottom:0.5rem
 }
 
-.py-28{
-  padding-top:7rem;
-  padding-bottom:7rem
-}
-
 .pb-0\.5{
   padding-bottom:0.125rem
 }
@@ -2666,6 +2614,10 @@ video {
 
 .pb-2{
   padding-bottom:0.5rem
+}
+
+.pb-28{
+  padding-bottom:7rem
 }
 
 .pb-5{
@@ -2698,26 +2650,6 @@ video {
 
 .pt-24{
   padding-top:6rem
-}
-
-.pb-24{
-  padding-bottom:6rem
-}
-
-.pb-28{
-  padding-bottom:7rem
-}
-
-.pt-10{
-  padding-top:2.5rem
-}
-
-.pt-3{
-  padding-top:0.75rem
-}
-
-.pt-6{
-  padding-top:1.5rem
 }
 
 .text-center{
@@ -2776,6 +2708,10 @@ video {
 
 .font-semibold{
   font-weight:600
+}
+
+.font-bold{
+  font-weight:700
 }
 
 .tracking-\[0\.15em\]{
@@ -2893,6 +2829,12 @@ video {
 
 .transition-colors{
   transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration:150ms
+}
+
+.transition-transform{
+  transition-property:transform;
   transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration:150ms
 }
@@ -3047,6 +2989,14 @@ video {
   --tw-bg-opacity:0.6
 }
 
+.hover\:font-bold:hover{
+  font-weight:700
+}
+
+.hover\:font-black:hover{
+  font-weight:900
+}
+
 .hover\:font-semibold:hover{
   font-weight:600
 }
@@ -3103,6 +3053,11 @@ video {
 .active\:bg-purple-light:active{
   --tw-bg-opacity:1;
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
+}
+
+.group:hover .group-hover\:-rotate-\[15deg\]{
+  --tw-rotate:-15deg;
+  transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
 }
 
 .group:hover .group-hover\:border-pink-light{

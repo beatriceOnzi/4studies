@@ -12,9 +12,9 @@
                     class="absolute top-44 z-20 pointer-events-none w-80 opacity-95"
                 >
 
-                <div id="clock" class="relative backdrop-blur-[2px] z-10 flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center text-9xl font-medium text-white overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
+                <div id="clock" class="relative backdrop-blur-[2px] z-10 flex flex-col justify-center mt-4 pb-5 pt-2 w-[35rem] items-center font-medium text-white overflow-hidden bg-[linear-gradient(to_right,transparent_0%,rgba(54,46,129,0.7)_10%,rgba(54,46,129,0.7)_90%,transparent_100%)]">
                     <div class="text-lg font-marck tracking-[0.2rem] text-white/80 mt-2">Current Session</div>
-                    <div id="clock_time" class="-mt-8">{{data.time}}</div>
+                    <div id="clock_time" class="text-9xl -mt-8">{{data.time}}</div>
                     <div id="clockIn_list_btn" class="text-xl tracking-widest cursor-pointer text-white/90 hover:text-purple-light">
                         View Clock In History
                     </div>
@@ -32,7 +32,7 @@
 
             </div>
 
-            <div id="clock_button" class="card backdrop-blur-[2px] cursor-pointer text-4xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8 hover:bg-purple-light/80 hover:font-semibold active:bg-purple-light">
+            <div id="clock_button" class="card backdrop-blur-[2px] cursor-pointer text-3xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8 hover:bg-purple-light/80 hover:font-semibold active:bg-purple-light">
                 {{#if data.is_running}}
                     Stop
                 {{else}}
@@ -63,11 +63,19 @@
                         <button
                             type="button"
                             onclick="delete_note(this, {{ id }})"
-                            class="mt-3 w-full py-1.5 rounded-lg text-pink-light text-xl
-                                border border-pink-light/30 bg-transparent 
-                                transition-all duration-200
+                            class="group flex items-center justify-center gap-1 mt-3 w-full py-1.5 rounded-lg 
+                                text-pink-light text-xl border border-pink-light/30 bg-transparent 
+                                transition-all duration-200 font-soul font-medium
                                 hover:bg-pink-light/10 hover:border-pink-light active:scale-95">
-                            🗑 Delete Note
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 mb-1">
+                                <g transform="translate(0 1.5)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.5">
+                                    <g class="origin-[3.5px_6px] transition-transform duration-200 group-hover:-rotate-[15deg]">
+                                        <path d="M9.17 4a3.001 3.001 0 0 1 5.66 0m5.33 2h-16.66"/>
+                                    </g>
+                                    <path d="M18.833 8.5l-.46 6.9c-.177 2.654-.265 3.981-1.13 4.79c-.865.81-2.196.81-4.856.81h-.774c-2.66 0-3.991 0-4.856-.81c-.865-.809-.954-2.136-1.13-4.79l-.46-6.9M9.5 11l.5 5m4.5-5l-.5 5"/>
+                                </g>
+                            </svg>
+                            Delete Note
                         </button>
                     </div>
                 </div>
@@ -102,8 +110,8 @@
 
             <div class="card inline-block backdrop-blur-[2px] h-[23rem] w-max pl-4 ms-8 pt-2">
                 <div class="flex gap-64 cursor-default">
-                    <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Daily Goals</div>
-                    <div class="font-extrabold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Weekly Goals</div>
+                    <div class="font-bold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Daily Goals</div>
+                    <div class="font-bold font-soul text-white text-2xl border-b-[1px] border-white pb-1 pr-8">Weekly Goals</div>
                 </div>
 
                 <div class="flex">

@@ -91,12 +91,15 @@ function create_new_note(data) {
 
                 <button
                     type="button"
-                    onclick="delete_note(this, ${id})"
-                    class="mt-3 w-full py-1.5 rounded-lg text-pink-light text-xl
-                        border border-pink-light/30 bg-transparent
-                        transition-all duration-200
+                    onclick="delete_note(this, {{ id }})"
+                    class="flex items-center justify-center gap-1 mt-3 w-full py-1.5 rounded-lg 
+                        text-pink-light text-xl border border-pink-light/30 bg-transparent 
+                        transition-all duration-200 font-soul font-medium
                         hover:bg-pink-light/10 hover:border-pink-light active:scale-95">
-                    🗑 Delete Note
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5">
+                            <path fill="none" stroke="#df81d1" stroke-linecap="round" stroke-width="1.5" d="M9.17 4a3.001 3.001 0 0 1 5.66 0m5.67 2h-17m15.333 2.5l-.46 6.9c-.177 2.654-.265 3.981-1.13 4.79c-.865.81-2.196.81-4.856.81h-.774c-2.66 0-3.991 0-4.856-.81c-.865-.809-.954-2.136-1.13-4.79l-.46-6.9M9.5 11l.5 5m4.5-5l-.5 5"/>
+                        </svg>
+                        Delete Note
                 </button>
             </div>
         </div>
