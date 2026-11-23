@@ -314,7 +314,7 @@ tl_clock.from("#clock", {
     opacity: 0.2,
     scale: 0.2,
     ease: "power3.out"
-}).from("#clock_button", {
+}).from("#button_card", {
     opacity: 0,
     scale: 0.2,
     duration: 1,

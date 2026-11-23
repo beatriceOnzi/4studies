@@ -2851,6 +2851,12 @@ video {
   transition-duration:150ms
 }
 
+.transition-\[transform\2c background-color\]{
+  transition-property:transform,background-color;
+  transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration:150ms
+}
+
 .duration-200{
   transition-duration:200ms
 }
@@ -2861,6 +2867,10 @@ video {
 
 .ease-out{
   transition-timing-function:cubic-bezier(0, 0, 0.2, 1)
+}
+
+.will-change-transform{
+  will-change:transform
 }
 
 .card{
@@ -3050,6 +3060,18 @@ video {
   transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
 }
 
+.active\:scale-105:active{
+  --tw-scale-x:1.05;
+  --tw-scale-y:1.05;
+  transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+}
+
+.active\:scale-110:active{
+  --tw-scale-x:1.1;
+  --tw-scale-y:1.1;
+  transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))
+}
+
 .active\:cursor-grabbing:active{
   cursor:grabbing
 }
@@ -3057,6 +3079,11 @@ video {
 .active\:bg-purple-light:active{
   --tw-bg-opacity:1;
   background-color:rgb(193 140 237 / var(--tw-bg-opacity, 1))
+}
+
+.active\:bg-pink-light:active{
+  --tw-bg-opacity:1;
+  background-color:rgb(223 129 209 / var(--tw-bg-opacity, 1))
 }
 
 .group:hover .group-hover\:-rotate-\[15deg\]{

@@ -32,13 +32,16 @@
 
             </div>
 
-            <div id="clock_button" class="card w-28 justify-center backdrop-blur-[2px] cursor-pointer text-3xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8 hover:bg-purple-light/80 hover:font-semibold active:bg-purple-light">
-                {{#if data.is_running}}
-                    Stop
-                {{else}}
-
-                    Start
-                {{/if}}
+           <div id="button_card" class="will-change-transform">
+                <div id="clock_button" class="card w-28 justify-center backdrop-blur-[2px] cursor-pointer text-3xl font-medium tracking-widest text-white mt-6 px-4 py-2 outline-8
+                    hover:bg-purple-light/80 hover:font-semibold
+                    transition-[transform,background-color] duration-200 hover:scale-105">
+                    {{#if data.is_running}}
+                        Stop
+                    {{else}}
+                        Start
+                    {{/if}}
+                </div>
             </div>
         </div>
     </section>
