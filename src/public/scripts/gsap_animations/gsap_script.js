@@ -7,7 +7,10 @@ const MAX_SPEED = 12;
 
 const MIN_SCALE = 0.75;
 const MIN_OPACITY = 0.85;
+
 let cards = [];
+let viewHalf = 0;
+let lastScroll = -1;
 
 const state = { speed: 0 };
 let setWidth = 0;
@@ -43,7 +46,7 @@ function setupLoop() {
     for (let i = 0; i < extra; i++) addAfter();
 
     container.scrollLeft = setWidth;
-    cards = Array.from(container.children);
+    measure();
     updateScale();
 }
 
@@ -79,15 +82,30 @@ container.addEventListener('input', (e) => {
     });
 });
 
-function updateScale() {
-    const half = container.clientWidth / 2;
-    for (const el of cards) {
-        const center = el.offsetLeft + el.offsetWidth / 2 - container.scrollLeft;
-        const dist = Math.min(Math.abs(center - half) / half, 1);
-        el.style.transform = `scale(${gsap.utils.mapRange(0, 1, 1, MIN_SCALE, dist)})`;
+function measure() {
+    viewHalf = container.clientWidth / 2;
+    cards = Array.from(container.children).map(el => ({
+        el,
+        inner: el.firstElementChild,
+        center: el.offsetLeft + el.offsetWidth / 2,
+    }));
+    lastScroll = -1;
+}
 
-        const inner = el.firstElementChild;
-        if (inner) inner.style.opacity = gsap.utils.mapRange(0, 1, 1, MIN_OPACITY, dist);
+function updateScale() {
+    const scroll = container.scrollLeft;
+    if (scroll === lastScroll) return;
+    lastScroll = scroll;
+
+    const range = viewHalf * 2 + 400;
+
+    for (const c of cards) {
+        const x = c.center - scroll;
+        if (x < -400 || x > range) continue;
+
+        const dist = Math.min(Math.abs(x - viewHalf) / viewHalf, 1);
+        c.el.style.transform = `scale(${1 - (1 - MIN_SCALE) * dist})`;
+        if (c.inner) c.inner.style.opacity = 1 - (1 - MIN_OPACITY) * dist;
     }
 }
 
